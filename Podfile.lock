@@ -1,0 +1,34 @@
+PODS:
+  - lottie-ios (4.5.0)
+  - RxCocoa (6.8.0):
+    - RxRelay (= 6.8.0)
+    - RxSwift (= 6.8.0)
+  - RxRelay (6.8.0):
+    - RxSwift (= 6.8.0)
+  - RxSwift (6.8.0)
+  - WebBrowser (0.1.5)
+
+DEPENDENCIES:
+  - lottie-ios
+  - RxCocoa
+  - RxSwift
+  - WebBrowser
+
+SPEC REPOS:
+  trunk:
+    - lottie-ios
+    - RxCocoa
+    - RxRelay
+    - RxSwift
+    - WebBrowser
+
+SPEC CHECKSUMS:
+  lottie-ios: a881093fab623c467d3bce374367755c272bdd59
+  RxCocoa: 2d33c1e1e5d66492052ad46b11024ae287572880
+  RxRelay: 335c78b926a2aea8d863a6d25f1ed3b5ad8e8705
+  RxSwift: 4e28be97cbcfeee614af26d83415febbf2bf6f45
+  WebBrowser: 0248873c77f54e2ac504ece7c2bc8eeb710b5a4f
+
+PODFILE CHECKSUM: 61e4065fad9a18774c93076c10327b326e4b28bd
+
+COCOAPODS: 1.16.2

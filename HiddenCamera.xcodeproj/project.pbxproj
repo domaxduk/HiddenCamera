@@ -13,6 +13,21 @@
 		85DA72312D1E919B008F5589 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 85DA72302D1E919B008F5589 /* Base */; };
 		85DA72332D1E919D008F5589 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85DA72322D1E919D008F5589 /* Assets.xcassets */; };
 		85DA72362D1E919D008F5589 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 85DA72352D1E919D008F5589 /* Base */; };
+		85DA72422D1E9343008F5589 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72412D1E9343008F5589 /* HomeView.swift */; };
+		85DA724C2D1E9392008F5589 /* Poppins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72452D1E9392008F5589 /* Poppins.swift */; };
+		85DA724D2D1E9392008F5589 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85DA72462D1E9392008F5589 /* Poppins-SemiBold.ttf */; };
+		85DA724E2D1E9392008F5589 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85DA72472D1E9392008F5589 /* Poppins-Medium.ttf */; };
+		85DA724F2D1E9392008F5589 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85DA72482D1E9392008F5589 /* Poppins-Bold.ttf */; };
+		85DA72502D1E9392008F5589 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85DA72492D1E9392008F5589 /* Poppins-Regular.ttf */; };
+		85DA72512D1E9392008F5589 /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85DA724A2D1E9392008F5589 /* Poppins-Italic.ttf */; };
+		85DA72522D1E9392008F5589 /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85DA724B2D1E9392008F5589 /* Poppins-BoldItalic.ttf */; };
+		85DA72552D1E942B008F5589 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72542D1E942B008F5589 /* AppColor.swift */; };
+		85DA725A2D1E9561008F5589 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72592D1E9561008F5589 /* AppConfig.swift */; };
+		85DA725D2D1E99F4008F5589 /* SakuraExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 85DA725C2D1E99F4008F5589 /* SakuraExtension */; };
+		85DA725F2D1E9C5B008F5589 /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA725E2D1E9C5B008F5589 /* ToolsView.swift */; };
+		85DA72622D1E9EFD008F5589 /* ToolItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72612D1E9EFD008F5589 /* ToolItem.swift */; };
+		85DA72642D1E9F0D008F5589 /* HomeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72632D1E9F0D008F5589 /* HomeTab.swift */; };
+		BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +39,22 @@
 		85DA72322D1E919D008F5589 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		85DA72352D1E919D008F5589 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		85DA72372D1E919D008F5589 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85DA72412D1E9343008F5589 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		85DA72452D1E9392008F5589 /* Poppins.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Poppins.swift; sourceTree = "<group>"; };
+		85DA72462D1E9392008F5589 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		85DA72472D1E9392008F5589 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		85DA72482D1E9392008F5589 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		85DA72492D1E9392008F5589 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		85DA724A2D1E9392008F5589 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Italic.ttf"; sourceTree = "<group>"; };
+		85DA724B2D1E9392008F5589 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
+		85DA72542D1E942B008F5589 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
+		85DA72592D1E9561008F5589 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		85DA725E2D1E9C5B008F5589 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
+		85DA72612D1E9EFD008F5589 /* ToolItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolItem.swift; sourceTree = "<group>"; };
+		85DA72632D1E9F0D008F5589 /* HomeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTab.swift; sourceTree = "<group>"; };
+		9538BCC95076E37CF40E04C0 /* Pods-HiddenCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.debug.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.debug.xcconfig"; sourceTree = "<group>"; };
+		B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HiddenCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D38A84736AD64ED2E350337F /* Pods-HiddenCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.release.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +62,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85DA725D2D1E99F4008F5589 /* SakuraExtension in Frameworks */,
+				BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +75,8 @@
 			children = (
 				85DA72282D1E919B008F5589 /* HiddenCamera */,
 				85DA72272D1E919B008F5589 /* Products */,
+				DD07395B187A8A3FDE185436 /* Pods */,
+				E5221B56DF607C04496333B0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,8 +91,11 @@
 		85DA72282D1E919B008F5589 /* HiddenCamera */ = {
 			isa = PBXGroup;
 			children = (
+				85DA72532D1E9422008F5589 /* Const */,
+				85DA72432D1E9376008F5589 /* Resources */,
 				85DA72292D1E919B008F5589 /* AppDelegate.swift */,
 				85DA722B2D1E919B008F5589 /* SceneDelegate.swift */,
+				85DA723D2D1E9302008F5589 /* Screen */,
 				85DA722D2D1E919B008F5589 /* ViewController.swift */,
 				85DA722F2D1E919B008F5589 /* Main.storyboard */,
 				85DA72322D1E919D008F5589 /* Assets.xcassets */,
@@ -67,6 +105,98 @@
 			path = HiddenCamera;
 			sourceTree = "<group>";
 		};
+		85DA723D2D1E9302008F5589 /* Screen */ = {
+			isa = PBXGroup;
+			children = (
+				85DA723F2D1E9335008F5589 /* Splash */,
+				85DA72402D1E933A008F5589 /* Intro */,
+				85DA723E2D1E932E008F5589 /* Home */,
+			);
+			path = Screen;
+			sourceTree = "<group>";
+		};
+		85DA723E2D1E932E008F5589 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				85DA72602D1E9EF5008F5589 /* Enum */,
+				85DA72412D1E9343008F5589 /* HomeView.swift */,
+				85DA725E2D1E9C5B008F5589 /* ToolsView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		85DA723F2D1E9335008F5589 /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		85DA72402D1E933A008F5589 /* Intro */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Intro;
+			sourceTree = "<group>";
+		};
+		85DA72432D1E9376008F5589 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				85DA72442D1E937B008F5589 /* Font */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		85DA72442D1E937B008F5589 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				85DA72482D1E9392008F5589 /* Poppins-Bold.ttf */,
+				85DA724B2D1E9392008F5589 /* Poppins-BoldItalic.ttf */,
+				85DA724A2D1E9392008F5589 /* Poppins-Italic.ttf */,
+				85DA72472D1E9392008F5589 /* Poppins-Medium.ttf */,
+				85DA72492D1E9392008F5589 /* Poppins-Regular.ttf */,
+				85DA72462D1E9392008F5589 /* Poppins-SemiBold.ttf */,
+				85DA72452D1E9392008F5589 /* Poppins.swift */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		85DA72532D1E9422008F5589 /* Const */ = {
+			isa = PBXGroup;
+			children = (
+				85DA72542D1E942B008F5589 /* AppColor.swift */,
+				85DA72592D1E9561008F5589 /* AppConfig.swift */,
+			);
+			path = Const;
+			sourceTree = "<group>";
+		};
+		85DA72602D1E9EF5008F5589 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				85DA72612D1E9EFD008F5589 /* ToolItem.swift */,
+				85DA72632D1E9F0D008F5589 /* HomeTab.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
+		DD07395B187A8A3FDE185436 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9538BCC95076E37CF40E04C0 /* Pods-HiddenCamera.debug.xcconfig */,
+				D38A84736AD64ED2E350337F /* Pods-HiddenCamera.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		E5221B56DF607C04496333B0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,15 +204,20 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85DA723A2D1E919D008F5589 /* Build configuration list for PBXNativeTarget "HiddenCamera" */;
 			buildPhases = (
+				FA6D6F4286F71D1609909E40 /* [CP] Check Pods Manifest.lock */,
 				85DA72222D1E919B008F5589 /* Sources */,
 				85DA72232D1E919B008F5589 /* Frameworks */,
 				85DA72242D1E919B008F5589 /* Resources */,
+				455D1788F7346CBCE7E399AE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = HiddenCamera;
+			packageProductDependencies = (
+				85DA725C2D1E99F4008F5589 /* SakuraExtension */,
+			);
 			productName = HiddenCamera;
 			productReference = 85DA72262D1E919B008F5589 /* HiddenCamera.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +246,9 @@
 				Base,
 			);
 			mainGroup = 85DA721D2D1E919B008F5589;
+			packageReferences = (
+				85DA725B2D1E99F4008F5589 /* XCRemoteSwiftPackageReference "SakuraExtension" */,
+			);
 			productRefGroup = 85DA72272D1E919B008F5589 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -125,13 +263,61 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85DA72522D1E9392008F5589 /* Poppins-BoldItalic.ttf in Resources */,
 				85DA72332D1E919D008F5589 /* Assets.xcassets in Resources */,
+				85DA724F2D1E9392008F5589 /* Poppins-Bold.ttf in Resources */,
+				85DA72512D1E9392008F5589 /* Poppins-Italic.ttf in Resources */,
+				85DA72502D1E9392008F5589 /* Poppins-Regular.ttf in Resources */,
+				85DA724D2D1E9392008F5589 /* Poppins-SemiBold.ttf in Resources */,
 				85DA72362D1E919D008F5589 /* Base in Resources */,
 				85DA72312D1E919B008F5589 /* Base in Resources */,
+				85DA724E2D1E9392008F5589 /* Poppins-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		455D1788F7346CBCE7E399AE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FA6D6F4286F71D1609909E40 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HiddenCamera-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		85DA72222D1E919B008F5589 /* Sources */ = {
@@ -139,7 +325,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				85DA722E2D1E919B008F5589 /* ViewController.swift in Sources */,
+				85DA72552D1E942B008F5589 /* AppColor.swift in Sources */,
+				85DA72422D1E9343008F5589 /* HomeView.swift in Sources */,
+				85DA72622D1E9EFD008F5589 /* ToolItem.swift in Sources */,
+				85DA725A2D1E9561008F5589 /* AppConfig.swift in Sources */,
+				85DA724C2D1E9392008F5589 /* Poppins.swift in Sources */,
 				85DA722A2D1E919B008F5589 /* AppDelegate.swift in Sources */,
+				85DA725F2D1E9C5B008F5589 /* ToolsView.swift in Sources */,
+				85DA72642D1E9F0D008F5589 /* HomeTab.swift in Sources */,
 				85DA722C2D1E919B008F5589 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,11 +480,13 @@
 		};
 		85DA723B2D1E919D008F5589 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9538BCC95076E37CF40E04C0 /* Pods-HiddenCamera.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YUS8V6L945;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -299,12 +494,13 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = f.HiddenCamera;
+				PRODUCT_BUNDLE_IDENTIFIER = com.duc.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -314,11 +510,13 @@
 		};
 		85DA723C2D1E919D008F5589 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D38A84736AD64ED2E350337F /* Pods-HiddenCamera.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YUS8V6L945;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -326,12 +524,13 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = f.HiddenCamera;
+				PRODUCT_BUNDLE_IDENTIFIER = com.duc.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -361,6 +560,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		85DA725B2D1E99F4008F5589 /* XCRemoteSwiftPackageReference "SakuraExtension" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Sakurathanh2003/SakuraExtension.git";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		85DA725C2D1E99F4008F5589 /* SakuraExtension */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 85DA725B2D1E99F4008F5589 /* XCRemoteSwiftPackageReference "SakuraExtension" */;
+			productName = SakuraExtension;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 85DA721E2D1E919B008F5589 /* Project object */;
 }
