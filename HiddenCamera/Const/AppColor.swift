@@ -12,6 +12,11 @@ enum AppColor: Int {
     case main = 0x0090FF
     case light03 = 0xF0F0F0
     case light06 = 0xD9D9D9
+    case light12 = 0x202020
+    case ee404c = 0xEE404C
+    
+    static let warningColor = Color(rgb: 0xEE404C)
+    static let safeColor = Color(rgb: 0x00BA00)
 }
 
 

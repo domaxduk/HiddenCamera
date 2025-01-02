@@ -8,10 +8,9 @@
 import SwiftUI
 import SakuraExtension
 
-
-
 struct HomeView: View {
-    @State var currentTab: HomeTab = .scan
+    @ObservedObject var viewModel: HomeViewModel
+    
     var body: some View {
         ZStack {
             Color.app(.light03).ignoresSafeArea()
@@ -21,7 +20,7 @@ struct HomeView: View {
                 content
                 tabbar
             }
-        }
+        }.environmentObject(viewModel)
     }
     
     // MARK: - NavigationBar
@@ -44,19 +43,19 @@ struct HomeView: View {
                         .renderingMode(.template)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .foreColor(.app(tab == currentTab ? .main : .light06))
+                        .foreColor(.app(tab == viewModel.currentTab ? .main : .light06))
                         .frame(width: 24)
                     
                     Text(tab.rawValue.capitalized)
                         .font(Poppins.medium.font(size: 14))
-                        .foreColor(.app(tab == currentTab ? .main : .light06))
+                        .foreColor(.app(tab == viewModel.currentTab ? .main : .light06))
                         .frame(height: 20)
                 }
-                .animation(.bouncy, value: currentTab)
+                .animation(.bouncy, value: viewModel.currentTab)
                 .padding()
                 .background(Color.clearInteractive)
                 .onTapGesture {
-                    currentTab = tab
+                    viewModel.currentTab = tab
                 }
                 
                 Spacer()
@@ -74,5 +73,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    HomeView(viewModel: HomeViewModel())
 }
