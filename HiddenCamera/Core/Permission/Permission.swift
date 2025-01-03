@@ -23,9 +23,4 @@ class Permission {
     static func requestCamera(completionHandler:  @escaping ((Bool) -> Void)) {
         AVCaptureDevice.requestAccess(for: .video, completionHandler: completionHandler)
     }
-    
-    static func requestLocation() {
-        let locationManager = CLLocationManager()
-        locationManager.requestWhenInUseAuthorization()
-    }
 }

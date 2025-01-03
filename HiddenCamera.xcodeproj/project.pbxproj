@@ -18,6 +18,21 @@
 		852E28FF2D2799EA00293218 /* DataProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28F22D2799EA00293218 /* DataProcesser.swift */; };
 		852E29002D2799EA00293218 /* ExtensionImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28F32D2799EA00293218 /* ExtensionImage.swift */; };
 		852E29022D2799EA00293218 /* ShapeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28F52D2799EA00293218 /* ShapeData.swift */; };
+		852E290C2D27E4EC00293218 /* WifiScannerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29082D27E4EC00293218 /* WifiScannerCoordinator.swift */; };
+		852E290D2D27E4EC00293218 /* WifiScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29092D27E4EC00293218 /* WifiScannerViewController.swift */; };
+		852E290E2D27E4EC00293218 /* WifiScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E290A2D27E4EC00293218 /* WifiScannerViewModel.swift */; };
+		852E290F2D27E4EC00293218 /* WifiScannerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 852E290B2D27E4EC00293218 /* WifiScannerViewController.xib */; };
+		852E29112D27E87300293218 /* WifiScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29102D27E87300293218 /* WifiScannerView.swift */; };
+		852E29262D27E90600293218 /* data.plist in Resources */ = {isa = PBXBuildFile; fileRef = 852E29122D27E90600293218 /* data.plist */; };
+		852E29272D27E90600293218 /* iphoneModels.json in Resources */ = {isa = PBXBuildFile; fileRef = 852E29132D27E90600293218 /* iphoneModels.json */; };
+		852E29282D27E90600293218 /* macModels.plist in Resources */ = {isa = PBXBuildFile; fileRef = 852E29142D27E90600293218 /* macModels.plist */; };
+		852E29292D27E90600293218 /* macVendors.plist in Resources */ = {isa = PBXBuildFile; fileRef = 852E29152D27E90600293218 /* macVendors.plist */; };
+		852E292A2D27E90600293218 /* NetServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29172D27E90600293218 /* NetServiceExtension.swift */; };
+		852E292B2D27E90600293218 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29192D27E90600293218 /* Device.swift */; };
+		852E292C2D27E90600293218 /* DeviceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E291A2D27E90600293218 /* DeviceService.swift */; };
+		852E292F2D27E90600293218 /* LocalNetworkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29232D27E90600293218 /* LocalNetworkDetector.swift */; };
+		852E29302D27E90600293218 /* NetworkUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29242D27E90600293218 /* NetworkUtils.swift */; };
+		852E29332D27E94000293218 /* SwiftyPing in Frameworks */ = {isa = PBXBuildFile; productRef = 852E29322D27E94000293218 /* SwiftyPing */; };
 		85699C412D26474F0000E5A6 /* AssetWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C402D26474F0000E5A6 /* AssetWriter.swift */; };
 		85699C472D2649600000E5A6 /* CameraResultCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C432D2649600000E5A6 /* CameraResultCoordinator.swift */; };
 		85699C482D2649600000E5A6 /* CameraResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C442D2649600000E5A6 /* CameraResultViewController.swift */; };
@@ -70,6 +85,7 @@
 		85DA72882D1EA93C008F5589 /* InfraredCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72832D1EA93C008F5589 /* InfraredCameraViewController.swift */; };
 		85DA72892D1EA93C008F5589 /* InfraredCameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72842D1EA93C008F5589 /* InfraredCameraViewModel.swift */; };
 		85DA728C2D1EAA1C008F5589 /* InfraredCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA728B2D1EAA1C008F5589 /* InfraredCameraView.swift */; };
+		85EC31AE2D27F777009F874A /* blueCircle.json in Resources */ = {isa = PBXBuildFile; fileRef = 85EC31AD2D27F777009F874A /* blueCircle.json */; };
 		BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +101,21 @@
 		852E28F22D2799EA00293218 /* DataProcesser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProcesser.swift; sourceTree = "<group>"; };
 		852E28F32D2799EA00293218 /* ExtensionImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionImage.swift; sourceTree = "<group>"; };
 		852E28F52D2799EA00293218 /* ShapeData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeData.swift; sourceTree = "<group>"; };
+		852E29082D27E4EC00293218 /* WifiScannerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScannerCoordinator.swift; sourceTree = "<group>"; };
+		852E29092D27E4EC00293218 /* WifiScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScannerViewController.swift; sourceTree = "<group>"; };
+		852E290A2D27E4EC00293218 /* WifiScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScannerViewModel.swift; sourceTree = "<group>"; };
+		852E290B2D27E4EC00293218 /* WifiScannerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WifiScannerViewController.xib; sourceTree = "<group>"; };
+		852E29102D27E87300293218 /* WifiScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScannerView.swift; sourceTree = "<group>"; };
+		852E29122D27E90600293218 /* data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = data.plist; sourceTree = "<group>"; };
+		852E29132D27E90600293218 /* iphoneModels.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = iphoneModels.json; sourceTree = "<group>"; };
+		852E29142D27E90600293218 /* macModels.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = macModels.plist; sourceTree = "<group>"; };
+		852E29152D27E90600293218 /* macVendors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = macVendors.plist; sourceTree = "<group>"; };
+		852E29172D27E90600293218 /* NetServiceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetServiceExtension.swift; sourceTree = "<group>"; };
+		852E29192D27E90600293218 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		852E291A2D27E90600293218 /* DeviceService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceService.swift; sourceTree = "<group>"; };
+		852E29232D27E90600293218 /* LocalNetworkDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNetworkDetector.swift; sourceTree = "<group>"; };
+		852E29242D27E90600293218 /* NetworkUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkUtils.swift; sourceTree = "<group>"; };
+		852E29342D27EAC700293218 /* HiddenCamera.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HiddenCamera.entitlements; sourceTree = "<group>"; };
 		85699C402D26474F0000E5A6 /* AssetWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetWriter.swift; sourceTree = "<group>"; };
 		85699C432D2649600000E5A6 /* CameraResultCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultCoordinator.swift; sourceTree = "<group>"; };
 		85699C442D2649600000E5A6 /* CameraResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultViewController.swift; sourceTree = "<group>"; };
@@ -138,6 +169,7 @@
 		85DA72842D1EA93C008F5589 /* InfraredCameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfraredCameraViewModel.swift; sourceTree = "<group>"; };
 		85DA72852D1EA93C008F5589 /* InfraredCameraViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfraredCameraViewController.xib; sourceTree = "<group>"; };
 		85DA728B2D1EAA1C008F5589 /* InfraredCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfraredCameraView.swift; sourceTree = "<group>"; };
+		85EC31AD2D27F777009F874A /* blueCircle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blueCircle.json; sourceTree = "<group>"; };
 		9538BCC95076E37CF40E04C0 /* Pods-HiddenCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.debug.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.debug.xcconfig"; sourceTree = "<group>"; };
 		B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HiddenCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D38A84736AD64ED2E350337F /* Pods-HiddenCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.release.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.release.xcconfig"; sourceTree = "<group>"; };
@@ -150,6 +182,7 @@
 			files = (
 				85DA725D2D1E99F4008F5589 /* SakuraExtension in Frameworks */,
 				BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */,
+				852E29332D27E94000293218 /* SwiftyPing in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +212,58 @@
 				852E28F52D2799EA00293218 /* ShapeData.swift */,
 			);
 			path = CameraDetector;
+			sourceTree = "<group>";
+		};
+		852E29072D27E4D300293218 /* WifiScanner */ = {
+			isa = PBXGroup;
+			children = (
+				852E29082D27E4EC00293218 /* WifiScannerCoordinator.swift */,
+				852E29092D27E4EC00293218 /* WifiScannerViewController.swift */,
+				852E290A2D27E4EC00293218 /* WifiScannerViewModel.swift */,
+				852E290B2D27E4EC00293218 /* WifiScannerViewController.xib */,
+				852E29102D27E87300293218 /* WifiScannerView.swift */,
+			);
+			path = WifiScanner;
+			sourceTree = "<group>";
+		};
+		852E29162D27E90600293218 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				852E29122D27E90600293218 /* data.plist */,
+				852E29132D27E90600293218 /* iphoneModels.json */,
+				852E29142D27E90600293218 /* macModels.plist */,
+				852E29152D27E90600293218 /* macVendors.plist */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		852E29182D27E90600293218 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				852E29172D27E90600293218 /* NetServiceExtension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		852E291B2D27E90600293218 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				852E29192D27E90600293218 /* Device.swift */,
+				852E291A2D27E90600293218 /* DeviceService.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		852E29252D27E90600293218 /* Wifi */ = {
+			isa = PBXGroup;
+			children = (
+				852E29162D27E90600293218 /* Data */,
+				852E29182D27E90600293218 /* Extension */,
+				852E291B2D27E90600293218 /* Model */,
+				852E29232D27E90600293218 /* LocalNetworkDetector.swift */,
+				852E29242D27E90600293218 /* NetworkUtils.swift */,
+			);
+			path = Wifi;
 			sourceTree = "<group>";
 		};
 		85699C422D26492D0000E5A6 /* PreviewCameraResult */ = {
@@ -255,6 +340,7 @@
 		85DA72282D1E919B008F5589 /* HiddenCamera */ = {
 			isa = PBXGroup;
 			children = (
+				852E29342D27EAC700293218 /* HiddenCamera.entitlements */,
 				85DA72372D1E919D008F5589 /* Info.plist */,
 				85DA72292D1E919B008F5589 /* AppDelegate.swift */,
 				85DA72342D1E919D008F5589 /* LaunchScreen.storyboard */,
@@ -271,6 +357,7 @@
 		85DA723D2D1E9302008F5589 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				852E29072D27E4D300293218 /* WifiScanner */,
 				852E28E32D2794C800293218 /* CameraDetector */,
 				85699C592D26942E0000E5A6 /* CameraResultGallery */,
 				85699C422D26492D0000E5A6 /* PreviewCameraResult */,
@@ -313,6 +400,7 @@
 		85DA72432D1E9376008F5589 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				85EC31AD2D27F777009F874A /* blueCircle.json */,
 				85DA72442D1E937B008F5589 /* Font */,
 			);
 			path = Resources;
@@ -353,6 +441,7 @@
 		85DA72652D1EA427008F5589 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				852E29252D27E90600293218 /* Wifi */,
 				85699C522D2690BB0000E5A6 /* Realm */,
 				85699C4F2D268A8A0000E5A6 /* Model */,
 				85A5EAED2D23D471008B58EB /* Camera */,
@@ -441,6 +530,7 @@
 			name = HiddenCamera;
 			packageProductDependencies = (
 				85DA725C2D1E99F4008F5589 /* SakuraExtension */,
+				852E29322D27E94000293218 /* SwiftyPing */,
 			);
 			productName = HiddenCamera;
 			productReference = 85DA72262D1E919B008F5589 /* HiddenCamera.app */;
@@ -472,6 +562,7 @@
 			mainGroup = 85DA721D2D1E919B008F5589;
 			packageReferences = (
 				85DA725B2D1E99F4008F5589 /* XCRemoteSwiftPackageReference "SakuraExtension" */,
+				852E29312D27E94000293218 /* XCRemoteSwiftPackageReference "SwiftyPing" */,
 			);
 			productRefGroup = 85DA72272D1E919B008F5589 /* Products */;
 			projectDirPath = "";
@@ -488,19 +579,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				85DA72522D1E9392008F5589 /* Poppins-BoldItalic.ttf in Resources */,
+				85EC31AE2D27F777009F874A /* blueCircle.json in Resources */,
 				85DA72332D1E919D008F5589 /* Assets.xcassets in Resources */,
 				852E28EB2D2794DA00293218 /* CameraDetectorViewController.xib in Resources */,
 				85DA724F2D1E9392008F5589 /* Poppins-Bold.ttf in Resources */,
 				85DA72512D1E9392008F5589 /* Poppins-Italic.ttf in Resources */,
+				852E29262D27E90600293218 /* data.plist in Resources */,
 				85DA72502D1E9392008F5589 /* Poppins-Regular.ttf in Resources */,
+				852E290F2D27E4EC00293218 /* WifiScannerViewController.xib in Resources */,
+				852E29292D27E90600293218 /* macVendors.plist in Resources */,
 				85DA724D2D1E9392008F5589 /* Poppins-SemiBold.ttf in Resources */,
 				85DA72362D1E919D008F5589 /* Base in Resources */,
+				852E29272D27E90600293218 /* iphoneModels.json in Resources */,
 				85DA727C2D1EA53B008F5589 /* HomeViewController.xib in Resources */,
 				852E28FC2D2799EA00293218 /* best.onnx in Resources */,
 				85DA72312D1E919B008F5589 /* Base in Resources */,
 				85699C612D26943F0000E5A6 /* CameraResultGalleryViewController.xib in Resources */,
 				85DA724E2D1E9392008F5589 /* Poppins-Medium.ttf in Resources */,
 				85699C4A2D2649600000E5A6 /* CameraResultViewController.xib in Resources */,
+				852E29282D27E90600293218 /* macModels.plist in Resources */,
 				85DA72862D1EA93C008F5589 /* InfraredCameraViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -560,6 +657,7 @@
 				852E28FD2D2799EA00293218 /* BoundingBox.swift in Sources */,
 				85DA72742D1EA526008F5589 /* AppCoordinator.swift in Sources */,
 				85A5EAF42D23DEE2008B58EB /* CameraManager.swift in Sources */,
+				852E29112D27E87300293218 /* WifiScannerView.swift in Sources */,
 				85DA726D2D1EA436008F5589 /* BaseViewModel.swift in Sources */,
 				85699C582D2692480000E5A6 /* CameraResultDAO.swift in Sources */,
 				85DA727F2D1EA810008F5589 /* Permission.swift in Sources */,
@@ -570,6 +668,7 @@
 				85DA728C2D1EAA1C008F5589 /* InfraredCameraView.swift in Sources */,
 				85DA72892D1EA93C008F5589 /* InfraredCameraViewModel.swift in Sources */,
 				85699C562D2691C20000E5A6 /* RlmCameraResult.swift in Sources */,
+				852E292C2D27E90600293218 /* DeviceService.swift in Sources */,
 				85699C4C2D264A130000E5A6 /* CameraResultView.swift in Sources */,
 				85DA72552D1E942B008F5589 /* AppColor.swift in Sources */,
 				85699C542D2690C50000E5A6 /* RealmDAO.swift in Sources */,
@@ -586,7 +685,12 @@
 				85A5EAEF2D23D479008B58EB /* PreviewCameraView.swift in Sources */,
 				85DA72622D1E9EFD008F5589 /* ToolItem.swift in Sources */,
 				85DA725A2D1E9561008F5589 /* AppConfig.swift in Sources */,
+				852E292B2D27E90600293218 /* Device.swift in Sources */,
+				852E290C2D27E4EC00293218 /* WifiScannerCoordinator.swift in Sources */,
+				852E290D2D27E4EC00293218 /* WifiScannerViewController.swift in Sources */,
+				852E290E2D27E4EC00293218 /* WifiScannerViewModel.swift in Sources */,
 				85699C5E2D26943F0000E5A6 /* CameraResultGalleryCoordinator.swift in Sources */,
+				852E29302D27E90600293218 /* NetworkUtils.swift in Sources */,
 				85699C5F2D26943F0000E5A6 /* CameraResultGalleryViewController.swift in Sources */,
 				85699C602D26943F0000E5A6 /* CameraResultGalleryViewModel.swift in Sources */,
 				85DA724C2D1E9392008F5589 /* Poppins.swift in Sources */,
@@ -594,11 +698,13 @@
 				85DA726E2D1EA436008F5589 /* Coordinator.swift in Sources */,
 				852E28FB2D2799EA00293218 /* AVCaptureDeviceExtension.swift in Sources */,
 				85DA725F2D1E9C5B008F5589 /* ToolsView.swift in Sources */,
+				852E292F2D27E90600293218 /* LocalNetworkDetector.swift in Sources */,
 				852E28FF2D2799EA00293218 /* DataProcesser.swift in Sources */,
 				85699C632D2696360000E5A6 /* CameraResultGalleryView.swift in Sources */,
 				85DA72642D1E9F0D008F5589 /* HomeTab.swift in Sources */,
 				85DA72702D1EA436008F5589 /* PresentedCoordinator.swift in Sources */,
 				852E28E82D2794DA00293218 /* CameraDetectorCoordinator.swift in Sources */,
+				852E292A2D27E90600293218 /* NetServiceExtension.swift in Sources */,
 				852E28E92D2794DA00293218 /* CameraDetectorViewController.swift in Sources */,
 				852E28EA2D2794DA00293218 /* CameraDetectorViewModel.swift in Sources */,
 			);
@@ -751,16 +857,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HiddenCamera/HiddenCamera.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YUS8V6L945;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "cho dung camera di";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "cho dung location di";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -769,7 +879,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.duc.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.duc.testy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -785,16 +895,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HiddenCamera/HiddenCamera.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YUS8V6L945;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "cho dung camera di";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "cho dung location di";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -803,7 +917,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.duc.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.duc.testy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -837,6 +951,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		852E29312D27E94000293218 /* XCRemoteSwiftPackageReference "SwiftyPing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/samiyr/SwiftyPing.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		85DA725B2D1E99F4008F5589 /* XCRemoteSwiftPackageReference "SakuraExtension" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Sakurathanh2003/SakuraExtension.git";
@@ -848,6 +970,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		852E29322D27E94000293218 /* SwiftyPing */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 852E29312D27E94000293218 /* XCRemoteSwiftPackageReference "SwiftyPing" */;
+			productName = SwiftyPing;
+		};
 		85DA725C2D1E99F4008F5589 /* SakuraExtension */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 85DA725B2D1E99F4008F5589 /* XCRemoteSwiftPackageReference "SakuraExtension" */;

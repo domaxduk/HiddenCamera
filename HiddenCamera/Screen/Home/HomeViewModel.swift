@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import CoreLocation
 
 struct HomeViewModelInput: InputOutputViewModel {
     var didSelectTool = PublishSubject<ToolItem>()
@@ -19,6 +20,7 @@ struct HomeViewModelOutput: InputOutputViewModel {
 struct HomeViewModelRouting: RoutingOutput {
     var routeToInfraredCamera = PublishSubject<()>()
     var routeToCameraDetector = PublishSubject<()>()
+    var routeToWifiScanner = PublishSubject<()>()
 }
 
 final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput, HomeViewModelRouting> {
@@ -33,6 +35,8 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
                 self?.routeToInfraredCamera()
             case .cameraDetector:
                 self?.routeToCameraDetector()
+            case .wifiScanner:
+                self?.routeToWifiScanner()
             default: break
             }
         }).disposed(by: self.disposeBag)
@@ -51,6 +55,26 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
             DispatchQueue.main.async {
                 self?.routing.routeToCameraDetector.onNext(())
             }
+        }
+    }
+    
+    private func routeToWifiScanner() {
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self
+        
+        if locationManager.authorizationStatus == .notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        } else {
+            self.routing.routeToWifiScanner.onNext(())
+        }
+    }
+}
+
+// MARK: - CLLocationManagerDelegate
+extension HomeViewModel: CLLocationManagerDelegate {
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        if manager.authorizationStatus != .notDetermined {
+            self.routing.routeToWifiScanner.onNext(())
         }
     }
 }

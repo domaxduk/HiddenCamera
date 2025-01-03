@@ -1,20 +1,19 @@
 //
-//  HomeViewController.swift
+//  WifiScannerViewController.swift
 //  HiddenCamera
 //
-//  Created by Duc apple  on 27/12/24.
+//  Created by Duc apple  on 3/1/25.
 //
 
 import UIKit
 import RxSwift
-import SakuraExtension
 import SwiftUI
 
-class HomeViewController: ViewController {
-    var viewModel: HomeViewModel
-    weak var coordinator: HomeCoordinator?
+class WifiScannerViewController: ViewController {
+    var viewModel: WifiScannerViewModel
+    weak var coordinator: WifiScannerCoordinator?
 
-    init(viewModel: HomeViewModel, coordinator: HomeCoordinator) {
+    init(viewModel: WifiScannerViewModel, coordinator: WifiScannerCoordinator) {
         self.viewModel = viewModel
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
@@ -47,22 +46,11 @@ class HomeViewController: ViewController {
     }
 
     func configRoutingOutput() {
-        viewModel.routing.routeToInfraredCamera.subscribe(onNext: { [weak self] _ in
-            self?.coordinator?.routeToInfraredCamera()
-        }).disposed(by: self.disposeBag)
-        
-        viewModel.routing.routeToCameraDetector.subscribe(onNext: { [weak self] _ in
-            self?.coordinator?.routeToCameraDetector()
-        }).disposed(by: self.disposeBag)
-        
-        viewModel.routing.routeToWifiScanner.subscribe(onNext: { [weak self] _ in
-            self?.coordinator?.routeToWifiScanner()
-        }).disposed(by: self.disposeBag)
+
     }
     
-    // MARK: - ConfigUI
     private func configUI() {
-        let mainView = HomeView(viewModel: viewModel)
+        let mainView = WifiScannerView(viewModel: viewModel)
         let hostingView = UIHostingController(rootView: mainView)
         hostingView.view.backgroundColor = .clear
         self.addChild(hostingView)

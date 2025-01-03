@@ -46,7 +46,7 @@ enum ToolItem: CaseIterable {
         case .metalSensorDetector:
             "Metal sensor detector"
         case .wifiScanner:
-            "Wifi scanner"
+            "Wifi Devices Finder"
         }
     }
     

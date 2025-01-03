@@ -12,6 +12,7 @@ final class HomeCoordinator: WindowBasedCoordinator {
     private var navigationController: UINavigationController!
     private var infraredCameraCoordinator: InfraredCameraCoordinator?
     private var cameraDetectorCoordinator: CameraDetectorCoordinator?
+    private var wifiScannerCoordinator: WifiScannerCoordinator?
 
     lazy var controller: HomeViewController = {
         let viewModel = HomeViewModel()
@@ -44,6 +45,10 @@ final class HomeCoordinator: WindowBasedCoordinator {
         if child is CameraDetectorCoordinator {
             self.cameraDetectorCoordinator = nil
         }
+        
+        if child is WifiScannerCoordinator {
+            self.wifiScannerCoordinator = nil
+        }
     }
 }
 
@@ -59,5 +64,11 @@ extension HomeCoordinator {
         self.cameraDetectorCoordinator = CameraDetectorCoordinator(navigationController: navigationController)
         self.cameraDetectorCoordinator?.start()
         self.addChild(cameraDetectorCoordinator!)
+    }
+    
+    func routeToWifiScanner() {
+        self.wifiScannerCoordinator = WifiScannerCoordinator(navigationController: navigationController)
+        self.wifiScannerCoordinator?.start()
+        self.addChild(wifiScannerCoordinator!)
     }
 }
