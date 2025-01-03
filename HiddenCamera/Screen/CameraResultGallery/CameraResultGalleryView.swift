@@ -164,7 +164,7 @@ struct CameraResultGalleryView: View {
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
             
-            Spacer()
+            Spacer(minLength: 0)
             
             if !viewModel.items.isEmpty {
                 Button(action: {
@@ -187,16 +187,12 @@ fileprivate struct CameraResultItemView: View {
     @ObservedObject var viewModel: CameraResultGalleryViewModel
 
     var item: CameraResultItem
+    
     var body: some View {
         ZStack(alignment: .topTrailing) {
             Color.black
             
-            if let image = item.thumbnailImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: Const.itemWidth, height: Const.itemWidth)
-            }
+            VideoThumbnailImage(loader: ImageLoader(url: item.url))
             
             if tag != nil && !viewModel.isEditing {
                 Circle().fill(.white)
@@ -249,6 +245,59 @@ fileprivate struct CameraResultItemView: View {
         return viewModel.isSelectedItem(id: item.id)
     }
 }
+
+class ImageCache {
+    static let shared = NSCache<NSURL, UIImage>()
+}
+
+class ImageLoader: ObservableObject {
+    @Published var image: UIImage?
+    private let url: URL
+    
+    init(url: URL) {
+        self.url = url
+        self.load()
+    }
+    
+    func load() {
+        // Check the cache first
+        if let cachedImage = ImageCache.shared.object(forKey: url as NSURL) {
+            // If image is found in cache, set it directly
+            self.image = cachedImage
+            return
+        }
+        
+        // If not cached, fetch from the URL
+        DispatchQueue.global().async {
+            if let image = self.url.getThumbnailImage()?.resizeToFit(maxSize: Const.itemWidth * 2) {
+                // Cache the image once loaded
+                ImageCache.shared.setObject(image, forKey: self.url as NSURL)
+                
+                DispatchQueue.main.async {
+                    self.image = image
+                }
+            }
+        }
+    }
+}
+
+// VideoThumbnailImage with the loader as a view
+fileprivate struct VideoThumbnailImage: View {
+    @ObservedObject var loader: ImageLoader
+    
+    @ViewBuilder
+    var body: some View {
+        ZStack {
+            if let image = loader.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: Const.itemWidth, height: Const.itemWidth)
+            }
+        }
+    }
+}
+
 
 // MARK: - Extension
 extension CameraResultItem {

@@ -179,7 +179,7 @@ extension InfraredCameraViewModel {
     
     func uiFilterColor() -> UIColor {
         switch self.filterColor {
-        case .red: return .red
+        case .red: return UIColor(red: 238, green: 64, blue: 76, alpha: 1)
         case .blue: return .blue
         case .green: return .green
         case .yellow: return .yellow

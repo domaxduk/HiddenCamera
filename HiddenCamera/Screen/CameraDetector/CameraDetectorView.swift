@@ -18,8 +18,14 @@ struct CameraDetectorView: View {
     
     var body: some View {
         ZStack {
-            Color.clear.ignoresSafeArea()
-
+            Color.black.ignoresSafeArea()
+            CameraSwiftUIView(captureSession: viewModel.captureSession)
+                .ignoresSafeArea()
+            
+            OverlayView(boxes: viewModel.boxes)
+                .ignoresSafeArea()
+                .opacity(viewModel.isRecording ? 1 : 0)
+            
             VStack {
                 navigationBar
                 content
@@ -96,7 +102,7 @@ struct CameraDetectorView: View {
                     Text("* Notice")
                         .font(Poppins.semibold.font(size: 16))
                     
-                    Text("Easily and quickly detect infrared cameras using your device's camera and the app's bright color filter feature.")
+                    Text("Use your phone's camera combined with AI technology to detect hidden cameras in your surroundings in real time.")
                         .font(Poppins.regular.font(size: 14))
                 }
                 .padding(16)
@@ -132,11 +138,37 @@ struct CameraDetectorView: View {
         }
     }
     
+    @ViewBuilder
     var bottomToolView: some View {
         HStack {
-            if !viewModel.isTheFirst {
-                
-            } else {
+            if !viewModel.boxes.isEmpty && viewModel.isRecording {
+                HStack {
+                    Spacer()
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .resizable()
+                        .foreColor(.white)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 16)
+                    
+                    Text("Detect suspicious devices!")
+                        .textColor(.white)
+                        .foreColor(.white)
+                        .font(Poppins.semibold.font(size: 16))
+                        .scaledToFit()
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
+                    Spacer()
+                }
+                .padding(8)
+                .frame(height: 48)
+                .background(
+                    Color(
+                        hue: !viewModel.isTheFirst ? 356 / 360 : 0,
+                        saturation: !viewModel.isTheFirst ? 0.73 : 0,
+                        brightness: !viewModel.isTheFirst ? 0.93 : 1)
+                )
+                .cornerRadius(24, corners: .allCorners)
+            } else if viewModel.isTheFirst {
                 Text("Tap this button to start feature")
                     .textColor(.app(.main))
                     .font(Poppins.semibold.font(size: 16))
@@ -144,17 +176,17 @@ struct CameraDetectorView: View {
                     .minimumScaleFactor(0.5)
                     .lineLimit(1)
                     .padding(.horizontal, 30)
+                    .padding(8)
+                    .frame(height: 48)
+                    .background(
+                        Color(
+                            hue: !viewModel.isTheFirst ? 356 / 360 : 0,
+                            saturation: !viewModel.isTheFirst ? 0.73 : 0,
+                            brightness: !viewModel.isTheFirst ? 0.93 : 1)
+                    )
+                    .cornerRadius(24, corners: .allCorners)
             }
         }
-        .padding(8)
-        .frame(height: 48)
-        .background(
-            Color(
-                hue: !viewModel.isTheFirst ? 1 : 0,
-                saturation: !viewModel.isTheFirst ? 1 : 0,
-                brightness: !viewModel.isTheFirst ? 0 : 1).opacity(!viewModel.isTheFirst ? 0.5 : 1)
-        )
-        .cornerRadius(24, corners: .allCorners)
     }
     
     var recordButton: some View {
@@ -190,6 +222,9 @@ struct CameraDetectorView: View {
             Text(ToolItem.cameraDetector.name)
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
+                .scaledToFit()
+                .minimumScaleFactor(0.5)
+                .lineLimit(1)
             
             Spacer()
         }
@@ -217,6 +252,35 @@ fileprivate struct CameraSwiftUIView: UIViewRepresentable {
     
     func updateUIView(_ uiView: PreviewCameraView, context: Context) {
         uiView.configCamera()
+    }
+}
+
+// MARK: - OverlayView
+fileprivate struct OverlayView: View {
+    var boxes: [BoundingBox]
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                ForEach(boxes.indices, id: \.self) { index in
+                    let box = boxes[index]
+                    let width = geometry.size.width
+                    let height = geometry.size.height
+                    
+                    let w = CGFloat(box.w) * width
+                    let h = CGFloat(box.h) * height
+                    
+                    let centerX = CGFloat(box.cx) * width
+                    let centerY = CGFloat(box.cy) * height
+                    
+                    Image("ic_frame_camera")
+                        .resizable()
+                        .frame(width: w, height: h)
+                        .position(x: centerX, y: centerY)
+                }
+            }
+        }
+        .clipped()
     }
 }
 

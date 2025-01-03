@@ -10,8 +10,6 @@ import RxSwift
 import SwiftUI
 
 class CameraDetectorViewController: ViewController {
-    @IBOutlet weak var image: UIImageView!
-    
     var viewModel: CameraDetectorViewModel
     weak var coordinator: CameraDetectorCoordinator?
 
@@ -39,17 +37,7 @@ class CameraDetectorViewController: ViewController {
     // MARK: - Config
     func config() {
         configUI()
-        configViewModelOutput()
         configRoutingOutput()
-    }
-
-    func configViewModelOutput() {
-        viewModel.output.updatePreview.subscribe(onNext: { [weak self] image in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                self.image.image = image
-            }
-        }).disposed(by: self.disposeBag)
     }
 
     func configRoutingOutput() {
@@ -83,7 +71,7 @@ class CameraDetectorViewController: ViewController {
         hostingView.view.backgroundColor = .clear
         self.addChild(hostingView)
         hostingView.didMove(toParent: self)
-        self.view.addSubview(hostingView.view)
+        self.view.insertSubview(hostingView.view, at: 0)
         hostingView.view.fitSuperviewConstraint()
     }
 }
