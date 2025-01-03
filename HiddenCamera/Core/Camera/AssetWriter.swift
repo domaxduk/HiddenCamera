@@ -92,7 +92,7 @@ public final class AssetWriter {
     }
 
     public func cancelWriting() {
-        self.isRecording = true
+        self.isRecording = false
         self.assetWriter?.finishWriting {
             self.videoWriterInput.markAsFinished()
             self.removeOutputFile()
@@ -101,10 +101,7 @@ public final class AssetWriter {
     }
 
     public func append(pixelBuffer: CVPixelBuffer, withPresentationTime presentationTime: CMTime) {
-        guard self.assetWriter?.status == .writing else {
-            return
-        }
-
+        guard let assetWriter, assetWriter.status == .writing && isRecording else { return }
         self.videoAdaptor.append(pixelBuffer, withPresentationTime: presentationTime)
     }
 

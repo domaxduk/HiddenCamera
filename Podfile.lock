@@ -1,5 +1,10 @@
 PODS:
   - lottie-ios (4.5.0)
+  - onnxruntime-c (1.16.3)
+  - onnxruntime-objc (1.16.3):
+    - onnxruntime-objc/Core (= 1.16.3)
+  - onnxruntime-objc/Core (1.16.3):
+    - onnxruntime-c (= 1.16.3)
   - Realm (20.0.1):
     - Realm/Headers (= 20.0.1)
   - Realm/Headers (20.0.1)
@@ -15,6 +20,7 @@ PODS:
 
 DEPENDENCIES:
   - lottie-ios
+  - onnxruntime-objc (~> 1.16.0)
   - RealmSwift
   - RxCocoa
   - RxSwift
@@ -23,6 +29,8 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - lottie-ios
+    - onnxruntime-c
+    - onnxruntime-objc
     - Realm
     - RealmSwift
     - RxCocoa
@@ -32,6 +40,8 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   lottie-ios: a881093fab623c467d3bce374367755c272bdd59
+  onnxruntime-c: 74e86835396f767f56835ea44cfe7630d8e58a4b
+  onnxruntime-objc: 67a7633965d57f9648a0c7cc858d32c5c6b414f4
   Realm: 9572204903ef28caeb3c03bb30c1147f354ee3e7
   RealmSwift: d230b44017a55a1ba97de6a944da1fe3bedb92b5
   RxCocoa: 2d33c1e1e5d66492052ad46b11024ae287572880
@@ -39,6 +49,6 @@ SPEC CHECKSUMS:
   RxSwift: 4e28be97cbcfeee614af26d83415febbf2bf6f45
   WebBrowser: 0248873c77f54e2ac504ece7c2bc8eeb710b5a4f
 
-PODFILE CHECKSUM: 7485fd6401b89bf0f892ec119f0f2ea88735abcb
+PODFILE CHECKSUM: 3c3c99e78a4f7e9c845b161800ccb78fc29530fd
 
 COCOAPODS: 1.16.2

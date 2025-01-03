@@ -17,6 +17,8 @@ fileprivate struct Const {
 
 struct CameraResultView: View {
     @ObservedObject var viewModel: CameraResultViewModel
+    @State var isShowingConfirmDialog: Bool = false
+    
     var body: some View {
         ZStack {
             Color.app(.light03).ignoresSafeArea()
@@ -33,6 +35,73 @@ struct CameraResultView: View {
                 }
                 
                 Spacer(minLength: 0)
+            }
+            
+            if isShowingConfirmDialog {
+                ZStack {
+                    Color.black.opacity(0.3).ignoresSafeArea()
+                    
+                    VStack(spacing: 0) {
+                        Text("Did you notice any devices in the video that seem suspicious?")
+                            .textColor(.app(.light12))
+                            .font(Poppins.semibold.font(size: 16))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 40)
+                            .padding(.bottom, 30)
+                            .padding(.top, 32)
+                        
+                        
+                        Color.app(.light04).frame(height: 1)
+                        
+                        HStack {
+                            Spacer()
+                            Text("Trusted")
+                                .font(Poppins.regular.font(size: 16))
+                                .textColor(AppColor.safeColor)
+                            Spacer()
+                        }
+                        .background(Color.clearInteractive)
+                        .frame(height: 56)
+                        .onTapGesture {
+                            withAnimation {
+                                viewModel.input.mask.onNext(.trusted)
+                                isShowingConfirmDialog = false
+                            }
+                        }
+                        
+                        Color.app(.light04).frame(height: 1)
+
+                        HStack {
+                            Spacer()
+                            Text("Mark as risk")
+                                .font(Poppins.regular.font(size: 16))
+                                .textColor(AppColor.warningColor)
+                            Spacer()
+                        }
+                        .background(Color.clearInteractive)
+                        .frame(height: 56)
+                        .onTapGesture {
+                            withAnimation {
+                                viewModel.input.mask.onNext(.risk)
+                                isShowingConfirmDialog = false
+                            }
+                        }
+                    }
+                    .overlay(
+                        ZStack(alignment: .topTrailing) {
+                            Image("ic_close")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24)
+                                .padding(16)
+                            
+                            Color.clear
+                        }
+                    )
+                    .background(Color.white)
+                    .cornerRadius(20, corners: .allCorners)
+                    .padding(.horizontal, 20)
+                }
             }
         }
     }
@@ -81,7 +150,9 @@ struct CameraResultView: View {
                 .cornerRadius(3)
                 .overlay(
                     HStack(spacing: 0) {
-                        Spacer(minLength: geometry.size.width * viewModel.percent - 16)
+                        if geometry.size.width * viewModel.percent - 16 >= 0 {
+                            Color.clear.frame(width: geometry.size.width * viewModel.percent - 16)
+                        }
                         
                         Circle()
                             .fill(Color.app(.main))
@@ -159,7 +230,13 @@ struct CameraResultView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24)
                 .onTapGesture {
-                    viewModel.input.didTapBack.onNext(())
+                    if viewModel.item.tag != nil {
+                        viewModel.input.didTapBack.onNext(())
+                    } else {
+                        withAnimation {
+                            isShowingConfirmDialog = true
+                        }
+                    }
                 }
             
             Text(viewModel.title)

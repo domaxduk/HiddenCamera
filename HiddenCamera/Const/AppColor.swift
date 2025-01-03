@@ -11,7 +11,9 @@ import SwiftUI
 enum AppColor: Int {
     case main = 0x0090FF
     case light03 = 0xF0F0F0
+    case light04 = 0xE8E8E8
     case light06 = 0xD9D9D9
+    case light09 = 0x8D8D8D
     case light12 = 0x202020
     case ee404c = 0xEE404C
     

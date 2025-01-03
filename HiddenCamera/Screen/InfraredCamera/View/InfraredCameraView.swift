@@ -13,6 +13,7 @@ import AVFoundation
 
 struct InfraredCameraView: View {
     @ObservedObject var viewModel: InfraredCameraViewModel
+    @State var isShowingNoteView: Bool = false
     
     var body: some View {
         ZStack {
@@ -75,7 +76,13 @@ struct InfraredCameraView: View {
                     Spacer()
                     
                     Button(action: {
+                        withAnimation {
+                            isShowingNoteView = true
+                        }
                         
+                        withAnimation(.default.delay(2)) {
+                            isShowingNoteView = false
+                        }
                     }, label: {
                         Image("ic_info")
                             .resizable()
@@ -83,6 +90,21 @@ struct InfraredCameraView: View {
                             .frame(height: 32)
                     })
                 }.padding(.horizontal, 20)
+                
+                VStack(alignment: .leading) {
+                    Text("* Notice")
+                        .font(Poppins.semibold.font(size: 16))
+                    
+                    Text("Easily and quickly detect infrared cameras using your device's camera and the app's bright color filter feature.")
+                        .font(Poppins.regular.font(size: 14))
+                }
+                .padding(16)
+                .background(Color.black.opacity(0.5))
+                .foreColor(.white)
+                .cornerRadius(12, corners: .allCorners)
+                .padding(.top, 12)
+                .padding(.horizontal, 24)
+                .opacity(isShowingNoteView ? 1 : 0)
                 
                 Spacer()
                 
@@ -194,7 +216,7 @@ struct InfraredCameraView: View {
         .frame(height: AppConfig.navigationBarHeight)
         .padding(.bottom, 12)
         .background(
-            Color.white.opacity(0.4)
+            Color.white
                 .cornerRadius(24, corners: [.bottomLeft, .bottomRight])
                 .ignoresSafeArea()
         )

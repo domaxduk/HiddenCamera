@@ -18,16 +18,38 @@ fileprivate struct Const {
 struct CameraResultGalleryView: View {
     @ObservedObject var viewModel: CameraResultGalleryViewModel
     @State var isShowingDeleteDialog: Bool = false
+    
     var body: some View {
         ZStack {
             Color.app(.light03).ignoresSafeArea()
             
-            VStack {
+            VStack(spacing: 0) {
                 navigationBar
                 
                 if viewModel.items.isEmpty {
                     Spacer()
-                    Text("Empty")
+                    Image("ic_gallery_empty")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 64)
+                    Text("Your gallery is empty. Scan now to ensure your area is safe and save video evidence.")
+                        .textColor(.app(.light09))
+                        .font(Poppins.regular.font(size: 14))
+                        .padding(.horizontal, 44)
+                        .padding(.top, 12)
+                        .multilineTextAlignment(.center)
+                    
+                    Button(action: {
+                        viewModel.input.didTapBack.onNext(())
+                    }, label: {
+                        Text("Scan now")
+                            .font(Poppins.semibold.font(size: 16))
+                            .textColor(.white)
+                            .padding(.horizontal, 71)
+                            .padding(.vertical, 16)
+                            .background(Color.app(.main))
+                            .cornerRadius(36, corners: .allCorners)
+                    }).padding(.top, 28)
                     Spacer()
                 } else {
                     ScrollView(.vertical) {
@@ -60,44 +82,70 @@ struct CameraResultGalleryView: View {
                 }
             }
             
-            ZStack {
-                Color.black.opacity(0.3).ignoresSafeArea()
-                
-                VStack {
-                    Text("Are you sure want to delete?\nThis action canot be undone")
-                        .textColor(.app(.light12))
-                        .font(Poppins.semibold.font(size: 16))
-                        .scaledToFit()
-                        .minimumScaleFactor(0.5)
-                        .lineLimit(2)
-                        .padding(.bottom, 30)
+            if isShowingDeleteDialog {
+                ZStack {
+                    Color.black.opacity(0.3).ignoresSafeArea()
                     
-                    Color.app(.light03).opacity(0.5).frame(height: 1)
-                    
-                    HStack {
-                        Spacer()
-                        Text("Remove")
-                            .font(Poppins.regular.font(size: 16))
-                            .textColor(AppColor.warningColor)
-                        Spacer()
-                    }
-                    .background(Color.clearInteractive)
-                    .frame(height: 56)
-                    
-                    Color.gray.opacity(0.5).frame(height: 1)
-                    
-                    HStack {
-                        Spacer()
-                        Text("Cancel")
-                            .font(Poppins.regular.font(size: 16))
+                    VStack {
+                        Text("Are you sure want to delete?\nThis action canot be undone")
                             .textColor(.app(.light12))
-                        Spacer()
+                            .font(Poppins.semibold.font(size: 16))
+                            .scaledToFit()
+                            .minimumScaleFactor(0.5)
+                            .lineLimit(2)
+                            .padding(.bottom, 30)
+                            .padding(.top, 32)
+                        
+                        Color.app(.light04).frame(height: 1)
+                        
+                        HStack {
+                            Spacer()
+                            Text("Remove")
+                                .font(Poppins.regular.font(size: 16))
+                                .textColor(AppColor.warningColor)
+                            Spacer()
+                        }
+                        .background(Color.clearInteractive)
+                        .frame(height: 56)
+                        .onTapGesture {
+                            withAnimation {
+                                viewModel.input.didTapDelete.onNext(())
+                                isShowingDeleteDialog = false
+                            }
+                        }
+                        
+                        Color.app(.light04).frame(height: 1)
+
+                        HStack {
+                            Spacer()
+                            Text("Cancel")
+                                .font(Poppins.regular.font(size: 16))
+                                .textColor(.app(.light12))
+                            Spacer()
+                        }
+                        .background(Color.clearInteractive)
+                        .frame(height: 56)
+                        .onTapGesture {
+                            withAnimation {
+                                isShowingDeleteDialog = false
+                            }
+                        }
                     }
-                    .background(Color.clearInteractive)
-                    .frame(height: 56)
+                    .overlay(
+                        ZStack(alignment: .topTrailing) {
+                            Image("ic_close")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24)
+                                .padding(16)
+                            
+                            Color.clear
+                        }
+                    )
+                    .background(Color.white)
+                    .cornerRadius(20, corners: .allCorners)
+                    .padding(.horizontal, 20)
                 }
-                .background(Color.white)
-                
             }
         }
     }

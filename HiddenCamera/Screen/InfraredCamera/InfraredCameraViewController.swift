@@ -53,7 +53,12 @@ class InfraredCameraViewController: ViewController {
 
     func configRoutingOutput() {
         viewModel.routing.stop.subscribe(onNext: { [weak self] _ in
-            self?.coordinator?.stop()
+            guard let self else { return }
+            if viewModel.isRecording {
+                self.presentAlert(title: "Oops!", message: "You must stop this feature to back")
+            } else {
+                self.coordinator?.stop()
+            }
         }).disposed(by: self.disposeBag)
         
         viewModel.routing.previewResult.subscribe(onNext: { [weak self] url in
@@ -61,7 +66,13 @@ class InfraredCameraViewController: ViewController {
         }).disposed(by: self.disposeBag)
         
         viewModel.routing.gallery.subscribe(onNext: { [weak self] url in
-            self?.coordinator?.routeToGallery()
+            guard let self else { return }
+            
+            if viewModel.isRecording {
+                self.presentAlert(title: "Oops!", message: "You must stop this feature to go to gallery")
+            } else {
+                self.coordinator?.routeToGallery()
+            }
         }).disposed(by: self.disposeBag)
     }
     

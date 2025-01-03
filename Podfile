@@ -12,6 +12,7 @@ target 'HiddenCamera' do
 
   pod 'WebBrowser'
   pod 'RealmSwift'
+  pod 'onnxruntime-objc', '~> 1.16.0'
 
 end
 
