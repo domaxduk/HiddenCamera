@@ -50,6 +50,10 @@ class HomeViewController: ViewController {
         viewModel.routing.routeToInfraredCamera.subscribe(onNext: { [weak self] _ in
             self?.coordinator?.routeToInfraredCamera()
         }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.routeToCameraDetector.subscribe(onNext: { [weak self] _ in
+            self?.coordinator?.routeToCameraDetector()
+        }).disposed(by: self.disposeBag)
     }
     
     // MARK: - ConfigUI

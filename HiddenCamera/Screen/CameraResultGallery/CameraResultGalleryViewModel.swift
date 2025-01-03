@@ -39,7 +39,7 @@ final class CameraResultGalleryViewModel: BaseViewModel<CameraResultGalleryViewM
     }
     
     private func getData() {
-        items = dao.getAll().filter({ $0.type == .infrared })
+        items = dao.getAll().filter({ $0.type == type })
     }
     
     override func configInput() {
@@ -87,5 +87,14 @@ final class CameraResultGalleryViewModel: BaseViewModel<CameraResultGalleryViewM
     
     func isSelectedItem(id: String) -> Bool {
         return selectedItems.contains(where: { $0.id == id })
+    }
+    
+    func title() -> String {
+        switch type {
+        case .aiDetector:
+            "AI Camera Scanner Gallery"
+        case .infrared:
+            "IR Vision Camera Gallery"
+        }
     }
 }

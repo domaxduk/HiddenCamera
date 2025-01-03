@@ -10,7 +10,6 @@ import SakuraExtension
 import RxSwift
 import AVFoundation
 
-
 struct InfraredCameraView: View {
     @ObservedObject var viewModel: InfraredCameraViewModel
     @State var isShowingNoteView: Bool = false

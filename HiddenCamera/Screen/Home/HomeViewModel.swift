@@ -18,6 +18,7 @@ struct HomeViewModelOutput: InputOutputViewModel {
 
 struct HomeViewModelRouting: RoutingOutput {
     var routeToInfraredCamera = PublishSubject<()>()
+    var routeToCameraDetector = PublishSubject<()>()
 }
 
 final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput, HomeViewModelRouting> {
@@ -30,6 +31,8 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
             switch tool {
             case .infraredCamera:
                 self?.routeToInfraredCamera()
+            case .cameraDetector:
+                self?.routeToCameraDetector()
             default: break
             }
         }).disposed(by: self.disposeBag)
@@ -39,6 +42,14 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
         Permission.requestCamera { [weak self] granted in
             DispatchQueue.main.async {
                 self?.routing.routeToInfraredCamera.onNext(())
+            }
+        }
+    }
+    
+    private func routeToCameraDetector() {
+        Permission.requestCamera { [weak self] granted in
+            DispatchQueue.main.async {
+                self?.routing.routeToCameraDetector.onNext(())
             }
         }
     }

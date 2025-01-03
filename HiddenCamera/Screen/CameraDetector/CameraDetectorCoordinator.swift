@@ -1,20 +1,20 @@
 //
-//  InfraredCameraCoordinator.swift
+//  CameraDetectorCoordinator.swift
 //  HiddenCamera
 //
-//  Created by Duc apple  on 27/12/24.
+//  Created by Duc apple  on 3/1/25.
 //
 
 import UIKit
 import RxSwift
 
-final class InfraredCameraCoordinator: NavigationBasedCoordinator {
+final class CameraDetectorCoordinator: NavigationBasedCoordinator {
     var previewResult: CameraResultCoordinator?
     var galleryCoodinator: CameraResultGalleryCoordinator?
-
-    lazy var controller: InfraredCameraViewController = {
-        let viewModel = InfraredCameraViewModel()
-        let controller = InfraredCameraViewController(viewModel: viewModel, coordinator: self)
+    
+    lazy var controller: CameraDetectorViewController = {
+        let viewModel = CameraDetectorViewModel()
+        let controller = CameraDetectorViewController(viewModel: viewModel, coordinator: self)
         return controller
     }()
 
@@ -46,14 +46,14 @@ final class InfraredCameraCoordinator: NavigationBasedCoordinator {
     }
     
     func routeToResult(url: URL) {
-        let item = CameraResultItem(id: UUID().uuidString, fileName: url.lastPathComponent, type: .infrared)
+        let item = CameraResultItem(id: UUID().uuidString, fileName: url.lastPathComponent, type: .aiDetector)
         self.previewResult = CameraResultCoordinator(item: item, navigationController: navigationController)
         self.previewResult?.start()
         self.addChild(self.previewResult!)
     }
     
     func routeToGallery() {
-        self.galleryCoodinator = CameraResultGalleryCoordinator(type: .infrared, navigationController: navigationController)
+        self.galleryCoodinator = CameraResultGalleryCoordinator(type: .aiDetector, navigationController: navigationController)
         self.galleryCoodinator?.start()
         self.addChild(self.galleryCoodinator!)
     }

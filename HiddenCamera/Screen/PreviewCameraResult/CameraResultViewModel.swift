@@ -125,9 +125,9 @@ extension CameraResultViewModel {
     var title: String {
         switch item.type {
         case .aiDetector:
-            "Lens Detector Result"
+            "AI Camera Scanner Result"
         case .infrared:
-            "Infrared Camera Result"
+            "IR Vision Camera Result"
         }
     }
     

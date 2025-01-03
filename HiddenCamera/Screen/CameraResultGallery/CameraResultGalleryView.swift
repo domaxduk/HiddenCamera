@@ -160,7 +160,7 @@ struct CameraResultGalleryView: View {
                     viewModel.input.didTapBack.onNext(())
                 }
             
-            Text("Gallery")
+            Text(viewModel.title())
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
             

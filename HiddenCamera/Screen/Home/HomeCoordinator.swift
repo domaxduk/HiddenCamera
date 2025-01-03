@@ -11,7 +11,8 @@ import RxSwift
 final class HomeCoordinator: WindowBasedCoordinator {
     private var navigationController: UINavigationController!
     private var infraredCameraCoordinator: InfraredCameraCoordinator?
-    
+    private var cameraDetectorCoordinator: CameraDetectorCoordinator?
+
     lazy var controller: HomeViewController = {
         let viewModel = HomeViewModel()
         let controller = HomeViewController(viewModel: viewModel, coordinator: self)
@@ -39,6 +40,10 @@ final class HomeCoordinator: WindowBasedCoordinator {
         if child is InfraredCameraCoordinator {
             self.infraredCameraCoordinator = nil
         }
+        
+        if child is CameraDetectorCoordinator {
+            self.cameraDetectorCoordinator = nil
+        }
     }
 }
 
@@ -48,5 +53,11 @@ extension HomeCoordinator {
         self.infraredCameraCoordinator = InfraredCameraCoordinator(navigationController: navigationController)
         self.infraredCameraCoordinator?.start()
         self.addChild(infraredCameraCoordinator!)
+    }
+    
+    func routeToCameraDetector() {
+        self.cameraDetectorCoordinator = CameraDetectorCoordinator(navigationController: navigationController)
+        self.cameraDetectorCoordinator?.start()
+        self.addChild(cameraDetectorCoordinator!)
     }
 }

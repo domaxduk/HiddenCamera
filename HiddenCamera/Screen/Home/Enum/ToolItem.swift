@@ -38,9 +38,9 @@ enum ToolItem: CaseIterable {
         case .bluetoothScanner:
             "Bluetooth devices scanner"
         case .cameraDetector:
-            "Camera lens detector"
+            "AI Camera Scanner"
         case .infraredCamera:
-            "Infrared camera"
+            "IR Vision Camera"
         case .magnetic:
             "Magnetic sensor"
         case .metalSensorDetector:
