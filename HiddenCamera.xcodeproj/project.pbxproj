@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		247A679F2D2989D900BA6EC8 /* ServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247A679E2D2989D900BA6EC8 /* ServiceType.swift */; };
+		247A67A12D298F8300BA6EC8 /* AppleDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247A67A02D298F8200BA6EC8 /* AppleDevice.swift */; };
+		24EC7E1C2D2A385100875752 /* ScannerResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24EC7E1B2D2A385100875752 /* ScannerResultViewController.xib */; };
+		24EC7E1D2D2A385100875752 /* ScannerResultCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EC7E182D2A385100875752 /* ScannerResultCoordinator.swift */; };
+		24EC7E1E2D2A385100875752 /* ScannerResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EC7E192D2A385100875752 /* ScannerResultViewController.swift */; };
+		24EC7E1F2D2A385100875752 /* ScannerResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EC7E1A2D2A385100875752 /* ScannerResultViewModel.swift */; };
+		24EC7E212D2A391E00875752 /* ScannerResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EC7E202D2A391E00875752 /* ScannerResultView.swift */; };
 		852E28E82D2794DA00293218 /* CameraDetectorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28E42D2794DA00293218 /* CameraDetectorCoordinator.swift */; };
 		852E28E92D2794DA00293218 /* CameraDetectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28E52D2794DA00293218 /* CameraDetectorViewController.swift */; };
 		852E28EA2D2794DA00293218 /* CameraDetectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28E62D2794DA00293218 /* CameraDetectorViewModel.swift */; };
@@ -23,7 +30,6 @@
 		852E290E2D27E4EC00293218 /* WifiScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E290A2D27E4EC00293218 /* WifiScannerViewModel.swift */; };
 		852E290F2D27E4EC00293218 /* WifiScannerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 852E290B2D27E4EC00293218 /* WifiScannerViewController.xib */; };
 		852E29112D27E87300293218 /* WifiScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29102D27E87300293218 /* WifiScannerView.swift */; };
-		852E29262D27E90600293218 /* data.plist in Resources */ = {isa = PBXBuildFile; fileRef = 852E29122D27E90600293218 /* data.plist */; };
 		852E29272D27E90600293218 /* iphoneModels.json in Resources */ = {isa = PBXBuildFile; fileRef = 852E29132D27E90600293218 /* iphoneModels.json */; };
 		852E29282D27E90600293218 /* macModels.plist in Resources */ = {isa = PBXBuildFile; fileRef = 852E29142D27E90600293218 /* macModels.plist */; };
 		852E29292D27E90600293218 /* macVendors.plist in Resources */ = {isa = PBXBuildFile; fileRef = 852E29152D27E90600293218 /* macVendors.plist */; };
@@ -90,6 +96,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		247A679E2D2989D900BA6EC8 /* ServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceType.swift; sourceTree = "<group>"; };
+		247A67A02D298F8200BA6EC8 /* AppleDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleDevice.swift; sourceTree = "<group>"; };
+		24EC7E182D2A385100875752 /* ScannerResultCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerResultCoordinator.swift; sourceTree = "<group>"; };
+		24EC7E192D2A385100875752 /* ScannerResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerResultViewController.swift; sourceTree = "<group>"; };
+		24EC7E1A2D2A385100875752 /* ScannerResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerResultViewModel.swift; sourceTree = "<group>"; };
+		24EC7E1B2D2A385100875752 /* ScannerResultViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScannerResultViewController.xib; sourceTree = "<group>"; };
+		24EC7E202D2A391E00875752 /* ScannerResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerResultView.swift; sourceTree = "<group>"; };
 		852E28E42D2794DA00293218 /* CameraDetectorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDetectorCoordinator.swift; sourceTree = "<group>"; };
 		852E28E52D2794DA00293218 /* CameraDetectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDetectorViewController.swift; sourceTree = "<group>"; };
 		852E28E62D2794DA00293218 /* CameraDetectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDetectorViewModel.swift; sourceTree = "<group>"; };
@@ -106,7 +119,6 @@
 		852E290A2D27E4EC00293218 /* WifiScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScannerViewModel.swift; sourceTree = "<group>"; };
 		852E290B2D27E4EC00293218 /* WifiScannerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WifiScannerViewController.xib; sourceTree = "<group>"; };
 		852E29102D27E87300293218 /* WifiScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScannerView.swift; sourceTree = "<group>"; };
-		852E29122D27E90600293218 /* data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = data.plist; sourceTree = "<group>"; };
 		852E29132D27E90600293218 /* iphoneModels.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = iphoneModels.json; sourceTree = "<group>"; };
 		852E29142D27E90600293218 /* macModels.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = macModels.plist; sourceTree = "<group>"; };
 		852E29152D27E90600293218 /* macVendors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = macVendors.plist; sourceTree = "<group>"; };
@@ -189,6 +201,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		24EC7E172D2A383900875752 /* ScannerResult */ = {
+			isa = PBXGroup;
+			children = (
+				24EC7E182D2A385100875752 /* ScannerResultCoordinator.swift */,
+				24EC7E192D2A385100875752 /* ScannerResultViewController.swift */,
+				24EC7E1A2D2A385100875752 /* ScannerResultViewModel.swift */,
+				24EC7E1B2D2A385100875752 /* ScannerResultViewController.xib */,
+				24EC7E202D2A391E00875752 /* ScannerResultView.swift */,
+			);
+			path = ScannerResult;
+			sourceTree = "<group>";
+		};
 		852E28E32D2794C800293218 /* CameraDetector */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,7 +253,6 @@
 		852E29162D27E90600293218 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				852E29122D27E90600293218 /* data.plist */,
 				852E29132D27E90600293218 /* iphoneModels.json */,
 				852E29142D27E90600293218 /* macModels.plist */,
 				852E29152D27E90600293218 /* macVendors.plist */,
@@ -250,6 +273,8 @@
 			children = (
 				852E29192D27E90600293218 /* Device.swift */,
 				852E291A2D27E90600293218 /* DeviceService.swift */,
+				247A679E2D2989D900BA6EC8 /* ServiceType.swift */,
+				247A67A02D298F8200BA6EC8 /* AppleDevice.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -357,6 +382,7 @@
 		85DA723D2D1E9302008F5589 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				24EC7E172D2A383900875752 /* ScannerResult */,
 				852E29072D27E4D300293218 /* WifiScanner */,
 				852E28E32D2794C800293218 /* CameraDetector */,
 				85699C592D26942E0000E5A6 /* CameraResultGallery */,
@@ -584,7 +610,7 @@
 				852E28EB2D2794DA00293218 /* CameraDetectorViewController.xib in Resources */,
 				85DA724F2D1E9392008F5589 /* Poppins-Bold.ttf in Resources */,
 				85DA72512D1E9392008F5589 /* Poppins-Italic.ttf in Resources */,
-				852E29262D27E90600293218 /* data.plist in Resources */,
+				24EC7E1C2D2A385100875752 /* ScannerResultViewController.xib in Resources */,
 				85DA72502D1E9392008F5589 /* Poppins-Regular.ttf in Resources */,
 				852E290F2D27E4EC00293218 /* WifiScannerViewController.xib in Resources */,
 				852E29292D27E90600293218 /* macVendors.plist in Resources */,
@@ -668,6 +694,7 @@
 				85DA728C2D1EAA1C008F5589 /* InfraredCameraView.swift in Sources */,
 				85DA72892D1EA93C008F5589 /* InfraredCameraViewModel.swift in Sources */,
 				85699C562D2691C20000E5A6 /* RlmCameraResult.swift in Sources */,
+				247A679F2D2989D900BA6EC8 /* ServiceType.swift in Sources */,
 				852E292C2D27E90600293218 /* DeviceService.swift in Sources */,
 				85699C4C2D264A130000E5A6 /* CameraResultView.swift in Sources */,
 				85DA72552D1E942B008F5589 /* AppColor.swift in Sources */,
@@ -681,6 +708,9 @@
 				85699C512D268A9B0000E5A6 /* CameraResultItem.swift in Sources */,
 				852E29022D2799EA00293218 /* ShapeData.swift in Sources */,
 				85DA727A2D1EA53B008F5589 /* HomeViewController.swift in Sources */,
+				24EC7E1D2D2A385100875752 /* ScannerResultCoordinator.swift in Sources */,
+				24EC7E1E2D2A385100875752 /* ScannerResultViewController.swift in Sources */,
+				24EC7E1F2D2A385100875752 /* ScannerResultViewModel.swift in Sources */,
 				85DA727B2D1EA53B008F5589 /* HomeViewModel.swift in Sources */,
 				85A5EAEF2D23D479008B58EB /* PreviewCameraView.swift in Sources */,
 				85DA72622D1E9EFD008F5589 /* ToolItem.swift in Sources */,
@@ -696,8 +726,10 @@
 				85DA724C2D1E9392008F5589 /* Poppins.swift in Sources */,
 				85DA722A2D1E919B008F5589 /* AppDelegate.swift in Sources */,
 				85DA726E2D1EA436008F5589 /* Coordinator.swift in Sources */,
+				24EC7E212D2A391E00875752 /* ScannerResultView.swift in Sources */,
 				852E28FB2D2799EA00293218 /* AVCaptureDeviceExtension.swift in Sources */,
 				85DA725F2D1E9C5B008F5589 /* ToolsView.swift in Sources */,
+				247A67A12D298F8300BA6EC8 /* AppleDevice.swift in Sources */,
 				852E292F2D27E90600293218 /* LocalNetworkDetector.swift in Sources */,
 				852E28FF2D2799EA00293218 /* DataProcesser.swift in Sources */,
 				85699C632D2696360000E5A6 /* CameraResultGalleryView.swift in Sources */,
@@ -860,7 +892,7 @@
 				CODE_SIGN_ENTITLEMENTS = HiddenCamera/HiddenCamera.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YUS8V6L945;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
@@ -879,7 +911,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.duc.testy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cucphung.testy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -898,7 +930,7 @@
 				CODE_SIGN_ENTITLEMENTS = HiddenCamera/HiddenCamera.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YUS8V6L945;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
@@ -917,7 +949,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.duc.testy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cucphung.testy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

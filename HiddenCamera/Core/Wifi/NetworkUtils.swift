@@ -128,7 +128,11 @@ class NetworkUtils {
     }
     
     // MARK: - Get Hostname from IP
-    static func getHostFromIPAddress(ipAddress: String) -> String? {
+    static func getHostFromIPAddress(ipAddress: String) -> String? {     
+        if ipAddress.components(separatedBy: ".").last == "1" {
+            return "Router"
+        }
+        
         var hostName: String? = nil
         var hints = addrinfo()
         hints.ai_flags = 0
@@ -138,6 +142,7 @@ class NetworkUtils {
         var results: UnsafeMutablePointer<addrinfo>?
         
         let error = getaddrinfo(ipAddress, nil, &hints, &results)
+        
         if error != 0 {
             print("Could not get any info for the address: \(String(cString: gai_strerror(error)))")
             return nil

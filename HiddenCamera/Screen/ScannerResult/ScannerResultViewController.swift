@@ -1,19 +1,19 @@
 //
-//  WifiScannerViewController.swift
+//  ScannerResultViewController.swift
 //  HiddenCamera
 //
-//  Created by Duc apple  on 3/1/25.
+//  Created by CucPhung on 5/1/25.
 //
 
 import UIKit
-import RxSwift
 import SwiftUI
+import RxSwift
 
-class WifiScannerViewController: ViewController {
-    var viewModel: WifiScannerViewModel
-    weak var coordinator: WifiScannerCoordinator?
+class ScannerResultViewController: ViewController {
+    var viewModel: ScannerResultViewModel
+    weak var coordinator: ScannerResultCoordinator?
 
-    init(viewModel: WifiScannerViewModel, coordinator: WifiScannerCoordinator) {
+    init(viewModel: ScannerResultViewModel, coordinator: ScannerResultCoordinator) {
         self.viewModel = viewModel
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
@@ -32,21 +32,27 @@ class WifiScannerViewController: ViewController {
     // MARK: - Config
     func config() {
         configUI()
+        configViewModelInput()
+        configViewModelOutput()
         configRoutingOutput()
     }
 
-    func configRoutingOutput() {
-        viewModel.routing.routeToResult.subscribe(onNext: { [weak self] devices in
-            self?.coordinator?.routeToResult(device: devices)
-        }).disposed(by: self.disposeBag)
+    func configViewModelInput() {
+
+    }
+
+    func configViewModelOutput() {
         
+    }
+
+    func configRoutingOutput() {
         self.viewModel.routing.stop.subscribe(onNext: { [weak  self] _  in
             self?.coordinator?.stop()
         }).disposed(by: self.disposeBag)
     }
     
     private func configUI() {
-        let mainView = WifiScannerView(viewModel: viewModel)
+        let mainView = ScannerResultView(viewModel: viewModel)
         let hostingView = UIHostingController(rootView: mainView)
         hostingView.view.backgroundColor = .clear
         self.addChild(hostingView)

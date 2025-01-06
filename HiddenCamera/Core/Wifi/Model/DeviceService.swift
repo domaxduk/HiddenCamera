@@ -12,12 +12,14 @@ class DeviceService {
     var type: String
     var name: String
     var txtRecord: Data?
+    var hostname: String?
     
-    init(domain: String, type: String, name: String, txtRecord: Data?) {
+    init(domain: String, type: String, name: String, txtRecord: Data? = nil, hostname: String? = nil) {
         self.domain = domain
         self.type = type
         self.name = name
         self.txtRecord = txtRecord
+        self.hostname = hostname
     }
     
     var full: String {

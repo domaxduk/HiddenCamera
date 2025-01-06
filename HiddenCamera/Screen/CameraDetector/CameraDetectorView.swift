@@ -76,7 +76,7 @@ struct CameraDetectorView: View {
                         .frame(height: 20)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
-                        .background(viewModel.isRecording ? Color.app(.ee404c) : .white.opacity(0.2))
+                        .background(viewModel.isRecording ? Color.app(.warning) : .white.opacity(0.2))
                         .cornerRadius(8, corners: .allCorners)
                         .animation(.bouncy, value: viewModel.isRecording)
                     
@@ -196,7 +196,7 @@ struct CameraDetectorView: View {
             .overlay(
                 ZStack {
                     RoundedRectangle(cornerRadius: viewModel.isRecording ? 5 : 24)
-                        .fill(Color.app(.ee404c))
+                        .fill(Color.app(.warning))
                         .frame(
                             width: viewModel.isRecording ? 24 : 48,
                             height: viewModel.isRecording ? 24 : 48)

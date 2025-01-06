@@ -7,13 +7,13 @@
 
 import Foundation
 import UIKit
+import SwiftUI
+import dnssd
+import Network
 
 private let deviceInfo = NSDictionary(contentsOf: Bundle.main.url(forResource: "macModels", withExtension: "plist")!)!
-private let mobileDevices: [MobileDevice] = {
-    let data = try! Data(contentsOf: Bundle.main.url(forResource: "iphoneModels", withExtension: "json")!)
-    let decoder = JSONDecoder()
-    return try! decoder.decode([MobileDevice].self, from: data)
-}()
+
+
 
 func deviceDescriptionForModel(model: String) -> String? {
     guard let info = deviceInfo[model] as? NSDictionary, let richDescription = info["Detail"] as? String else {
@@ -23,9 +23,9 @@ func deviceDescriptionForModel(model: String) -> String? {
 }
 
 class RawDevice: NSObject, ObservableObject {
-    let ipAddress: String
+    var ipAddress: String?
     
-    init(ipAddress: String) {
+    init(ipAddress: String?) {
         self.ipAddress = ipAddress
     }
 }
@@ -33,62 +33,79 @@ class RawDevice: NSObject, ObservableObject {
 class Device: RawDevice {
     let id: String
     
+    @Published var name: String?
+    @Published var model: String?
     @Published var services: [DeviceService]
-    @Published var hostName: String? = nil
-    @Published var localHost: String? = nil
-    @Published var title: String
-    @Published var desc: String
-    @Published var image: UIImage?
-    @Published var richDescription: String?
-    
-    func updateDeviceName(name: String) {
-        self.title = name
-    }
-    
-    func name() -> String {
-        title.replacingOccurrences(of: "realName_", with: "")
-            .replacingOccurrences(of: ".local.", with: "")
-            .replacingOccurrences(of: "-", with: " ")
-    }
-    
-    func isRealName() -> Bool {
-        return title.contains("realName_")
-    }
-    
-    init(ipAddress: String, services: [DeviceService] = [], title: String, model: String?) {
-        self.id = UUID().uuidString
-        self.services = services
-        self.title = title
-        self.desc = ""
-        self.image = nil
-        
-        
+
+    var imageName: String {
+        if let ipAddress, let number = ipAddress.components(separatedBy: ".").last, number == "1" {
+            return "ic_device_router"
+        }
+
         if let model {
-            let mobileDeviceReference = mobileDevices.first(where: { $0.target?.lowercased() == model.lowercased() })
-            if let richDescription = deviceDescriptionForModel(model: model) {
-                self.richDescription = richDescription
-            } else if let mobileDeviceModel = mobileDeviceReference?.product_type, let richDescription = deviceDescriptionForModel(model: mobileDeviceModel) {
-                self.richDescription = richDescription
-            } else {
-                self.richDescription = "Model: \(model)"
+            let compareText = model.lowercased()
+            if compareText.contains("airpod") {
+                return "ic_device_airpod"
+            }
+            
+            if compareText.contains("macbook") {
+                return "ic_device_laptop"
+            }
+            
+            if compareText.contains("phone") {
+                return "ic_device_phone"
             }
         }
         
-        super.init(ipAddress: ipAddress)
+        return "ic_device_unknown"
     }
     
-    func updateWithDeviceModel(model: String?) {
-        guard let model else { return }
-        self.desc = ""
-        self.image = nil
+    func updateDeviceName(name: String) {
+        self.name = name
+    }
+    
+    func deviceName() -> String? {
+        if let name {
+            return name
+        }
         
-        let mobileDeviceReference = mobileDevices.first(where: { $0.target?.lowercased() == model.lowercased() })
-        if let richDescription = deviceDescriptionForModel(model: model) {
-            self.richDescription = richDescription
-        } else if let mobileDeviceModel = mobileDeviceReference?.product_type, let richDescription = deviceDescriptionForModel(model: mobileDeviceModel) {
-            self.richDescription = richDescription
-        } else {
-            self.richDescription = nil
+        if let service = services.first(where: { service in  return ServiceType.allCases.contains(where: { $0.rawValue == service.type })}) {
+            return service.name
+        }
+        
+        if let hostname {
+            return hostname.components(separatedBy: ".").first
+        }
+        
+        return nil
+    }
+    
+    var hostname: String? {
+        return services.first(where: { $0.hostname != nil })?.hostname
+    }
+    
+    init(ipAddress: String?, services: [DeviceService] = [], name: String?, model: String?) {
+        self.id = UUID().uuidString
+        self.name = name
+        self.services = services
+        self.model = model
+        super.init(ipAddress: ipAddress)
+        
+        if let appleDevice = self.getAppleDevice(from: model)  {
+            self.model = appleDevice.product_description
+        }
+    }
+    
+    func updateWithDeviceModel(model: String?, name: String?) {
+        guard let model else { return }
+        self.model = model
+        
+        if let name {
+            self.name = name
+        }
+        
+        if let appleDevice = getAppleDevice(from: model)  {
+            self.model = appleDevice.product_description
         }
     }
     
@@ -97,19 +114,42 @@ class Device: RawDevice {
         
         if let exitedService = services.first(where: { $0.full == fullService }) {
             exitedService.txtRecord = service.txtRecordData()
+            exitedService.hostname = service.hostName
         } else {
-            let object = DeviceService(domain: service.domain, type: service.type, name: service.name, txtRecord: service.txtRecordData())
+            let object = DeviceService(domain: service.domain, type: service.type, name: service.name, txtRecord: service.txtRecordData(), hostname: service.hostName)
             services.append(object)
         }
     }
+    
+    func addServices(services: [DeviceService]) {
+        for service in services {
+            if !self.services.contains(where: { $0.full == service.full }) {
+                self.services.append(service)
+            }
+        }
+        
+    }
+    
+    var listService: String {
+        var value = ""
+        for service in services {
+            value += service.full + "\n"
+        }
+        
+        return value
+    }
+    
+    private func getAppleDevice(from model: String?) -> AppleDevice? {
+        guard let data = try? Data(contentsOf: Bundle.main.url(forResource: "iphoneModels", withExtension: "json")!), 
+                let listDevice = try? JSONDecoder().decode([AppleDevice].self, from: data),
+                let model else {
+            return nil
+        }
+        
+        return listDevice.first(where: { $0.target?.lowercased() == model.lowercased() })
+    }
 }
 
-struct MobileDevice: Codable {
-    let target: String?
-    let target_type: String?
-    let target_variant: String?
-    let platform: String?
-    let product_type: String?
-    let product_description: String?
-    let compatible_device_fallback: String?
+#Preview {
+    WifiScannerView(viewModel: WifiScannerViewModel())
 }

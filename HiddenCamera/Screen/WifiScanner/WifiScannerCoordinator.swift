@@ -10,6 +10,8 @@ import RxSwift
 
 final class WifiScannerCoordinator: NavigationBasedCoordinator {
     
+    var resultCoordinator: ScannerResultCoordinator?
+    
     lazy var controller: WifiScannerViewController = {
         let viewModel = WifiScannerViewModel()
         let controller = WifiScannerViewController(viewModel: viewModel, coordinator: self)
@@ -29,5 +31,11 @@ final class WifiScannerCoordinator: NavigationBasedCoordinator {
         }
         
         super.stop(completion: completion)
+    }
+    
+    func routeToResult(device: [Device]) {
+        self.resultCoordinator = ScannerResultCoordinator(devices: device, navigationController: navigationController)
+        self.resultCoordinator?.start()
+        self.addChild(resultCoordinator!)
     }
 }
