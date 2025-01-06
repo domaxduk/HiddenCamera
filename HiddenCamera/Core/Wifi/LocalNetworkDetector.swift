@@ -129,7 +129,7 @@ extension LocalNetworkDetector: PingDelegate {
                 let name = NetworkUtils.getHostFromIPAddress(ipAddress: ipAddress)
                 let device = Device(ipAddress: ipAddress, name: name, model: nil)
                 self.devices.append(device)
-                self.delegate?.localNetworkDetector(self, updateListDevice: devices)
+                self.mergeDevice()
             }
         }
     }
@@ -152,7 +152,6 @@ extension LocalNetworkDetector: NetServiceBrowserDelegate {
     }
     
     func netServiceBrowser(_ browser: NetServiceBrowser, didFind service: NetService, moreComing: Bool) {
-        print("did find: \(service.description)")
         let all = service.name + service.type
         let components = all.components(separatedBy: ".")
         
@@ -219,7 +218,7 @@ extension LocalNetworkDetector: NetServiceDelegate {
     }
     
     private func addDevice(sender: NetService, data: Data?) {
-        
+        print("sender \(sender.description) \(sender.hostName)")
         var deviceAddresses: [String] = []
         
         if let addresses = sender.addresses {
@@ -242,9 +241,13 @@ extension LocalNetworkDetector: NetServiceDelegate {
             ipAddress = ipv4
         }
         
-        if let device = findExitstingDevice(ip: ipAddress, hostname: sender.hostName) {
+        if let device = findExitstingDevice(ip: ipAddress, service: sender) {
             device.updateWithDeviceModel(model: deviceModel, name: sender.name)
             device.addService(service: sender)
+            
+            if let ipAddress {
+                device.ipAddress = ipAddress
+            }
         } else {
             let device = Device(ipAddress: ipAddress, name: nil, model: deviceModel)
             device.addService(service: sender)
@@ -255,6 +258,7 @@ extension LocalNetworkDetector: NetServiceDelegate {
     }
     
     private func mergeDevice() {
+        self.deleteDuplicateDevice()
         var listDevice = [String: Device]()
         var listIPDevice = [String: Device]()
         
@@ -301,18 +305,77 @@ extension LocalNetworkDetector: NetServiceDelegate {
         }
         
         let totalDevice = Array(listDevice.values) + Array(listIPDevice.values)
+        
+//        print("LIST\(self.devices.count)------------------")
+//        
+//        for device in self.devices {
+//            print("device: \(device.ipAddress)  \(device.deviceName()) \(device.model) \(device.hostname) \(device.listService)")
+//        }
 
-        self.delegate?.localNetworkDetector(self, updateListDevice: sorted(listDevice: totalDevice))
+        self.delegate?.localNetworkDetector(self, 
+                                            updateListDevice: sorted(listDevice: totalDevice).filter({ $0.ipAddress != nil }))
     }
     
-    private func findExitstingDevice(ip: String?, hostname: String?) -> Device? {
+    private func deleteDuplicateDevice() {
+        // Xoá trùng service
+        var listService = [String: Int]()
+        for device in self.devices {
+            for service in device.services {
+                if listService.contains(where: { $0.key == service.full }) {
+                    listService[service.full]! += 1
+                } else {
+                    listService[service.full] = 1
+                }
+            }
+        }
+                
+        for service in listService {
+            if service.value > 1 {
+                if let index = devices.firstIndex(where: { device in
+                    return device.services.contains(where: { $0.full == service.key }) && device.services.count <= 1
+                }) {
+                    devices.remove(at: index)
+                    print("delete: \(service.key)")
+                }
+            }
+        }
+        
+        // Xoá trùng ip
+        var listIP = [String: Int]()
+        for device in self.devices {
+            if let ipAddress = device.ipAddress {
+                if listIP.contains(where: { $0.key == ipAddress }) {
+                    listIP[ipAddress]! += 1
+                } else {
+                    listIP[ipAddress] = 1
+                }
+            }
+        }
+        
+        for ip in listIP {
+            if ip.value > 1 {
+                if let index = devices.firstIndex(where: { $0.ipAddress == ip.key && $0.services.count < 1 }) {
+                    devices.remove(at: index)
+                }
+            }
+        }
+    }
+        
+    private func findExitstingDevice(ip: String?, service: NetService) -> Device? {
         return devices.first(where: { device in
             if let ipAdress = device.ipAddress, let ip {
                 return ip == ipAdress
             }
             
-            if let hostname, let deviceHostname = device.hostname {
-                return hostname == deviceHostname
+            
+            for deviceService in device.services {
+                if deviceService.name == service.name {
+                    return true
+                }
+                
+                if let hostname = service.hostName, let deviceHostname = deviceService.hostname, hostname == deviceHostname {
+                    return true
+                }
             }
             
             return false

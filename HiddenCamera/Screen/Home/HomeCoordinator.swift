@@ -67,6 +67,10 @@ extension HomeCoordinator {
     }
     
     func routeToWifiScanner() {
+        if self.wifiScannerCoordinator != nil {
+            return
+        }
+        
         self.wifiScannerCoordinator = WifiScannerCoordinator(navigationController: navigationController)
         self.wifiScannerCoordinator?.start()
         self.addChild(wifiScannerCoordinator!)

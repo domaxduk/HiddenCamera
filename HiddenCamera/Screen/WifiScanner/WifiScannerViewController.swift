@@ -40,8 +40,9 @@ class WifiScannerViewController: ViewController {
             self?.coordinator?.routeToResult(device: devices)
         }).disposed(by: self.disposeBag)
         
-        self.viewModel.routing.stop.subscribe(onNext: { [weak  self] _  in
-            self?.coordinator?.stop()
+        self.viewModel.routing.stop.subscribe(onNext: { [weak  self] _ in
+            guard let self else { return }
+            self.coordinator?.stop()
         }).disposed(by: self.disposeBag)
     }
     

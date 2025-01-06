@@ -34,7 +34,7 @@ final class WifiScannerCoordinator: NavigationBasedCoordinator {
     }
     
     func routeToResult(device: [Device]) {
-        self.resultCoordinator = ScannerResultCoordinator(devices: device, navigationController: navigationController)
+        self.resultCoordinator = ScannerResultCoordinator(type: .wifi, devices: device, navigationController: navigationController)
         self.resultCoordinator?.start()
         self.addChild(resultCoordinator!)
     }

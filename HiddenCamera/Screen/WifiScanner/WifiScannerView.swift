@@ -23,6 +23,22 @@ struct WifiScannerView: View {
                 navigationBar
                 content
             }
+            
+            if viewModel.isLoading {
+                Color.black.opacity(0.5).ignoresSafeArea()
+                
+                ProgressView().progressViewStyle(CircularProgressViewStyle(tint: .white))
+            }
+            
+            if viewModel.isShowingLocationDialog {
+                PermissionDialogView(type: .location, 
+                                     isShowing: $viewModel.isShowingLocationDialog)
+            }
+            
+            if viewModel.isShowingLocalNetworkDialog {
+                PermissionDialogView(type: .localNetwork,
+                                     isShowing: $viewModel.isShowingLocalNetworkDialog)
+            }
         }
     }
     
@@ -33,7 +49,7 @@ struct WifiScannerView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24)
                 .onTapGesture {
-                   
+                    viewModel.input.didTapBack.onNext(())
                 }
             
             Text(ToolItem.wifiScanner.name)
@@ -63,10 +79,47 @@ struct WifiScannerView: View {
                         .textColor(.app(.light12))
                         .padding(.top, 20)
                     
-                    AppColor.safeColor.opacity(0.1)
-                        .frame(height: 48)
-                        .cornerRadius(24, corners: .allCorners)
-                        .padding(.top, 16)
+                    let numberOfRiskDevice = viewModel.suspiciousDevices().count
+                    
+                    if numberOfRiskDevice == 0 {
+                        AppColor.safeColor.opacity(0.1)
+                            .frame(height: 48)
+                            .cornerRadius(24, corners: .allCorners)
+                            .overlay(
+                                HStack {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 24)
+                                    
+                                    Text("You are safe now!")
+                                        .font(Poppins.regular.font(size: 14))
+                                        .scaledToFit()
+                                        .minimumScaleFactor(0.5)
+                                        .lineLimit(1)
+                                }.foreColor(.app(.safe))
+                            )
+                            .padding(.top, 16)
+                    } else {
+                        AppColor.warningColor.opacity(0.1)
+                            .frame(height: 48)
+                            .cornerRadius(24, corners: .allCorners)
+                            .overlay(
+                                HStack {
+                                    Image("ic_risk")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 24)
+                                    
+                                    Text("Suspicious Devices: \(numberOfRiskDevice)")
+                                        .font(Poppins.regular.font(size: 14))
+                                        .scaledToFit()
+                                        .minimumScaleFactor(0.5)
+                                        .lineLimit(1)
+                                }.foreColor(.app(.warning))
+                            )
+                            .padding(.top, 16)
+                    }
                 }
                 .padding(32)
                 .background(Color.white)
@@ -78,7 +131,7 @@ struct WifiScannerView: View {
                     ZStack {
                         Color.clearInteractive
                         
-                        Text("Re-scan")
+                        Text("Scan again")
                             .font(Poppins.semibold.font(size: 14))
                             .textColor(.app(.main))
                         

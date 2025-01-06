@@ -7,17 +7,24 @@
 
 import UIKit
 
+enum ScannerResultType {
+    case wifi
+    case bluetooth
+}
+
 final class ScannerResultCoordinator: NavigationBasedCoordinator {
     
-    var devices: [Device]
+    private let type: ScannerResultType
+    private var devices: [Device]
     
-    init(devices: [Device], navigationController: UINavigationController) {
+    init(type: ScannerResultType, devices: [Device], navigationController: UINavigationController) {
         self.devices = devices
+        self.type = type
         super.init(navigationController: navigationController)
     }
     
     lazy var controller: ScannerResultViewController = {
-        let viewModel = ScannerResultViewModel(devices: devices)
+        let viewModel = ScannerResultViewModel(type: type, devices: devices)
         let controller = ScannerResultViewController(viewModel: viewModel, coordinator: self)
         return controller
     }()

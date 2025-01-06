@@ -91,6 +91,8 @@
 		85DA72882D1EA93C008F5589 /* InfraredCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72832D1EA93C008F5589 /* InfraredCameraViewController.swift */; };
 		85DA72892D1EA93C008F5589 /* InfraredCameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72842D1EA93C008F5589 /* InfraredCameraViewModel.swift */; };
 		85DA728C2D1EAA1C008F5589 /* InfraredCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA728B2D1EAA1C008F5589 /* InfraredCameraView.swift */; };
+		85E3C5F02D2B883900BBAFBE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E3C5EF2D2B883900BBAFBE /* LocationManager.swift */; };
+		85E3C5F32D2B8E8100BBAFBE /* PermissionDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E3C5F22D2B8E8100BBAFBE /* PermissionDialogView.swift */; };
 		85EC31AE2D27F777009F874A /* blueCircle.json in Resources */ = {isa = PBXBuildFile; fileRef = 85EC31AD2D27F777009F874A /* blueCircle.json */; };
 		BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */; };
 /* End PBXBuildFile section */
@@ -181,6 +183,8 @@
 		85DA72842D1EA93C008F5589 /* InfraredCameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfraredCameraViewModel.swift; sourceTree = "<group>"; };
 		85DA72852D1EA93C008F5589 /* InfraredCameraViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfraredCameraViewController.xib; sourceTree = "<group>"; };
 		85DA728B2D1EAA1C008F5589 /* InfraredCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfraredCameraView.swift; sourceTree = "<group>"; };
+		85E3C5EF2D2B883900BBAFBE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		85E3C5F22D2B8E8100BBAFBE /* PermissionDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionDialogView.swift; sourceTree = "<group>"; };
 		85EC31AD2D27F777009F874A /* blueCircle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blueCircle.json; sourceTree = "<group>"; };
 		9538BCC95076E37CF40E04C0 /* Pods-HiddenCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.debug.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.debug.xcconfig"; sourceTree = "<group>"; };
 		B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HiddenCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -382,6 +386,7 @@
 		85DA723D2D1E9302008F5589 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				85E3C5F12D2B8E7100BBAFBE /* Dialog */,
 				24EC7E172D2A383900875752 /* ScannerResult */,
 				852E29072D27E4D300293218 /* WifiScanner */,
 				852E28E32D2794C800293218 /* CameraDetector */,
@@ -467,6 +472,7 @@
 		85DA72652D1EA427008F5589 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				85E3C5EE2D2B883000BBAFBE /* Location */,
 				852E29252D27E90600293218 /* Wifi */,
 				85699C522D2690BB0000E5A6 /* Realm */,
 				85699C4F2D268A8A0000E5A6 /* Model */,
@@ -517,6 +523,22 @@
 				85DA72852D1EA93C008F5589 /* InfraredCameraViewController.xib */,
 			);
 			path = InfraredCamera;
+			sourceTree = "<group>";
+		};
+		85E3C5EE2D2B883000BBAFBE /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				85E3C5EF2D2B883900BBAFBE /* LocationManager.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		85E3C5F12D2B8E7100BBAFBE /* Dialog */ = {
+			isa = PBXGroup;
+			children = (
+				85E3C5F22D2B8E8100BBAFBE /* PermissionDialogView.swift */,
+			);
+			path = Dialog;
 			sourceTree = "<group>";
 		};
 		DD07395B187A8A3FDE185436 /* Pods */ = {
@@ -686,6 +708,7 @@
 				852E29112D27E87300293218 /* WifiScannerView.swift in Sources */,
 				85DA726D2D1EA436008F5589 /* BaseViewModel.swift in Sources */,
 				85699C582D2692480000E5A6 /* CameraResultDAO.swift in Sources */,
+				85E3C5F32D2B8E8100BBAFBE /* PermissionDialogView.swift in Sources */,
 				85DA727F2D1EA810008F5589 /* Permission.swift in Sources */,
 				85DA72872D1EA93C008F5589 /* InfraredCameraCoordinator.swift in Sources */,
 				85DA72882D1EA93C008F5589 /* InfraredCameraViewController.swift in Sources */,
@@ -694,6 +717,7 @@
 				85DA728C2D1EAA1C008F5589 /* InfraredCameraView.swift in Sources */,
 				85DA72892D1EA93C008F5589 /* InfraredCameraViewModel.swift in Sources */,
 				85699C562D2691C20000E5A6 /* RlmCameraResult.swift in Sources */,
+				85E3C5F02D2B883900BBAFBE /* LocationManager.swift in Sources */,
 				247A679F2D2989D900BA6EC8 /* ServiceType.swift in Sources */,
 				852E292C2D27E90600293218 /* DeviceService.swift in Sources */,
 				85699C4C2D264A130000E5A6 /* CameraResultView.swift in Sources */,
@@ -892,7 +916,7 @@
 				CODE_SIGN_ENTITLEMENTS = HiddenCamera/HiddenCamera.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YUS8V6L945;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
@@ -911,7 +935,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cucphung.testy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.duc.testy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -930,7 +954,7 @@
 				CODE_SIGN_ENTITLEMENTS = HiddenCamera/HiddenCamera.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YUS8V6L945;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
@@ -949,7 +973,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cucphung.testy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.duc.testy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

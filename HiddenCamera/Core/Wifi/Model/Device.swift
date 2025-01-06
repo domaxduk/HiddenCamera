@@ -42,22 +42,37 @@ class Device: RawDevice {
             return "ic_device_router"
         }
 
-        if let model {
-            let compareText = model.lowercased()
-            if compareText.contains("airpod") {
-                return "ic_device_airpod"
-            }
-            
-            if compareText.contains("macbook") {
-                return "ic_device_laptop"
-            }
-            
-            if compareText.contains("phone") {
-                return "ic_device_phone"
-            }
+        if let model, let imageName = getImageName(from: model) {
+            return imageName
+        }
+        
+        if let deviceName = deviceName(), let imageName = getImageName(from: deviceName) {
+            return imageName
         }
         
         return "ic_device_unknown"
+    }
+    
+    private func getImageName(from key: String) -> String? {
+        let compareText = key.lowercased()
+        
+        if compareText.contains("airpod") {
+            return "ic_device_airpod"
+        }
+        
+        if compareText.contains("tv") {
+            return "ic_device_tv"
+        }
+        
+        if compareText.contains("macbook") || compareText.contains("macmini") || compareText.contains("pc") {
+            return "ic_device_laptop"
+        }
+        
+        if compareText.contains("phone") || compareText.contains("redmi") {
+            return "ic_device_phone"
+        }
+        
+        return nil
     }
     
     func updateDeviceName(name: String) {
@@ -147,6 +162,10 @@ class Device: RawDevice {
         }
         
         return listDevice.first(where: { $0.target?.lowercased() == model.lowercased() })
+    }
+    
+    var keystore: [String] {
+        return [self.ipAddress, self.hostname, self.deviceName()].compactMap({ $0 })
     }
 }
 

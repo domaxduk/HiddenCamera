@@ -10,7 +10,7 @@ import SwiftUI
 import RxSwift
 
 struct ScannerResultViewModelInput: InputOutputViewModel {
-    var didTapDevice = PublishSubject<Device>()
+    var didTapFix = PublishSubject<Device>()
     var moveToSafe = PublishSubject<Device>()
     var remove = PublishSubject<Device>()
     var didTapBack = PublishSubject<()>()
@@ -31,19 +31,22 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
     @Published var selectedDevice: Device?
     @Published var removedDevice = [Device]()
     
-    init(devices: [Device]) {
+    private let type: ScannerResultType
+    
+    init(type: ScannerResultType, devices: [Device]) {
+        self.type = type
         self.devices = devices
         super.init()
         
-        if self.numberOfSafeDevice() == 0 {
-            self.currentTab = .suspicious
-        }
+        
+        configDiscovery()
+        changeTabIfNeed()
     }
     
     override func configInput() {
         super.configInput()
         
-        input.didTapDevice.subscribe(onNext: { [weak self] device in
+        input.didTapFix.subscribe(onNext: { [weak self] device in
             guard let self else { return }
             withAnimation {
                 self.selectedDevice = device
@@ -52,10 +55,10 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
         
         input.moveToSafe.subscribe(onNext: { [weak self] device in
             guard let self else { return }
-            let key = [device.ipAddress, device.hostname, device.deviceName()].compactMap({ $0 })
             withAnimation {
                 self.selectedDevice = nil
-                self.safeID.append(contentsOf: key)
+                self.safeID.append(contentsOf: device.keystore)
+                self.changeTabIfNeed()
             }
         }).disposed(by: self.disposeBag)
         
@@ -70,6 +73,31 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
         input.didTapBack.subscribe(onNext: { [weak self] _ in
             self?.routing.stop.onNext(())
         }).disposed(by: self.disposeBag)
+    }
+    
+    private func configDiscovery() {
+        if type == .wifi {
+            LocalNetworkDetector.shared.delegate = self
+        }
+    }
+    
+    private func changeTabIfNeed() {
+        if self.numberOfSafeDevice() == 0 {
+            self.currentTab = .suspicious
+        }
+        
+        if self.numberOfSuspiciousDevice() == 0 {
+            self.currentTab = .safe
+        }
+    }
+}
+
+// MARK: - LocalNetworkDetectorDelegate
+extension ScannerResultViewModel: LocalNetworkDetectorDelegate {
+    func localNetworkDetector(_ detector: LocalNetworkDetector, updateListDevice devices: [Device]) {
+        withAnimation {
+            self.devices = devices
+        }
     }
 }
 

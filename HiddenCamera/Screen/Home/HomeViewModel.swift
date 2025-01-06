@@ -59,22 +59,10 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
     }
     
     private func routeToWifiScanner() {
-        let locationManager = CLLocationManager()
-        locationManager.delegate = self
+        LocationManager.shared.statusObserver.take(1).subscribe(onNext: { [weak self] _ in
+            self?.routing.routeToWifiScanner.onNext(())
+        }).disposed(by: self.disposeBag)
         
-        if locationManager.authorizationStatus == .notDetermined {
-            locationManager.requestWhenInUseAuthorization()
-        } else {
-            self.routing.routeToWifiScanner.onNext(())
-        }
-    }
-}
-
-// MARK: - CLLocationManagerDelegate
-extension HomeViewModel: CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        if manager.authorizationStatus != .notDetermined {
-            self.routing.routeToWifiScanner.onNext(())
-        }
+        LocationManager.shared.requestPermission()
     }
 }

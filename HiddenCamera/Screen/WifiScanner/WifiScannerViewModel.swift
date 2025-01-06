@@ -31,12 +31,17 @@ struct WifiScannerViewModelRouting: RoutingOutput {
 }
 
 final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiScannerViewModelOutput, WifiScannerViewModelRouting> {
+    @AppStorage("safe") var safeID = [String]()
     @Published var state: WifiScannerState = .ready
     @Published var percent: Double = 0
     @Published var seconds: Double = 0
     @Published var devices = [Device]()
     @Published var showingDevice: Device?
     
+    @Published var isLoading: Bool = false
+    @Published var isShowingLocationDialog: Bool = false
+    @Published var isShowingLocalNetworkDialog: Bool = false
+
     private var index: Int = 0
     
     private var timer: Timer?
@@ -51,18 +56,36 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
         
         input.didTapScan.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            startScan()
-            startTimer()
+            prepareToScan()
         }).disposed(by: self.disposeBag)
         
         input.viewResult.subscribe(onNext: { [weak self] _ in
             guard let self else {return}
             self.routing.routeToResult.onNext(devices)
+            self.state = .ready
         }).disposed(by: self.disposeBag)
         
         input.didTapBack.subscribe(onNext: { [weak self] _ in
+            LocalNetworkDetector.shared.stopScan()
             self?.routing.stop.onNext(())
         }).disposed(by: self.disposeBag)
+    }
+    
+    private func prepareToScan() {
+        if LocationManager.shared.status == .restricted || LocationManager.shared.status == .denied {
+            withAnimation {
+                self.isShowingLocationDialog = true
+            }
+            
+            return
+        }
+        
+        isLoading = true
+        
+        // TODO: - Check Local network permission
+        
+        startScan()
+        startTimer()
     }
     
     private func startTimer() {
@@ -98,11 +121,10 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
              return
         }
         
-        self.resetData()
-        LocalNetworkDetector.shared.start()
-        
         withAnimation {
             self.state = .isScanning
+            self.resetData()
+            LocalNetworkDetector.shared.start()
         }
     }
     
@@ -127,6 +149,16 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
         }
         
         return text
+    }
+    
+    func suspiciousDevices() -> [Device] {
+        return devices.filter({ device in
+            return !isSafe(device: device)
+        })
+    }
+    
+    func isSafe(device: Device) -> Bool {
+        return safeID.contains(where: { $0 == device.ipAddress || $0 == device.hostname || $0 ==  device.deviceName() })
     }
 }
 
@@ -169,4 +201,3 @@ extension Array: RawRepresentable where Element: Codable {
         return result
     }
 }
-
