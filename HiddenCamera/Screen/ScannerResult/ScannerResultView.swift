@@ -9,19 +9,29 @@ import SwiftUI
 import RxSwift
 import SakuraExtension
 import WebKit
+import CoreBluetooth
 
 enum ScannerResultTab: String {
     case safe
     case suspicious
 }
 
+fileprivate struct Const {
+    static let width = UIScreen.main.bounds.width - 20 * 2
+}
+
 struct ScannerResultView: View {
     @ObservedObject var viewModel: ScannerResultViewModel
     @State var showing: Bool = false
+    
     var body: some View {
         NavigationView(content: {
             ZStack {
                 content
+                
+                if let device = viewModel.selectedDevice {
+                    fixDialog(device: device)
+                }
             }
         })
         .navigationBarBackButtonHidden()
@@ -49,103 +59,82 @@ struct ScannerResultView: View {
             VStack(spacing: 0) {
                 navigationBar
                 
-                Text("Network name : \(NetworkUtils.getWifiName() ?? "No name")")
-                    .font(Poppins.regular.font(size: 14))
-                    .textColor(.app(.light09))
-                    .padding(.top, 8)
-                
-                HStack {
-                    Text("IP:")
+                if viewModel.type == .wifi {
+                    Text("Network name : \(NetworkUtils.getWifiName() ?? "No name")")
                         .font(Poppins.regular.font(size: 14))
                         .textColor(.app(.light09))
+                        .padding(.top, 8)
                     
-                    Text(NetworkUtils.currentIPAddress())
-                        .font(Poppins.semibold.font(size: 14))
-                        .textColor(.app(.light09))
-                }
-                
-                if viewModel.numberOfSafeDevice() != 0 && viewModel.numberOfSuspiciousDevice() != 0 {
                     HStack {
-                        ZStack {
-                            Color.clearInteractive
-                            
-                            Text("Safe(\(viewModel.numberOfSafeDevice()))")
-                                .font(Poppins.semibold.font(size: 14))
-                                .textColor(viewModel.currentTab == .safe ? .white : .app(.light09))
-                        }.onTapGesture {
-                            viewModel.currentTab = .safe
-                        }
+                        Text("IP:")
+                            .font(Poppins.regular.font(size: 14))
+                            .textColor(.app(.light09))
                         
-                        ZStack {
-                            Color.clearInteractive
-                            
-                            Text("Suspicious(\(viewModel.numberOfSuspiciousDevice()))")
-                                .font(Poppins.semibold.font(size: 14))
-                                .textColor(viewModel.currentTab == .suspicious ? .white : .app(.light09))
-                        }
-                        .onTapGesture {
-                            viewModel.currentTab = .suspicious
-                        }
+                        Text(NetworkUtils.currentIPAddress())
+                            .font(Poppins.semibold.font(size: 14))
+                            .textColor(.app(.light09))
                     }
-                    .background(
-                        GeometryReader(content: { geometry in
-                            HStack  {
-                                Color.app(.main).cornerRadius(28, corners: .allCorners)
-                                    .frame(width: geometry.size.width / 2)
-                                    .padding(.leading, viewModel.currentTab == .safe ? 0 : geometry.size.width / 2)
-                            }
-                        })
-                    )
-                    .animation(.bouncy)
-                    .background(Color.white)
-                    .frame(height: 56)
-                    .cornerRadius(28, corners: .allCorners)
-                    .padding(.horizontal, 48)
-                    .padding(.top, 20)
                 }
                 
-                TabView(selection: $viewModel.currentTab,
-                        content:  {
-                    ZStack {
-                        let safeDevices = self.viewModel.safeDevices()
-                        if safeDevices.isEmpty {
-                            emptyView
-                        } else {
-                            ScrollView(.vertical) {
-                                VStack(spacing: 16) {
-                                    ForEach(safeDevices, id: \.id) { device in
-                                        LocalDeviceItemView(viewModel: viewModel,device: device)
-                                    }
-                                }
+                tabView
+                
+                let devices = viewModel.currentTab == .safe ? viewModel.safeDevices() : viewModel.suspiciousDevices()
+                if devices.isEmpty {
+                    emptyView
+                } else {
+                    ScrollView(.vertical) {
+                        VStack(spacing: 16) {
+                            ForEach(devices, id: \.id) { device in
+                                DeviceItemView(viewModel: viewModel, device: device)
                             }
-                        }
+                        }.padding(.bottom, 100)
                     }
-                    .tag(ScannerResultTab.safe)
-                    
-                    ZStack {
-                        let safeDevices = self.viewModel.suspiciousDevices()
-                        if safeDevices.isEmpty {
-                            emptyView
-                        } else {
-                            ScrollView(.vertical) {
-                                VStack(spacing: 16) {
-                                    ForEach(safeDevices, id: \.id) { device in
-                                        LocalDeviceItemView(viewModel: viewModel,device: device)
-                                    }
-                                }
-                            }
-                        }
-                    }.tag(ScannerResultTab.suspicious)
-                })
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .padding(.top, 20)
-                .ignoresSafeArea()
-            }
-            
-            if let device = viewModel.selectedDevice {
-                fixDialog(device: device)
+                    .padding(.top, 20)
+                    .ignoresSafeArea()
+                }
             }
         }
+    }
+    
+    // MARK: - Tab View
+    var tabView: some View {
+        HStack {
+            ZStack {
+                Color.clearInteractive
+                
+                Text("Safe(\(viewModel.numberOfSafeDevice()))")
+                    .font(Poppins.semibold.font(size: 14))
+                    .textColor(viewModel.currentTab == .safe ? .white : .app(.light09))
+            }.onTapGesture {
+                viewModel.currentTab = .safe
+            }
+            
+            ZStack {
+                Color.clearInteractive
+                
+                Text("Suspicious(\(viewModel.numberOfSuspiciousDevice()))")
+                    .font(Poppins.semibold.font(size: 14))
+                    .textColor(viewModel.currentTab == .suspicious ? .white : .app(.light09))
+            }
+            .onTapGesture {
+                viewModel.currentTab = .suspicious
+            }
+        }
+        .background(
+            GeometryReader(content: { geometry in
+                HStack  {
+                    Color.app(.main).cornerRadius(28, corners: .allCorners)
+                        .frame(width: geometry.size.width / 2)
+                        .padding(.leading, viewModel.currentTab == .safe ? 0 : geometry.size.width / 2)
+                }
+            })
+        )
+        .background(Color.white)
+        .frame(height: isShowingTab ? 56 : 0)
+        .cornerRadius(28, corners: .allCorners)
+        .animation(.bouncy)
+        .padding(.horizontal, 48)
+        .padding(.top, isShowingTab ? 20 : 0)
     }
     
     // MARK: - Dialog
@@ -185,18 +174,36 @@ struct ScannerResultView: View {
                 
                 Color.app(.light04).frame(height: 1)
 
-                NavigationLink {
-                    AddressView(device: device)
-                } label: {
-                    HStack {
-                        Spacer()
-                        Text("Check device")
-                            .font(Poppins.regular.font(size: 16))
-                            .textColor(.app(.light12))
-                        Spacer()
+                if let device = device as? LANDevice {
+                    NavigationLink {
+                        AddressView(device: device)
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Text("Check device")
+                                .font(Poppins.regular.font(size: 16))
+                                .textColor(.app(.light12))
+                            Spacer()
+                        }
+                        .background(Color.clearInteractive)
+                        .frame(height: 56)
                     }
-                    .background(Color.clearInteractive)
-                    .frame(height: 56)
+                }
+                
+                if let device = device as? BluetoothDevice {
+                    NavigationLink {
+                        FindView(viewModel: viewModel, device: device)
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Text("Find device")
+                                .font(Poppins.regular.font(size: 16))
+                                .textColor(.app(.light12))
+                            Spacer()
+                        }
+                        .background(Color.clearInteractive)
+                        .frame(height: 56)
+                    }
                 }
             }
             .overlay(
@@ -242,6 +249,173 @@ struct ScannerResultView: View {
         .frame(height: AppConfig.navigationBarHeight)
         .frame(height: 56)
     }
+    
+    // MARK: - Get
+    var isShowingTab: Bool {
+        return viewModel.numberOfSafeDevice() != 0 && viewModel.numberOfSuspiciousDevice() != 0
+    }
+}
+
+// MARK: - Find View
+fileprivate struct FindView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @ObservedObject var viewModel: ScannerResultViewModel
+    @ObservedObject var device: BluetoothDevice
+    @State var isAnimation: Bool = false
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                HStack {
+                    Image("ic_back")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24)
+                        .onTapGesture {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    
+                    Text(device.deviceName() ?? "Unknown")
+                        .textColor(.app(.light12))
+                        .font(Poppins.semibold.font(size: 18))
+                    
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
+                .frame(height: AppConfig.navigationBarHeight)
+                .frame(height: 56)
+                
+                deviceView
+                
+                Text("Move around to find this device")
+                    .textColor(.app(.light11))
+                    .font(Poppins.regular.font(size: 14))
+                    .padding(.top, 24)
+                    .padding(.horizontal, 60)
+                
+                Spacer(minLength: 0)
+                
+                ZStack {
+                
+                    Circle()
+                        .stroke(gradientColor, lineWidth: 2)
+                        .frame(height: isAnimation ? Const.width : 0)
+                        .rotationEffect(.degrees(90))
+                        .animation(
+                            .easeInOut(duration: 2)
+                            .repeatForever(autoreverses: false)
+                        )
+                    
+                    Circle()
+                        .stroke(gradientColor, lineWidth: 2)
+                        .frame(height: isAnimation ? Const.width : 0)
+                        .rotationEffect(.degrees(90))
+                        .animation(
+                            .easeInOut(duration: 2)
+                            .repeatForever(autoreverses: false)
+                            .delay(0.25)
+                        )
+                       
+                    Circle()
+                        .stroke(gradientColor, lineWidth: 2)
+                        .frame(height: isAnimation ? Const.width : 0)
+                        .rotationEffect(.degrees(90))
+                        .animation(
+                            .easeInOut(duration: 2)
+                            .repeatForever(autoreverses: false)
+                            .delay(0.5)
+                        )
+                    
+                    Circle()
+                        .fill(circleColor)
+                        .frame(height: Const.width / 388 * 175)
+                        .overlay(
+                            Text(meterDescription)
+                                .textColor(.white)
+                                .font(Poppins.semibold.font(size: Const.width / 388 * 36))
+                                .scaledToFit()
+                                .minimumScaleFactor(0.5)
+                                .lineLimit(1)
+                        )
+                }
+                .onAppear(perform: {
+                    isAnimation = true
+                })
+                
+                Spacer()
+                
+                Color.app(.main).frame(height: 56)
+                    .cornerRadius(28, corners: .allCorners)
+                    .overlay(
+                        Text("Found it!")
+                            .textColor(.white)
+                            .font(Poppins.semibold.font(size: 16))
+                    )
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    .padding(.horizontal, 56)
+                    .padding(.bottom, 100)
+            }
+            .background(Color.app(.light03).ignoresSafeArea())
+        }
+        .navigationBarTitle("")
+        .navigationBarHidden(true)
+        .onAppear(perform: {
+            viewModel.selectedDevice = nil
+        })
+    }
+    
+    var deviceView: some View {
+        HStack(spacing: 16) {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.app(.main).opacity(0.1))
+                .frame(width: 44, height: 44)
+                .overlay(
+                    Image(device.imageName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24)
+                )
+                
+            VStack(alignment: .leading, spacing: 4) {
+                Text(device.deviceName() ?? "Unknown")
+                    .font(Poppins.semibold.font(size: 14))
+                    .frame(height: 20)
+                
+                Text(isSafe ? "Safe Device" : "Suspicious Device")
+                    .font(Poppins.regular.font(size: 12))
+                    .textColor(.app(isSafe ? .safe : .warning))
+                    .lineLimit(1)
+                    .frame(height: 18)
+            }
+            
+            Spacer(minLength: 0)
+        }
+        .padding(20)
+        .background(Color.white)
+        .cornerRadius(16, corners: .allCorners)
+        .padding(.horizontal, 20)
+    }
+    
+    var isSafe: Bool {
+        return viewModel.isSafe(device: device)
+    }
+    
+    var circleColor: Color {
+        return device.meterDistance() <= 1.0 ? .app(.warning) : .app(.safe)
+    }
+    
+    var gradientColor: LinearGradient {
+        LinearGradient(
+            gradient: Gradient(colors: [circleColor, .clear, .clear]),
+                startPoint: .leading,
+                endPoint: .trailing)
+    }
+    
+    var meterDescription: String {
+        return String(format: "%.2f m", device.meterDistance())
+    }
 }
 
 // MARK: - Address View
@@ -249,7 +423,7 @@ fileprivate struct AddressView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var error: Error?
     
-    var device: Device
+    var device: LANDevice
 
     var body: some View {
         NavigationView {
@@ -290,7 +464,8 @@ fileprivate struct AddressView: View {
             
                 Spacer(minLength: 0)
             }
-        } 
+            .background(Color.app(.light03).ignoresSafeArea())
+        }
         .navigationBarTitle("")
         .navigationBarHidden(true)
     }
@@ -345,7 +520,7 @@ struct WebView: UIViewRepresentable {
 }
 
 // MARK: - LocalDeviceItemView
-fileprivate struct LocalDeviceItemView: View {
+fileprivate struct DeviceItemView: View {
     @ObservedObject var viewModel: ScannerResultViewModel
     var device: Device
         
@@ -366,7 +541,7 @@ fileprivate struct LocalDeviceItemView: View {
                     .font(Poppins.semibold.font(size: 14))
                     .frame(height: 20)
                 
-                Text("IP Address: " + (device.ipAddress ?? ""))
+                Text(device.note())
                     .font(Poppins.regular.font(size: 12))
                     .textColor(.app(.light11))
                     .lineLimit(1)
@@ -376,17 +551,34 @@ fileprivate struct LocalDeviceItemView: View {
             Spacer(minLength: 0)
             
             if isSafe {
-                NavigationLink {
-                    AddressView(device: device)
-                } label: {
-                    Text("Check")
-                        .font(Poppins.medium.font(size: 14))
-                        .textColor(.app(.main))
-                        .frame(width: 76, height: 26)
-                        .background(
-                            Color.app(.main).opacity(0.1)
-                        )
-                        .cornerRadius(26, corners: .allCorners)
+                if let device = device as? LANDevice {
+                    NavigationLink {
+                        AddressView(device: device)
+                    } label: {
+                        Text("Check")
+                            .font(Poppins.medium.font(size: 14))
+                            .textColor(.app(.main))
+                            .frame(width: 76, height: 26)
+                            .background(
+                                Color.app(.main).opacity(0.1)
+                            )
+                            .cornerRadius(26, corners: .allCorners)
+                    }
+                }
+                
+                if let device = device as? BluetoothDevice {
+                    NavigationLink {
+                        FindView(viewModel: viewModel, device: device)
+                    } label: {
+                        Text("Find")
+                            .font(Poppins.medium.font(size: 14))
+                            .textColor(.app(.main))
+                            .frame(width: 76, height: 26)
+                            .background(
+                                Color.app(.main).opacity(0.1)
+                            )
+                            .cornerRadius(26, corners: .allCorners)
+                    }
                 }
             } else {
                 Text("Fix")
@@ -418,7 +610,8 @@ fileprivate struct LocalDeviceItemView: View {
 }
 
 #Preview {
-    ScannerResultView(viewModel: ScannerResultViewModel(type: .wifi, devices: [
-        .init(ipAddress: "196.168.1.105", name: "Than", model: nil)
+    ScannerResultView(viewModel: ScannerResultViewModel(type: .bluetooth, devices: [
+        LANDevice(ipAddress: UUID().uuidString, name: "TV", model: nil),
+        BluetoothDevice(id: UUID().uuidString, rssi: 12, peripheral: nil)
     ]))
 }

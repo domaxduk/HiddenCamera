@@ -216,7 +216,6 @@ struct WifiScannerView: View {
                             .textColor(.app(.light11))
                     }
                     
-                    
                     Text("Allow the app to access your local network to detect any suspicious hidden devices, such as hidden cameras or other spy devices connected to the same network.")
                         .font(Poppins.regular.font(size: 14))
                         .textColor(.app(.light11))
@@ -258,7 +257,7 @@ struct WifiScannerView: View {
 
 // MARK:  - LocalDeviceItemView
 fileprivate struct LocalDeviceItemView: View {
-    @ObservedObject var device: Device
+    @ObservedObject var device: LANDevice
         
     var body: some View {
         HStack(spacing: 16) {

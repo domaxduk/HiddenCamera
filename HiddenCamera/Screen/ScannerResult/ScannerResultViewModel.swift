@@ -31,7 +31,8 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
     @Published var selectedDevice: Device?
     @Published var removedDevice = [Device]()
     
-    private let type: ScannerResultType
+    let type: ScannerResultType
+    private var lastUpdate: Date?
     
     init(type: ScannerResultType, devices: [Device]) {
         self.type = type
@@ -78,6 +79,8 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
     private func configDiscovery() {
         if type == .wifi {
             LocalNetworkDetector.shared.delegate = self
+        } else {
+            BluetoothScanner.shared.delegate = self
         }
     }
     
@@ -93,8 +96,30 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
 }
 
 // MARK: - LocalNetworkDetectorDelegate
-extension ScannerResultViewModel: LocalNetworkDetectorDelegate {
-    func localNetworkDetector(_ detector: LocalNetworkDetector, updateListDevice devices: [Device]) {
+extension ScannerResultViewModel: LocalNetworkDetectorDelegate, BluetoothScannerDelegate {
+    func bluetoothScanner(_ scanner: BluetoothScanner, updateListDevice devices: [BluetoothDevice]) {
+        if let lastUpdate, abs(lastUpdate.timeIntervalSinceNow) < 0.5 {
+            return
+        }
+        
+        
+        let newDevices = devices
+        
+        self.lastUpdate = Date()
+        if newDevices.count == self.devices.count {
+            self.devices = newDevices
+        } else {
+            withAnimation {
+                self.devices = newDevices
+            }
+        }
+        
+        if let id = selectedDevice?.id, let device = devices.first(where: { $0.id == id }) {
+            self.selectedDevice = device
+        }
+    }
+    
+    func localNetworkDetector(_ detector: LocalNetworkDetector, updateListDevice devices: [LANDevice]) {
         withAnimation {
             self.devices = devices
         }
@@ -104,7 +129,11 @@ extension ScannerResultViewModel: LocalNetworkDetectorDelegate {
 // MARK: - Get
 extension ScannerResultViewModel {
     func isSafe(device: Device) -> Bool {
-        return safeID.contains(where: { $0 == device.ipAddress || $0 == device.hostname || $0 ==  device.deviceName() })
+        if let device = device as? LANDevice {
+            return safeID.contains(where: { $0 == device.ipAddress || $0 == device.hostname || $0 ==  device.deviceName() })
+        }
+        
+        return safeID.contains(where: { $0 == device.id })
     }
     
     func numberOfSafeDevice() -> Int {

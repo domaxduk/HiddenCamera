@@ -33,17 +33,7 @@ class HomeViewController: ViewController {
     // MARK: - Config
     func config() {
         configUI()
-        configViewModelInput()
-        configViewModelOutput()
         configRoutingOutput()
-    }
-
-    func configViewModelInput() {
-
-    }
-
-    func configViewModelOutput() {
-        
     }
 
     func configRoutingOutput() {
@@ -57,6 +47,10 @@ class HomeViewController: ViewController {
         
         viewModel.routing.routeToWifiScanner.subscribe(onNext: { [weak self] _ in
             self?.coordinator?.routeToWifiScanner()
+        }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.routeToBluetoothScanner.subscribe(onNext: { [weak self] _ in
+            self?.coordinator?.routeToBluetoothScanner()
         }).disposed(by: self.disposeBag)
     }
     

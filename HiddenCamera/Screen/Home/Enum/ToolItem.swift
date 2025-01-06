@@ -36,7 +36,7 @@ enum ToolItem: CaseIterable {
     var name: String {
         switch self {
         case .bluetoothScanner:
-            "Bluetooth devices scanner"
+            "Bluetooth Locator"
         case .cameraDetector:
             "AI Camera Scanner"
         case .infraredCamera:

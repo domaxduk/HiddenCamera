@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import SwiftUI
 
-enum WifiScannerState {
+enum ScannerState {
     case ready
     case isScanning
     case done
@@ -32,18 +32,17 @@ struct WifiScannerViewModelRouting: RoutingOutput {
 
 final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiScannerViewModelOutput, WifiScannerViewModelRouting> {
     @AppStorage("safe") var safeID = [String]()
-    @Published var state: WifiScannerState = .ready
+    @Published var state: ScannerState = .ready
     @Published var percent: Double = 0
     @Published var seconds: Double = 0
-    @Published var devices = [Device]()
-    @Published var showingDevice: Device?
+    @Published var devices = [LANDevice]()
+    @Published var showingDevice: LANDevice?
     
     @Published var isLoading: Bool = false
     @Published var isShowingLocationDialog: Bool = false
     @Published var isShowingLocalNetworkDialog: Bool = false
 
     private var index: Int = 0
-    
     private var timer: Timer?
     
     override func config() {
@@ -79,11 +78,8 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
             
             return
         }
-        
-        isLoading = true
-        
+                
         // TODO: - Check Local network permission
-        
         startScan()
         startTimer()
     }
@@ -151,20 +147,20 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
         return text
     }
     
-    func suspiciousDevices() -> [Device] {
+    func suspiciousDevices() -> [LANDevice] {
         return devices.filter({ device in
             return !isSafe(device: device)
         })
     }
     
-    func isSafe(device: Device) -> Bool {
+    func isSafe(device: LANDevice) -> Bool {
         return safeID.contains(where: { $0 == device.ipAddress || $0 == device.hostname || $0 ==  device.deviceName() })
     }
 }
 
 // MARK: - LocalNetworkDetectorDelegate
 extension WifiScannerViewModel: LocalNetworkDetectorDelegate {
-    func localNetworkDetector(_ detector: LocalNetworkDetector, updateListDevice devices: [Device]) {
+    func localNetworkDetector(_ detector: LocalNetworkDetector, updateListDevice devices: [LANDevice]) {
         if state == .done {
             return
         }
@@ -176,10 +172,6 @@ extension WifiScannerViewModel: LocalNetworkDetectorDelegate {
             }
         }
     }
-}
-
-#Preview {
-    WifiScannerView(viewModel: WifiScannerViewModel())
 }
 
 extension Array: RawRepresentable where Element: Codable {

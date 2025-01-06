@@ -27,6 +27,4 @@ struct AppleDevice: Codable {
         let graphics_feature_set_class: String?
         let graphics_feature_set_fallbacks: String?
     }
-    
-    
 }

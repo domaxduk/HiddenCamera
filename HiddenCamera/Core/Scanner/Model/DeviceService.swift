@@ -26,3 +26,9 @@ class DeviceService {
         return domain + type + name
     }
 }
+
+enum ServiceType: String, CaseIterable {
+    case deviceInfo = "_device-info._tcp."
+    case airplay = "_airplay._tcp."
+    case rdlink = "_rdlink._tcp."
+}

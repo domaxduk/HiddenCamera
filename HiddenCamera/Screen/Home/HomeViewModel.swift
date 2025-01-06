@@ -21,6 +21,7 @@ struct HomeViewModelRouting: RoutingOutput {
     var routeToInfraredCamera = PublishSubject<()>()
     var routeToCameraDetector = PublishSubject<()>()
     var routeToWifiScanner = PublishSubject<()>()
+    var routeToBluetoothScanner = PublishSubject<()>()
 }
 
 final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput, HomeViewModelRouting> {
@@ -37,6 +38,8 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
                 self?.routeToCameraDetector()
             case .wifiScanner:
                 self?.routeToWifiScanner()
+            case .bluetoothScanner:
+                self?.routing.routeToBluetoothScanner.onNext(())
             default: break
             }
         }).disposed(by: self.disposeBag)

@@ -1,43 +1,31 @@
 //
-//  Device.swift
-//  DemoDetect
+//  LANDevice.swift
+//  HiddenCamera
 //
-//  Created by Duc apple  on 24/12/24.
+//  Created by Duc apple  on 6/1/25.
 //
 
-import Foundation
 import UIKit
 import SwiftUI
 import dnssd
 import Network
 
-private let deviceInfo = NSDictionary(contentsOf: Bundle.main.url(forResource: "macModels", withExtension: "plist")!)!
-
-
-
-func deviceDescriptionForModel(model: String) -> String? {
-    guard let info = deviceInfo[model] as? NSDictionary, let richDescription = info["Detail"] as? String else {
-        return nil
-    }
-    return richDescription
-}
-
-class RawDevice: NSObject, ObservableObject {
-    var ipAddress: String?
+class LANDevice: Device {
     
-    init(ipAddress: String?) {
-        self.ipAddress = ipAddress
-    }
-}
-
-class Device: RawDevice {
-    let id: String
-    
+    @Published var ipAddress: String?
     @Published var name: String?
     @Published var model: String?
     @Published var services: [DeviceService]
+    
+    override var keystore: [String] {
+        return [self.ipAddress, self.hostname, self.deviceName()].compactMap({ $0 })
+    }
+    
+    override func note() -> String {
+        return "IP Address: " + (self.ipAddress ?? "")
+    }
 
-    var imageName: String {
+    override var imageName: String {
         if let ipAddress, let number = ipAddress.components(separatedBy: ".").last, number == "1" {
             return "ic_device_router"
         }
@@ -53,33 +41,7 @@ class Device: RawDevice {
         return "ic_device_unknown"
     }
     
-    private func getImageName(from key: String) -> String? {
-        let compareText = key.lowercased()
-        
-        if compareText.contains("airpod") {
-            return "ic_device_airpod"
-        }
-        
-        if compareText.contains("tv") {
-            return "ic_device_tv"
-        }
-        
-        if compareText.contains("macbook") || compareText.contains("macmini") || compareText.contains("pc") {
-            return "ic_device_laptop"
-        }
-        
-        if compareText.contains("phone") || compareText.contains("redmi") {
-            return "ic_device_phone"
-        }
-        
-        return nil
-    }
-    
-    func updateDeviceName(name: String) {
-        self.name = name
-    }
-    
-    func deviceName() -> String? {
+    override func deviceName() -> String? {
         if let name {
             return name
         }
@@ -100,11 +62,11 @@ class Device: RawDevice {
     }
     
     init(ipAddress: String?, services: [DeviceService] = [], name: String?, model: String?) {
-        self.id = UUID().uuidString
+        self.ipAddress = ipAddress
         self.name = name
         self.services = services
         self.model = model
-        super.init(ipAddress: ipAddress)
+        super.init(id: UUID().uuidString)
         
         if let appleDevice = self.getAppleDevice(from: model)  {
             self.model = appleDevice.product_description
@@ -155,7 +117,7 @@ class Device: RawDevice {
     }
     
     private func getAppleDevice(from model: String?) -> AppleDevice? {
-        guard let data = try? Data(contentsOf: Bundle.main.url(forResource: "iphoneModels", withExtension: "json")!), 
+        guard let data = try? Data(contentsOf: Bundle.main.url(forResource: "iphoneModels", withExtension: "json")!),
                 let listDevice = try? JSONDecoder().decode([AppleDevice].self, from: data),
                 let model else {
             return nil
@@ -164,11 +126,6 @@ class Device: RawDevice {
         return listDevice.first(where: { $0.target?.lowercased() == model.lowercased() })
     }
     
-    var keystore: [String] {
-        return [self.ipAddress, self.hostname, self.deviceName()].compactMap({ $0 })
-    }
+    
 }
 
-#Preview {
-    WifiScannerView(viewModel: WifiScannerViewModel())
-}

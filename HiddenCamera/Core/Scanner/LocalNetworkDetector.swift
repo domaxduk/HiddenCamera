@@ -10,14 +10,14 @@ import SwiftUI
 import SwiftyPing
 
 protocol LocalNetworkDetectorDelegate: AnyObject {
-    func localNetworkDetector(_ detector: LocalNetworkDetector, updateListDevice devices: [Device])
+    func localNetworkDetector(_ detector: LocalNetworkDetector, updateListDevice devices: [LANDevice])
 }
 
 class LocalNetworkDetector: NSObject {
     static let shared = LocalNetworkDetector()
     weak var delegate: LocalNetworkDetectorDelegate?
     
-    private var devices: [Device] = []
+    private var devices: [LANDevice] = []
 
     private var services: [NetService] = []
     private var browsers: [NetServiceBrowser] = []
@@ -107,7 +107,7 @@ class LocalNetworkDetector: NSObject {
         }
     }
     
-    private func sorted(listDevice: [Device]) -> [Device] {
+    private func sorted(listDevice: [LANDevice]) -> [LANDevice] {
         return listDevice.sorted { first, second in
             let a = first.ipAddress
             let b = second.ipAddress
@@ -127,7 +127,7 @@ extension LocalNetworkDetector: PingDelegate {
         if let ipAddress = response.ipAddress, !devices.contains(where: { $0.ipAddress == ipAddress }) {
             if response.error == nil {
                 let name = NetworkUtils.getHostFromIPAddress(ipAddress: ipAddress)
-                let device = Device(ipAddress: ipAddress, name: name, model: nil)
+                let device = LANDevice(ipAddress: ipAddress, name: name, model: nil)
                 self.devices.append(device)
                 self.mergeDevice()
             }
@@ -249,7 +249,7 @@ extension LocalNetworkDetector: NetServiceDelegate {
                 device.ipAddress = ipAddress
             }
         } else {
-            let device = Device(ipAddress: ipAddress, name: nil, model: deviceModel)
+            let device = LANDevice(ipAddress: ipAddress, name: nil, model: deviceModel)
             device.addService(service: sender)
             devices.append(device)
         }
@@ -259,8 +259,8 @@ extension LocalNetworkDetector: NetServiceDelegate {
     
     private func mergeDevice() {
         self.deleteDuplicateDevice()
-        var listDevice = [String: Device]()
-        var listIPDevice = [String: Device]()
+        var listDevice = [String: LANDevice]()
+        var listIPDevice = [String: LANDevice]()
         
         for device in devices {
             if let key = device.hostname {
@@ -361,7 +361,7 @@ extension LocalNetworkDetector: NetServiceDelegate {
         }
     }
         
-    private func findExitstingDevice(ip: String?, service: NetService) -> Device? {
+    private func findExitstingDevice(ip: String?, service: NetService) -> LANDevice? {
         return devices.first(where: { device in
             if let ipAdress = device.ipAddress, let ip {
                 return ip == ipAdress
@@ -392,8 +392,4 @@ extension LocalNetworkDetector: NetServiceDelegate {
         
         return model.isEmpty ? nil : model
     }
-}
-
-#Preview {
-    WifiScannerView(viewModel: WifiScannerViewModel())
 }
