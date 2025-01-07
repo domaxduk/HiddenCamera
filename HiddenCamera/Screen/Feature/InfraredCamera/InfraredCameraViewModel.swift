@@ -1,78 +1,59 @@
 //
-//  CameraDetectorViewModel.swift
+//  InfraredCameraViewModel.swift
 //  HiddenCamera
 //
-//  Created by Duc apple  on 3/1/25.
+//  Created by Duc apple  on 27/12/24.
 //
 
 import UIKit
 import RxSwift
-import AVFoundation
 import SwiftUI
+import AVFoundation
 import SakuraExtension
 
-struct CameraDetectorViewModelInput: InputOutputViewModel {
+struct InfraredCameraViewModelInput: InputOutputViewModel {
     var back = PublishSubject<()>()
+    var toggleFlash = PublishSubject<()>()
     var didTapRecord = PublishSubject<()>()
     var didTapGallery = PublishSubject<()>()
 }
 
-struct CameraDetectorViewModelOutput: InputOutputViewModel {
-    
+struct InfraredCameraViewModelOutput: InputOutputViewModel {
+    var updatePreview = PublishSubject<UIImage?>()
 }
 
-struct CameraDetectorViewModelRouting: RoutingOutput {
+struct InfraredCameraViewModelRouting: RoutingOutput {
     var stop = PublishSubject<()>()
     var previewResult = PublishSubject<URL>()
     var gallery = PublishSubject<()>()
 }
 
-struct Model {
-    var time: CMTime
-    var ciImage: CIImage
-}
-
-final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput, CameraDetectorViewModelOutput, CameraDetectorViewModelRouting> {
-    @AppStorage("theFirstUseCameraDetector") var isTheFirst: Bool = true
+final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput, InfraredCameraViewModelOutput, InfraredCameraViewModelRouting> {
+    @AppStorage("theFirstUseInfraredCamera") var isTheFirst: Bool = true
     @Published var isRecording: Bool = false
+    @Published var filterColor: Color = .red
     @Published var seconds: Int = 0
     @Published var showIntro: Bool = true
     @Published var captureSession: AVCaptureSession
-    @Published var boxes = [BoundingBox]()
-    private let dataProcess = DataProcesser()
+    @Published var isTurnFlash: Bool = false
     
     private var writer: AssetWriter?
     private var timer: Timer?
     
-    private var isReady: Bool = false
-    private var detectObject: Model? {
-        didSet {
-            if let detectObject {
-                DispatchQueue.global(qos: .userInitiated).async {
-                    self.dataProcess.imageProcess(ciImage: detectObject.ciImage, time: detectObject.time)
-                }
-            }
-        }
-    }
-    
     private var cameraOutput: AVCaptureVideoDataOutput!
+    private var audioOutput: AVCaptureAudioDataOutput!
+    
     private var needToStart: Bool = false
     private var startRecordingTimeOnSampleBuffer: CMTime!
-    private var currentCIImage: CIImage?
+    let hasButtonNext: Bool
     
-    override init() {
-        self.isTheFirst = true
+    init(hasButtonNext: Bool) {
+        self.hasButtonNext = hasButtonNext
         self.captureSession = AVCaptureSession()
         super.init()
         configCaptureSession()
         initAssetWriter()
         print("screen size: \(UIScreen.main.bounds.size)")
-        configDataProcesser()
-    }
-    
-    private func configDataProcesser() {
-        self.dataProcess.loadModel()
-        self.dataProcess.delegate = self
     }
     
     override func configInput() {
@@ -81,13 +62,19 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
             self?.routing.stop.onNext(())
         }).disposed(by: self.disposeBag)
         
+        input.toggleFlash.subscribe(onNext: { [weak self] _ in
+            guard let self else { return }
+            self.isTurnFlash.toggle()
+            CameraManager.configFlash(isOn: isTurnFlash)
+        }).disposed(by: self.disposeBag)
+        
         input.didTapRecord.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
            
             DispatchQueue.main.async {
                 self.isTheFirst = false
                 self.isRecording.toggle()
-                self.cleanData()
+                self.invalidateTimer()
                 
                 if self.isRecording {
                     self.startRecord()
@@ -128,6 +115,14 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
             let queue = DispatchQueue(label: "cameraQueue")
             cameraOutput.setSampleBufferDelegate(self, queue: queue)
         }
+        
+        let audioOutput = AVCaptureAudioDataOutput()
+        let outputSampleBufferQueue = DispatchQueue(label: "outputAudioSampleBufferQueue")
+        audioOutput.setSampleBufferDelegate(self, queue: outputSampleBufferQueue)
+        if self.captureSession.canAddOutput(audioOutput) {
+            self.captureSession.addOutput(audioOutput)
+            self.audioOutput = audioOutput
+        }
     }
     
     func startCamera() {
@@ -147,13 +142,19 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     
     let context = CIContext()
     
+    private func invalidateTimer() {
+        timer?.invalidate()
+        seconds = 0
+    }
+    
     // MARK: - Record
     private func startRecord() {
         self.startTimer()
         self.needToStart = true
     }
     
-    private func stopRecord() {        
+    private func stopRecord() {
+        self.seconds = 0
         self.writer?.finishWriting(completion: { [weak self] error in
             guard let self else { return }
             if error == nil {
@@ -165,132 +166,67 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
             } else {
                 print("error: \(error!)")
             }
-            
-            self.cleanData()
         })
-    }
-    
-    private func cleanData() {
-        self.timer?.invalidate()
-        self.seconds = 0
-        self.boxes = []
     }
 }
 
 // MARK: - GET
-extension CameraDetectorViewModel {
+extension InfraredCameraViewModel {
     func durationDescription() -> String {
         let hour = seconds / 3600
         let minute = (seconds - hour * 3600) / 60
         let second = seconds - hour * 3600 - minute * 60
         return String(format: "%02d:%02d:%02d", hour, minute, second)
     }
+    
+    func uiFilterColor() -> UIColor {
+        switch self.filterColor {
+        case .red: return UIColor(red: 238, green: 64, blue: 76, alpha: 1)
+        case .blue: return .blue
+        case .green: return .green
+        case .yellow: return .yellow
+        default: return .clear
+        }
+    }
 }
 
 // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
-extension CameraDetectorViewModel: AVCaptureVideoDataOutputSampleBufferDelegate {
+extension InfraredCameraViewModel: AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         guard let videoPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
             return
         }
         
         let time = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-        
         var ciImage = CIImage(cvPixelBuffer: videoPixelBuffer).rotate(radians: -CGFloat.pi / 2)
         ciImage = ciImage.transformed(by: CGAffineTransform(translationX: -ciImage.extent.minX, y: -ciImage.extent.minY))
+
+        if filterColor != .clear {
+            if let newImage = ciImage.colorized(with: uiFilterColor()) {
+                ciImage = newImage
+            }
+        }
         
         if needToStart {
             self.startRecordingTimeOnSampleBuffer = time
             self.writer?.startWriting(atSourceTime: self.startRecordingTimeOnSampleBuffer ?? .zero)
+            self.needToStart = false
         }
         
-        if isRecording {
-            let screenSize = UIScreen.main.bounds.size
-            let currentSize = ciImage.image.size
-            let targetSize = screenSize.scale(currentSize.height / screenSize.height)
-            ciImage = ciImage.cropToCenter(size: targetSize)
-            ciImage = ciImage.transformed(by: CGAffineTransform(translationX: -ciImage.extent.minX, y: -ciImage.extent.minY))
-            self.currentCIImage = ciImage
-            
-            if isReady {
-                print("detect camera")
-                self.isReady = false
-                self.detectObject = Model(time: time, ciImage: ciImage)
-            } else {
-                print("append camera")
-                let result = drawOnCIImage(backgroundCIImage: ciImage, boxes: boxes)
+        let screenSize = UIScreen.main.bounds.size
+        let currentSize = ciImage.image.size
+        let targetSize = screenSize.scale(currentSize.height / screenSize.height)
+        let rect: CGRect = .init(x: 0, y: 0, width: targetSize.width, height: targetSize.height)
+        ciImage = ciImage.cropped(to: rect)
+        
+        let image = ciImage.image
                 
-                if let buffer = result?.buffer {
-                    self.writer?.append(pixelBuffer: buffer, withPresentationTime: time)
-                }
-            }
-            
-            if needToStart {
-                self.needToStart = false
-                self.isReady = true
-            } 
+        if isRecording {
+            self.writer?.append(pixelBuffer: ciImage.buffer ?? videoPixelBuffer, withPresentationTime: time)
         }
-    }
-}
-
-// MARK: - DataProcessDelegate
-extension CameraDetectorViewModel: DataProcessDelegate {
-    func dataProcess(_ object: DataProcesser, time: CMTime, ciImage: CIImage, boxes: [BoundingBox]) {
-        self.isReady = true
-        
+                
         DispatchQueue.main.async {
-            self.boxes = boxes
-            self.objectWillChange.send()
+            self.output.updatePreview.onNext(image)
         }
-    }
-    
-    func drawOnCIImage(backgroundCIImage: CIImage, boxes: [BoundingBox]) -> CIImage? {
-        // 1. Convert CIImage to CGImage
-        let context = CIContext(options: nil)
-        guard let cgImage = context.createCGImage(backgroundCIImage, from: backgroundCIImage.extent) else {
-            return nil
-        }
-        
-        // 2. Create a new drawing context with the correct scale factor
-        UIGraphicsBeginImageContextWithOptions(backgroundCIImage.extent.size, false, 1.0)
-        
-        // 3. Get the current CGContext
-        let drawingContext = UIGraphicsGetCurrentContext()
-        
-        // 4. Flip the context vertically to match UIImage's top-left origin system
-        drawingContext?.translateBy(x: 0, y: backgroundCIImage.extent.height)
-        drawingContext?.scaleBy(x: 1.0, y: -1.0)
-        
-        // 5. Draw the CGImage onto the context (this will respect the coordinate system)
-        drawingContext?.draw(cgImage, in: CGRect(origin: .zero, size: backgroundCIImage.extent.size))
-        
-        // 6. Adjust the positions of the bounding boxes and overlay image
-        let width = backgroundCIImage.extent.width
-        let height = backgroundCIImage.extent.height
-        
-        let overlayImage = UIImage(named: "ic_frame_camera")
-        
-        for box in boxes {
-            // Convert bounding box dimensions to pixels
-            let w = CGFloat(box.w) * width
-            let h = CGFloat(box.h) * height
-            let centerX = CGFloat(box.cx) * width - w / 2
-            let centerY = CGFloat(box.cy) * height - h / 2
-            
-            let flippedCenterY = backgroundCIImage.extent.height - centerY - h  // Correct for flipped Y
-            let rect = CGRect(origin: CGPoint(x: centerX, y: flippedCenterY), size: CGSize(width: w, height: h))
-            overlayImage?.draw(in: rect)
-        }
-        
-        // 7. Get the new image from the context
-        guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else {
-            UIGraphicsEndImageContext()
-            return nil
-        }
-        
-        // 8. End the context and return the new CIImage
-        UIGraphicsEndImageContext()
-        
-        return CIImage(image: newImage)
     }
 }

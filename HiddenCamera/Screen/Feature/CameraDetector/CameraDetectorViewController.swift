@@ -50,6 +50,15 @@ class CameraDetectorViewController: ViewController {
             }
         }).disposed(by: self.disposeBag)
         
+        viewModel.routing.nextTool.subscribe(onNext: { [weak self] _ in
+            guard let self else { return }
+            if viewModel.isRecording {
+                self.presentAlert(title: "Oops!", message: "You must stop this feature to next")
+            } else {
+                self.coordinator?.nextTool()
+            }
+        }).disposed(by: self.disposeBag)
+        
         viewModel.routing.previewResult.subscribe(onNext: { [weak self] url in
             self?.coordinator?.routeToResult(url: url)
         }).disposed(by: self.disposeBag)

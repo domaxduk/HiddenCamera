@@ -27,14 +27,18 @@ open class Coordinator: NSObject {
             return
         }
 
-        self.children.forEach { child in
-            child.stop()
-        }
+        stopAllChild()
 
         self.started = false
         self.parent?.childDidStop(self)
         self.parent?.removeChild(self)
         completion?()
+    }
+    
+    func stopAllChild() {
+        self.children.forEach { child in
+            child.stop()
+        }
     }
 
     open func handle(event: CoordinatorEvent) -> Bool {

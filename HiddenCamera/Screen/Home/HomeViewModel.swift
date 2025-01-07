@@ -11,6 +11,7 @@ import CoreLocation
 
 struct HomeViewModelInput: InputOutputViewModel {
     var didSelectTool = PublishSubject<ToolItem>()
+    var didTapQuickScan = PublishSubject<()>()
 }
 
 struct HomeViewModelOutput: InputOutputViewModel {
@@ -22,10 +23,13 @@ struct HomeViewModelRouting: RoutingOutput {
     var routeToCameraDetector = PublishSubject<()>()
     var routeToWifiScanner = PublishSubject<()>()
     var routeToBluetoothScanner = PublishSubject<()>()
+    var routeToMagnetic = PublishSubject<()>()
+    
+    var routeToScanOption = PublishSubject<ScanOptionItem>()
 }
 
 final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput, HomeViewModelRouting> {
-    @Published var currentTab: HomeTab = .tools
+    @Published var currentTab: HomeTab = .scan
     
     override func configInput() {
         super.configInput()
@@ -40,32 +44,30 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
                 self?.routeToWifiScanner()
             case .bluetoothScanner:
                 self?.routing.routeToBluetoothScanner.onNext(())
+            case .magnetic:
+                self?.routeToMetalDetector()
             default: break
             }
+        }).disposed(by: self.disposeBag)
+        
+        input.didTapQuickScan.subscribe(onNext: { [weak self] _ in 
+            self?.routing.routeToScanOption.onNext(.init())
         }).disposed(by: self.disposeBag)
     }
     
     private func routeToInfraredCamera() {
-        Permission.requestCamera { [weak self] granted in
-            DispatchQueue.main.async {
-                self?.routing.routeToInfraredCamera.onNext(())
-            }
-        }
+        self.routing.routeToInfraredCamera.onNext(())
     }
     
     private func routeToCameraDetector() {
-        Permission.requestCamera { [weak self] granted in
-            DispatchQueue.main.async {
-                self?.routing.routeToCameraDetector.onNext(())
-            }
-        }
+        self.routing.routeToCameraDetector.onNext(())
     }
     
     private func routeToWifiScanner() {
-        LocationManager.shared.statusObserver.take(1).subscribe(onNext: { [weak self] _ in
-            self?.routing.routeToWifiScanner.onNext(())
-        }).disposed(by: self.disposeBag)
-        
-        LocationManager.shared.requestPermission()
+        self.routing.routeToWifiScanner.onNext(())
+    }
+    
+    private func routeToMetalDetector() {
+        self.routing.routeToMagnetic.onNext(())
     }
 }

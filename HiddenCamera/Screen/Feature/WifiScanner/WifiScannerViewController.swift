@@ -1,19 +1,19 @@
 //
-//  BluetoothScannerViewController.swift
+//  WifiScannerViewController.swift
 //  HiddenCamera
 //
-//  Created by Duc apple  on 6/1/25.
+//  Created by Duc apple  on 3/1/25.
 //
 
 import UIKit
 import RxSwift
 import SwiftUI
 
-class BluetoothScannerViewController: ViewController {
-    var viewModel: BluetoothScannerViewModel
-    weak var coordinator: BluetoothScannerCoordinator?
+class WifiScannerViewController: ViewController {
+    var viewModel: WifiScannerViewModel
+    weak var coordinator: WifiScannerCoordinator?
 
-    init(viewModel: BluetoothScannerViewModel, coordinator: BluetoothScannerCoordinator) {
+    init(viewModel: WifiScannerViewModel, coordinator: WifiScannerCoordinator) {
         self.viewModel = viewModel
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
@@ -44,10 +44,18 @@ class BluetoothScannerViewController: ViewController {
             guard let self else { return }
             self.coordinator?.stop()
         }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.showErrorMessage.subscribe(onNext: { [weak self] message in
+            self?.presentAlert(title: "Oops!", message: message)
+        }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.nextTool.subscribe(onNext: { [weak self] _ in
+            self?.coordinator?.nextTool()
+        }).disposed(by: self.disposeBag)
     }
     
     private func configUI() {
-        let mainView = BluetoothScannerView(viewModel: viewModel)
+        let mainView = WifiScannerView(viewModel: viewModel)
         let hostingView = UIHostingController(rootView: mainView)
         hostingView.view.backgroundColor = .clear
         self.addChild(hostingView)

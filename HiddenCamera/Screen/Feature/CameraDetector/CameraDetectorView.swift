@@ -1,23 +1,31 @@
 //
-//  InfraredCameraView.swift
+//  CameraDetectorView.swift
 //  HiddenCamera
 //
-//  Created by Duc apple  on 27/12/24.
+//  Created by Duc apple  on 3/1/25.
 //
+
+import SwiftUI
 
 import SwiftUI
 import SakuraExtension
 import RxSwift
 import AVFoundation
 
-struct InfraredCameraView: View {
-    @ObservedObject var viewModel: InfraredCameraViewModel
+struct CameraDetectorView: View {
+    @ObservedObject var viewModel: CameraDetectorViewModel
     @State var isShowingNoteView: Bool = false
     
     var body: some View {
         ZStack {
-            Color.clear.ignoresSafeArea()
-
+            Color.black.ignoresSafeArea()
+            CameraSwiftUIView(captureSession: viewModel.captureSession)
+                .ignoresSafeArea()
+            
+            OverlayView(boxes: viewModel.boxes)
+                .ignoresSafeArea()
+                .opacity(viewModel.isRecording ? 1 : 0)
+            
             VStack {
                 navigationBar
                 content
@@ -94,7 +102,7 @@ struct InfraredCameraView: View {
                     Text("* Notice")
                         .font(Poppins.semibold.font(size: 16))
                     
-                    Text("Easily and quickly detect infrared cameras using your device's camera and the app's bright color filter feature.")
+                    Text("Use your phone's camera combined with AI technology to detect hidden cameras in your surroundings in real time.")
                         .font(Poppins.regular.font(size: 14))
                 }
                 .padding(16)
@@ -130,31 +138,37 @@ struct InfraredCameraView: View {
         }
     }
     
+    @ViewBuilder
     var bottomToolView: some View {
         HStack {
-            if !viewModel.isTheFirst {
-                FilterItemView(viewModel: viewModel, color: .red)
-                FilterItemView(viewModel: viewModel, color: .green)
-                FilterItemView(viewModel: viewModel, color: .blue)
-                FilterItemView(viewModel: viewModel, color: .yellow)
-            
-                
-                // Flash Button
-                if CameraManager.isFlashAvailable() {
-                    Circle().fill(.white.opacity(0.25))
-                        .overlay(
-                            Image("ic_flash")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 24)
-                        )
-                        .frame(height: 32)
-                        .onTapGesture {
-                            viewModel.input.toggleFlash.onNext(())
-                        }
-                        .padding(.leading, 20)
+            if !viewModel.boxes.isEmpty && viewModel.isRecording {
+                HStack {
+                    Spacer()
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .resizable()
+                        .foreColor(.white)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 16)
+                    
+                    Text("Detect suspicious devices!")
+                        .textColor(.white)
+                        .foreColor(.white)
+                        .font(Poppins.semibold.font(size: 16))
+                        .scaledToFit()
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
+                    Spacer()
                 }
-            } else {
+                .padding(8)
+                .frame(height: 48)
+                .background(
+                    Color(
+                        hue: !viewModel.isTheFirst ? 356 / 360 : 0,
+                        saturation: !viewModel.isTheFirst ? 0.73 : 0,
+                        brightness: !viewModel.isTheFirst ? 0.93 : 1)
+                )
+                .cornerRadius(24, corners: .allCorners)
+            } else if viewModel.isTheFirst {
                 Text("Tap this button to start feature")
                     .textColor(.app(.main))
                     .font(Poppins.semibold.font(size: 16))
@@ -162,17 +176,17 @@ struct InfraredCameraView: View {
                     .minimumScaleFactor(0.5)
                     .lineLimit(1)
                     .padding(.horizontal, 30)
+                    .padding(8)
+                    .frame(height: 48)
+                    .background(
+                        Color(
+                            hue: !viewModel.isTheFirst ? 356 / 360 : 0,
+                            saturation: !viewModel.isTheFirst ? 0.73 : 0,
+                            brightness: !viewModel.isTheFirst ? 0.93 : 1)
+                    )
+                    .cornerRadius(24, corners: .allCorners)
             }
         }
-        .padding(8)
-        .frame(height: 48)
-        .background(
-            Color(
-                hue: !viewModel.isTheFirst ? 1 : 0,
-                saturation: !viewModel.isTheFirst ? 1 : 0,
-                brightness: !viewModel.isTheFirst ? 0 : 1).opacity(!viewModel.isTheFirst ? 0.5 : 1)
-        )
-        .cornerRadius(24, corners: .allCorners)
     }
     
     var recordButton: some View {
@@ -203,15 +217,28 @@ struct InfraredCameraView: View {
                 .frame(width: 24)
                 .onTapGesture {
                     viewModel.input.back.onNext(())
-                }
+                }.padding(.leading, 20)
             
-            Text(ToolItem.infraredCamera.name)
+            Text(ToolItem.cameraDetector.name)
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
+                .scaledToFit()
+                .minimumScaleFactor(0.5)
+                .lineLimit(1)
             
             Spacer()
+            
+            if viewModel.hasButtonNext {
+                Button(action: {
+                    viewModel.input.didTapNext.onNext(())
+                }, label: {
+                    Text("Next")
+                        .textColor(.app(.main))
+                        .font(Poppins.semibold.font(size: 16))
+                        .padding(20)
+                })
+            }
         }
-        .padding(.horizontal, 20)
         .frame(height: AppConfig.navigationBarHeight)
         .padding(.bottom, 12)
         .background(
@@ -238,26 +265,35 @@ fileprivate struct CameraSwiftUIView: UIViewRepresentable {
     }
 }
 
-// MARK: - FilterItem
-fileprivate struct FilterItemView: View {
-    @ObservedObject var viewModel: InfraredCameraViewModel
+// MARK: - OverlayView
+fileprivate struct OverlayView: View {
+    var boxes: [BoundingBox]
     
-    var color: Color
     var body: some View {
-        Circle()
-            .stroke(color,lineWidth: 2.0)
-            .overlay(
-                Circle().fill(color)
-                    .padding(3)
+        GeometryReader { geometry in
+            ZStack {
+                ForEach(boxes.indices, id: \.self) { index in
+                    let box = boxes[index]
+                    let width = geometry.size.width
+                    let height = geometry.size.height
                     
-            )
-            .frame(height: 32)
-            .onTapGesture {
-                viewModel.filterColor = color
+                    let w = CGFloat(box.w) * width
+                    let h = CGFloat(box.h) * height
+                    
+                    let centerX = CGFloat(box.cx) * width
+                    let centerY = CGFloat(box.cy) * height
+                    
+                    Image("ic_frame_camera")
+                        .resizable()
+                        .frame(width: w, height: h)
+                        .position(x: centerX, y: centerY)
+                }
             }
+        }
+        .clipped()
     }
 }
 
 #Preview {
-    InfraredCameraView(viewModel: InfraredCameraViewModel())
+    CameraDetectorView(viewModel: CameraDetectorViewModel(hasButtonNext: true))
 }

@@ -52,6 +52,14 @@ class HomeViewController: ViewController {
         viewModel.routing.routeToBluetoothScanner.subscribe(onNext: { [weak self] _ in
             self?.coordinator?.routeToBluetoothScanner()
         }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.routeToMagnetic.subscribe(onNext: { [weak self] _ in
+            self?.coordinator?.routeToMagnetic()
+        }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.routeToScanOption.subscribe(onNext: { [weak self] item in
+            self?.coordinator?.startScanOption(item: item)
+        }).disposed(by: self.disposeBag)
     }
     
     // MARK: - ConfigUI

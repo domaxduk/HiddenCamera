@@ -76,23 +76,6 @@ class NetworkUtils {
                             }
                         }
                     }
-                    
-                    // For IPv6 (AF_INET6)
-                    if sa_type == UInt8(AF_INET6) {
-                        // Cast to sockaddr_in6 for IPv6
-                        let sockaddr_in6 = temp_addr?.pointee.ifa_addr?.withMemoryRebound(to: sockaddr_in6.self, capacity: 1) { $0 }
-                        if let sockaddr_in6 = sockaddr_in6 {
-                            var addr = [CChar](repeating: 0, count: Int(INET6_ADDRSTRLEN))
-                            if let ip = inet_ntop(AF_INET6, &sockaddr_in6.pointee.sin6_addr, &addr, socklen_t(INET6_ADDRSTRLEN)) {
-                                let ipString = String(cString: ip)
-                                if name == "en0" { // WiFi interface
-                                    wifiAddress = ipString
-                                } else if name == "pdp_ip0" { // Cellular interface
-                                    cellAddress = ipString
-                                }
-                            }
-                        }
-                    }
                 }
                 
                 temp_addr = temp_addr?.pointee.ifa_next

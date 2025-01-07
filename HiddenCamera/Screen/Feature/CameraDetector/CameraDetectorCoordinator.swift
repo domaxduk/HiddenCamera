@@ -9,11 +9,18 @@ import UIKit
 import RxSwift
 
 final class CameraDetectorCoordinator: NavigationBasedCoordinator {
+    
+    private let scanOption: ScanOptionItem?
     var previewResult: CameraResultCoordinator?
     var galleryCoodinator: CameraResultGalleryCoordinator?
     
+    init(scanOption: ScanOptionItem?, navigationController: UINavigationController) {
+        self.scanOption = scanOption
+        super.init(navigationController: navigationController)
+    }
+    
     lazy var controller: CameraDetectorViewController = {
-        let viewModel = CameraDetectorViewModel()
+        let viewModel = CameraDetectorViewModel(hasButtonNext: true)
         let controller = CameraDetectorViewController(viewModel: viewModel, coordinator: self)
         return controller
     }()
@@ -56,5 +63,9 @@ final class CameraDetectorCoordinator: NavigationBasedCoordinator {
         self.galleryCoodinator = CameraResultGalleryCoordinator(type: .aiDetector, navigationController: navigationController)
         self.galleryCoodinator?.start()
         self.addChild(self.galleryCoodinator!)
+    }
+    
+    func nextTool() {
+        self.send(event: RouteToNextTool())
     }
 }

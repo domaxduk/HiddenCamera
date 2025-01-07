@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         configAppCoordinator()
+        configNetworkManager()
         return true
     }
 
@@ -26,6 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.appCoordinator = AppCoordinator(window: self.window!)
         self.appCoordinator.start()
         UIView.appearance().isExclusiveTouch = true
+    }
+    
+    private func configNetworkManager() {
+        NetworkManager.shared.config()
     }
 }
 

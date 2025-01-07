@@ -19,6 +19,7 @@ struct WifiScannerViewModelInput: InputOutputViewModel {
     var didTapScan = PublishSubject<()>()
     var viewResult = PublishSubject<()>()
     var didTapBack = PublishSubject<()>()
+    var didTapNext = PublishSubject<()>()
 }
 
 struct WifiScannerViewModelOutput: InputOutputViewModel {
@@ -27,7 +28,9 @@ struct WifiScannerViewModelOutput: InputOutputViewModel {
 
 struct WifiScannerViewModelRouting: RoutingOutput {
     var routeToResult =  PublishSubject<[Device]>()
+    var showErrorMessage = PublishSubject<String>()
     var stop = PublishSubject<()>()
+    var nextTool = PublishSubject<()>()
 }
 
 final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiScannerViewModelOutput, WifiScannerViewModelRouting> {
@@ -41,13 +44,32 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
     @Published var isLoading: Bool = false
     @Published var isShowingLocationDialog: Bool = false
     @Published var isShowingLocalNetworkDialog: Bool = false
+    
+    @Published var networkName = NetworkUtils.getWifiName()
+    @Published var ip = NetworkUtils.currentIPAddress()
 
     private var index: Int = 0
     private var timer: Timer?
+    let hasButtonNext: Bool
+    
+    init(hasButtonNext: Bool) {
+        self.hasButtonNext = hasButtonNext
+        super.init()
+    }
     
     override func config() {
         super.config()
         configLocalNetworkDetector()
+        configNotificationCenter()
+    }
+    
+    private func configNotificationCenter() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateNetworkInfo), name: .didChangeNetworkStatus, object: nil)
+    }
+    
+    @objc private func updateNetworkInfo() {
+        self.networkName = NetworkUtils.getWifiName()
+        self.ip = NetworkUtils.currentIPAddress()
     }
     
     override func configInput() {
@@ -68,6 +90,11 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
             LocalNetworkDetector.shared.stopScan()
             self?.routing.stop.onNext(())
         }).disposed(by: self.disposeBag)
+        
+        input.didTapNext.subscribe(onNext: { [weak self] _ in
+            LocalNetworkDetector.shared.stopScan()
+            self?.routing.nextTool.onNext(())
+        }).disposed(by: self.disposeBag)
     }
     
     private func prepareToScan() {
@@ -78,8 +105,14 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
             
             return
         }
+        
+        if let path = NetworkManager.shared.path, !(path.status == .satisfied && !path.isExpensive) {
+            self.routing.showErrorMessage.onNext("Please connect to wifi")
+            return
+        }
                 
         // TODO: - Check Local network permission
+        resetData()
         startScan()
         startTimer()
     }
@@ -117,11 +150,8 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
              return
         }
         
-        withAnimation {
-            self.state = .isScanning
-            self.resetData()
-            LocalNetworkDetector.shared.start()
-        }
+        self.state = .isScanning
+        LocalNetworkDetector.shared.start()
     }
     
     private func configLocalNetworkDetector() {

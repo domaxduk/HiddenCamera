@@ -22,7 +22,7 @@ class LANDevice: Device {
     }
     
     override func note() -> String {
-        return "IP Address: " + (self.ipAddress ?? "")
+        return "IP: " + (self.ipAddress ?? "")
     }
 
     override var imageName: String {

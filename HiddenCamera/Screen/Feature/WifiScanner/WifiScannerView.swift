@@ -51,14 +51,25 @@ struct WifiScannerView: View {
                 .onTapGesture {
                     viewModel.input.didTapBack.onNext(())
                 }
+                .padding(.leading, 20)
             
             Text(ToolItem.wifiScanner.name)
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
             
             Spacer()
+            
+            if viewModel.hasButtonNext {
+                Button(action: {
+                    viewModel.input.didTapNext.onNext(())
+                }, label: {
+                    Text("Next")
+                        .textColor(.app(.main))
+                        .font(Poppins.semibold.font(size: 16))
+                        .padding(20)
+                })
+            }
         }
-        .padding(.horizontal, 20)
         .frame(height: AppConfig.navigationBarHeight)
         .frame(height: 56)
     }
@@ -128,30 +139,33 @@ struct WifiScannerView: View {
                 .padding(.top, UIScreen.main.bounds.height / 15)
                 
                 HStack(spacing: 12) {
-                    ZStack {
-                        Color.clearInteractive
-                        
-                        Text("Scan again")
-                            .font(Poppins.semibold.font(size: 14))
-                            .textColor(.app(.main))
-                        
-                        RoundedRectangle(cornerRadius: 28)
-                            .stroke(Color.app(.main), lineWidth: 1.0)
-                    }.onTapGesture {
+                    Button(action: {
                         viewModel.input.didTapScan.onNext(())
-                    }
+                    }, label: {
+                        ZStack {
+                            Color.clearInteractive
+                            
+                            Text("Scan again")
+                                .font(Poppins.semibold.font(size: 14))
+                                .textColor(.app(.main))
+                            
+                            RoundedRectangle(cornerRadius: 28)
+                                .stroke(Color.app(.main), lineWidth: 1.0)
+                        }
+                    })
                     
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 28)
-                            .fill(Color.app(.main))
-                        
-                        Text("View Result")
-                            .font(Poppins.semibold.font(size: 14))
-                            .textColor(.white)
-                    }
-                    .onTapGesture {
+                    Button(action: {
                         viewModel.input.viewResult.onNext(())
-                    }
+                    }, label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 28)
+                                .fill(Color.app(.main))
+                            
+                            Text("View Result")
+                                .font(Poppins.semibold.font(size: 14))
+                                .textColor(.white)
+                        }
+                    })
                 }
                 .frame(height: 56)
                 .padding(.top, 40)
@@ -164,7 +178,7 @@ struct WifiScannerView: View {
             }
             
             if viewModel.state != .done {
-                Text("Network name : \(NetworkUtils.getWifiName() ?? "No name")")
+                Text("Network name : \(viewModel.networkName ?? "Unknow")")
                     .font(Poppins.regular.font(size: 14))
                     .textColor(.app(.light09))
                 
@@ -173,7 +187,7 @@ struct WifiScannerView: View {
                         .font(Poppins.regular.font(size: 14))
                         .textColor(.app(.light09))
                     
-                    Text(NetworkUtils.currentIPAddress())
+                    Text(viewModel.ip)
                         .font(Poppins.semibold.font(size: 14))
                         .textColor(.app(.light09))
                 }
@@ -213,7 +227,7 @@ struct WifiScannerView: View {
                         
                         Text(" Notice:")
                             .font(Poppins.semibold.font(size: 14))
-                            .textColor(.app(.light11))
+                            .textColor(.black)
                     }
                     
                     Text("Allow the app to access your local network to detect any suspicious hidden devices, such as hidden cameras or other spy devices connected to the same network.")
@@ -297,5 +311,5 @@ fileprivate struct LocalDeviceItemView: View {
 }
 
 #Preview {
-    WifiScannerView(viewModel: WifiScannerViewModel())
+    WifiScannerView(viewModel: WifiScannerViewModel(hasButtonNext: true))
 }

@@ -11,9 +11,15 @@ import RxSwift
 final class InfraredCameraCoordinator: NavigationBasedCoordinator {
     var previewResult: CameraResultCoordinator?
     var galleryCoodinator: CameraResultGalleryCoordinator?
+    private let scanOption: ScanOptionItem?
+    
+    init(scanOption: ScanOptionItem?, navigationController: UINavigationController) {
+        self.scanOption = scanOption
+        super.init(navigationController: navigationController)
+    }
 
     lazy var controller: InfraredCameraViewController = {
-        let viewModel = InfraredCameraViewModel()
+        let viewModel = InfraredCameraViewModel(hasButtonNext: self.scanOption != nil)
         let controller = InfraredCameraViewController(viewModel: viewModel, coordinator: self)
         return controller
     }()
@@ -56,5 +62,9 @@ final class InfraredCameraCoordinator: NavigationBasedCoordinator {
         self.galleryCoodinator = CameraResultGalleryCoordinator(type: .infrared, navigationController: navigationController)
         self.galleryCoodinator?.start()
         self.addChild(self.galleryCoodinator!)
+    }
+    
+    func nextTool() {
+        self.send(event: RouteToNextTool())
     }
 }

@@ -15,6 +15,7 @@ enum PermissionDialogType {
     case location
     case localNetwork
     case camera
+    case bluetooth
     
     var image: String {
         switch self {
@@ -24,6 +25,8 @@ enum PermissionDialogType {
             "ic_permission_localnetwork"
         case .camera:
             "ic_permission_camera"
+        case .bluetooth:
+            "ic_tool_bluetooth"
         }
     }
     
@@ -35,6 +38,8 @@ enum PermissionDialogType {
             "Local Network Access Needed"
         case .camera:
             "Camera Access Needed"
+        case .bluetooth:
+            "Bluetooth Access Needed"
         }
     }
     
@@ -46,6 +51,8 @@ enum PermissionDialogType {
             "Oh! It looks like you have denied access to your local network. Please enable this permission in your settings to use this feature!"
         case .camera:
             "Oh! It looks like you have denied camera access. Please enable this permission in your settings to use this feature!"
+        case .bluetooth:
+            "Oh! It looks like you have denied bluetooth access. Please enable this permission in your settings to use this feature!"
         }
     }
 }

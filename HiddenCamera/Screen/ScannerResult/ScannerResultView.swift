@@ -40,6 +40,7 @@ struct ScannerResultView: View {
     
     var emptyView: some View {
         VStack {
+            Spacer()
             Image("ic_listdevice_empty")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -49,6 +50,7 @@ struct ScannerResultView: View {
                 .font(Poppins.regular.font(size: 14))
                 .textColor(.app(.light09))
                 .padding(.top, 8)
+            Spacer()
         }
     }
     
@@ -83,11 +85,14 @@ struct ScannerResultView: View {
                     emptyView
                 } else {
                     ScrollView(.vertical) {
-                        VStack(spacing: 16) {
+                        LazyVGrid(columns: [.init()], spacing: 16.0, content: {
                             ForEach(devices, id: \.id) { device in
                                 DeviceItemView(viewModel: viewModel, device: device)
                             }
-                        }.padding(.bottom, 100)
+                            
+                            Spacer()
+                        })
+                        .padding(.bottom, 100)
                     }
                     .padding(.top, 20)
                     .ignoresSafeArea()
@@ -273,6 +278,7 @@ fileprivate struct FindView: View {
                         .frame(width: 24)
                         .onTapGesture {
                             presentationMode.wrappedValue.dismiss()
+                            viewModel.selectedDevice = nil
                         }
                     
                     Text(device.deviceName() ?? "Unknown")
@@ -353,6 +359,7 @@ fileprivate struct FindView: View {
                     )
                     .onTapGesture {
                         presentationMode.wrappedValue.dismiss()
+                        viewModel.selectedDevice = nil
                     }
                     .padding(.horizontal, 56)
                     .padding(.bottom, 100)
@@ -361,9 +368,6 @@ fileprivate struct FindView: View {
         }
         .navigationBarTitle("")
         .navigationBarHidden(true)
-        .onAppear(perform: {
-            viewModel.selectedDevice = nil
-        })
     }
     
     var deviceView: some View {
@@ -519,9 +523,10 @@ struct WebView: UIViewRepresentable {
     }
 }
 
-// MARK: - LocalDeviceItemView
+// MARK: - DeviceItemView
 fileprivate struct DeviceItemView: View {
     @ObservedObject var viewModel: ScannerResultViewModel
+    @State var didAppear: Bool = false
     var device: Device
         
     var body: some View {
@@ -544,6 +549,8 @@ fileprivate struct DeviceItemView: View {
                 Text(device.note())
                     .font(Poppins.regular.font(size: 12))
                     .textColor(.app(.light11))
+                    .scaledToFit()
+                    .minimumScaleFactor(0.5)
                     .lineLimit(1)
                     .frame(height: 18)
             }

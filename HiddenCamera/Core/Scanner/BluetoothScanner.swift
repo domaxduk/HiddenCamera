@@ -21,43 +21,32 @@ fileprivate struct Const {
 class BluetoothScanner: NSObject, ObservableObject {
     static var shared = BluetoothScanner()
     private var manager: CBCentralManager?
-    private var currentState: CBManagerState = .unknown
+    
     
     private var devices = [BluetoothDevice]()
     
     weak var delegate: BluetoothScannerDelegate?
     private var isScanning: Bool = false
-        
+    
+    var authorization: CBManagerAuthorization {
+        return CBManager.authorization
+    }
+    
+    var currentState: CBManagerState = .unknown
+
+    
+    private override init() {
+        super.init()
+        self.manager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: false])
+    }
+
     // MARK: - Action
-    private func configManager() {
-        manager = CBCentralManager(delegate: self, queue: nil,
-                                   options: options())
-    }
-    
-    private func options() -> [String : Any] {
-        var options = [String:Any]()
-        
-        let deviceInfoServiceUUID = ["1801", "180A", "1810", "1820", "180F", "180D"].map({ CBUUID(string: $0) })
-
-        options[CBCentralManagerOptionShowPowerAlertKey] = false
-        options[CBCentralManagerScanOptionAllowDuplicatesKey] = true
-        options[CBCentralManagerScanOptionSolicitedServiceUUIDsKey] = deviceInfoServiceUUID
-
-        if #available(iOS 16.0, *) {
-            options[CBCentralManagerOptionDeviceAccessForMedia] = true
-        }
-        
-        return options
-    }
-    
     func startScanning() {
-        if manager == nil {
-            configManager()
+        if let manager, manager.isScanning {
+            return
         }
         
-        stopScanning()
         isScanning = true
-        
         if self.currentState == .poweredOn  {
             manager?.scanForPeripherals(withServices: nil,
                                         options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
@@ -65,27 +54,51 @@ class BluetoothScanner: NSObject, ObservableObject {
     }
     
     func stopScanning() {
-        manager?.stopScan()
-        self.devices.removeAll()
-        self.isScanning = false
+        if let manager, manager.isScanning {
+            manager.stopScan()
+            devices.removeAll()
+            isScanning = false
+        }
     }
 }
 
 // MARK: - Handle bluetooth updates
 extension BluetoothScanner: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        let previousState = self.currentState
-        self.currentState = central.state
-        
-        if previousState == .unknown && self.isScanning {
-            self.startScanning()
+        switch central.state {
+        case .unknown:
+            print("Bluetooth is unknown.")
+        case .resetting:
+            print("Bluetooth is resetting.")
+        case .unsupported:
+            print("Bluetooth is unsupported.")
+        case .unauthorized:
+            print("Bluetooth is unauthorized.")
+        case .poweredOff:
+            print("Bluetooth is poweredOff.")
+        case .poweredOn:
+            if self.isScanning {
+                self.startScanning()
+            }
+            
+            print("Bluetooth is poweredOn.")
+        @unknown default:
+            break
         }
         
+        self.currentState = central.state
         self.delegate?.bluetoothScanner?(self, didUpdateState: central.state)
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        if let device = devices.first(where: { $0.id == peripheral.identifier.uuidString }) {
+        if let index = devices.firstIndex(where: { $0.id == peripheral.identifier.uuidString }) {
+            let device = devices[index]
+            
+            if peripheral.name != nil && device.deviceName() == nil {
+                devices.remove(at: index)
+                devices.insert(device, at: 0)
+            }
+            
             device.peripheral = peripheral
             device.rssi = RSSI
         } else {
@@ -100,25 +113,6 @@ extension BluetoothScanner: CBCentralManagerDelegate {
             if let deviceName = advertisementData[CBAdvertisementDataLocalNameKey] as? String {
                 print("Tên thiết bị: \(deviceName)")
             }
-            
-           
-        }
-        
-//        print("ADRESSSSSsss")
-//        for data in advertisementData {
-//            print("\(data.key) \(data.value)")
-//        }
-        var tooltip = ""
-        if let mfgData = advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data {
-            tooltip += "Mfg Data:\t\t0x\(mfgData.base64EncodedString())\n"
-                    if mfgData[0] == 0xd9 && mfgData[1] == 0x01 {
-                        let uidData = mfgData[6..<14]
-                        tooltip += "UID:\t\t\t\(uidData.base64EncodedString())\n"
-                    }
-                }
-        
-        if !tooltip.isEmpty {
-            print(tooltip)
         }
         
         self.delegate?.bluetoothScanner(self, updateListDevice: devices)

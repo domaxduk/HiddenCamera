@@ -23,6 +23,10 @@ struct BluetoothScannerView: View {
                 navigationBar
                 content
             }
+            
+            if viewModel.isShowingBluetoothDialog {
+                PermissionDialogView(type: .bluetooth, isShowing: $viewModel.isShowingBluetoothDialog)
+            }
         }
     }
     
@@ -35,14 +39,25 @@ struct BluetoothScannerView: View {
                 .onTapGesture {
                     viewModel.input.didTapBack.onNext(())
                 }
+                .padding(.leading, 20)
             
             Text(ToolItem.bluetoothScanner.name)
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
             
             Spacer()
+            
+            if viewModel.scanOption != nil && viewModel.state != .isScanning {
+                Button(action: {
+                    viewModel.input.didTapNext.onNext(())
+                }, label: {
+                    Text("Next")
+                        .textColor(.app(.main))
+                        .font(Poppins.semibold.font(size: 16))
+                        .padding(20)
+                })
+            }
         }
-        .padding(.horizontal, 20)
         .frame(height: AppConfig.navigationBarHeight)
         .frame(height: 56)
     }
@@ -253,7 +268,7 @@ fileprivate struct LocalDeviceItemView: View {
                     .font(Poppins.semibold.font(size: 14))
                     .frame(height: 20)
                 
-                Text("gi do")
+                Text(device.note())
                     .font(Poppins.regular.font(size: 12))
                     .textColor(.app(.light11))
                     .lineLimit(1)
@@ -274,5 +289,5 @@ fileprivate struct LocalDeviceItemView: View {
 }
 
 #Preview {
-    BluetoothScannerView(viewModel: BluetoothScannerViewModel())
+    BluetoothScannerView(viewModel: BluetoothScannerViewModel(scanOption: .init()))
 }

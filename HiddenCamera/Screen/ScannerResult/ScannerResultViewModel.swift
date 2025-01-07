@@ -39,7 +39,6 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
         self.devices = devices
         super.init()
         
-        
         configDiscovery()
         changeTabIfNeed()
     }
@@ -72,7 +71,8 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
         }).disposed(by: self.disposeBag)
         
         input.didTapBack.subscribe(onNext: { [weak self] _ in
-            self?.routing.stop.onNext(())
+            guard let self else { return }
+            self.routing.stop.onNext(())
         }).disposed(by: self.disposeBag)
     }
     

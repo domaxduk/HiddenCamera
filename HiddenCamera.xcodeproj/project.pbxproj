@@ -38,6 +38,22 @@
 		852E292F2D27E90600293218 /* LocalNetworkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29232D27E90600293218 /* LocalNetworkDetector.swift */; };
 		852E29302D27E90600293218 /* NetworkUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29242D27E90600293218 /* NetworkUtils.swift */; };
 		852E29332D27E94000293218 /* SwiftyPing in Frameworks */ = {isa = PBXBuildFile; productRef = 852E29322D27E94000293218 /* SwiftyPing */; };
+		853D48172D2CD32500644A55 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D48162D2CD32500644A55 /* NetworkManager.swift */; };
+		853D481D2D2CD7A100644A55 /* MagnetometerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 853D481C2D2CD7A100644A55 /* MagnetometerViewController.xib */; };
+		853D481E2D2CD7A100644A55 /* MagnetometerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D48192D2CD7A100644A55 /* MagnetometerCoordinator.swift */; };
+		853D481F2D2CD7A100644A55 /* MagnetometerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D481A2D2CD7A100644A55 /* MagnetometerViewController.swift */; };
+		853D48202D2CD7A100644A55 /* MagnetometerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D481B2D2CD7A100644A55 /* MagnetometerViewModel.swift */; };
+		853D48222D2CD7BD00644A55 /* MagnetometerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D48212D2CD7BD00644A55 /* MagnetometerView.swift */; };
+		853D48282D2CF31500644A55 /* Magnetometer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D48272D2CF31500644A55 /* Magnetometer.swift */; };
+		853D482D2D2CF3C000644A55 /* ComplexModule in Frameworks */ = {isa = PBXBuildFile; productRef = 853D482C2D2CF3C000644A55 /* ComplexModule */; };
+		853D482F2D2CF3C000644A55 /* Numerics in Frameworks */ = {isa = PBXBuildFile; productRef = 853D482E2D2CF3C000644A55 /* Numerics */; };
+		853D48312D2CF3C000644A55 /* RealModule in Frameworks */ = {isa = PBXBuildFile; productRef = 853D48302D2CF3C000644A55 /* RealModule */; };
+		853D48362D2D2A1300644A55 /* ScanOptionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D48352D2D2A1300644A55 /* ScanOptionItem.swift */; };
+		853D483D2D2D333E00644A55 /* HistoryDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 853D483C2D2D333E00644A55 /* HistoryDetailViewController.xib */; };
+		853D483E2D2D333E00644A55 /* HistoryDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D48392D2D333E00644A55 /* HistoryDetailCoordinator.swift */; };
+		853D483F2D2D333E00644A55 /* HistoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D483A2D2D333E00644A55 /* HistoryDetailViewController.swift */; };
+		853D48402D2D333E00644A55 /* HistoryDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D483B2D2D333E00644A55 /* HistoryDetailViewModel.swift */; };
+		853D48422D2D337600644A55 /* HistoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D48412D2D337600644A55 /* HistoryDetailView.swift */; };
 		85699C412D26474F0000E5A6 /* AssetWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C402D26474F0000E5A6 /* AssetWriter.swift */; };
 		85699C472D2649600000E5A6 /* CameraResultCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C432D2649600000E5A6 /* CameraResultCoordinator.swift */; };
 		85699C482D2649600000E5A6 /* CameraResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C442D2649600000E5A6 /* CameraResultViewController.swift */; };
@@ -136,6 +152,19 @@
 		852E29232D27E90600293218 /* LocalNetworkDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNetworkDetector.swift; sourceTree = "<group>"; };
 		852E29242D27E90600293218 /* NetworkUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkUtils.swift; sourceTree = "<group>"; };
 		852E29342D27EAC700293218 /* HiddenCamera.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HiddenCamera.entitlements; sourceTree = "<group>"; };
+		853D48162D2CD32500644A55 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		853D48192D2CD7A100644A55 /* MagnetometerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagnetometerCoordinator.swift; sourceTree = "<group>"; };
+		853D481A2D2CD7A100644A55 /* MagnetometerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagnetometerViewController.swift; sourceTree = "<group>"; };
+		853D481B2D2CD7A100644A55 /* MagnetometerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagnetometerViewModel.swift; sourceTree = "<group>"; };
+		853D481C2D2CD7A100644A55 /* MagnetometerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MagnetometerViewController.xib; sourceTree = "<group>"; };
+		853D48212D2CD7BD00644A55 /* MagnetometerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagnetometerView.swift; sourceTree = "<group>"; };
+		853D48272D2CF31500644A55 /* Magnetometer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Magnetometer.swift; sourceTree = "<group>"; };
+		853D48352D2D2A1300644A55 /* ScanOptionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanOptionItem.swift; sourceTree = "<group>"; };
+		853D48392D2D333E00644A55 /* HistoryDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailCoordinator.swift; sourceTree = "<group>"; };
+		853D483A2D2D333E00644A55 /* HistoryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailViewController.swift; sourceTree = "<group>"; };
+		853D483B2D2D333E00644A55 /* HistoryDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailViewModel.swift; sourceTree = "<group>"; };
+		853D483C2D2D333E00644A55 /* HistoryDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HistoryDetailViewController.xib; sourceTree = "<group>"; };
+		853D48412D2D337600644A55 /* HistoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailView.swift; sourceTree = "<group>"; };
 		85699C402D26474F0000E5A6 /* AssetWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetWriter.swift; sourceTree = "<group>"; };
 		85699C432D2649600000E5A6 /* CameraResultCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultCoordinator.swift; sourceTree = "<group>"; };
 		85699C442D2649600000E5A6 /* CameraResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultViewController.swift; sourceTree = "<group>"; };
@@ -210,8 +239,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				853D482D2D2CF3C000644A55 /* ComplexModule in Frameworks */,
 				85DA725D2D1E99F4008F5589 /* SakuraExtension in Frameworks */,
+				853D48312D2CF3C000644A55 /* RealModule in Frameworks */,
 				BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */,
+				853D482F2D2CF3C000644A55 /* Numerics in Frameworks */,
 				852E29332D27E94000293218 /* SwiftyPing in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,8 +339,61 @@
 				852E29232D27E90600293218 /* LocalNetworkDetector.swift */,
 				85E3C6002D2BB27100BBAFBE /* BluetoothScanner.swift */,
 				852E29242D27E90600293218 /* NetworkUtils.swift */,
+				853D48162D2CD32500644A55 /* NetworkManager.swift */,
 			);
 			path = Scanner;
+			sourceTree = "<group>";
+		};
+		853D48182D2CD79600644A55 /* Magnetometer */ = {
+			isa = PBXGroup;
+			children = (
+				853D48192D2CD7A100644A55 /* MagnetometerCoordinator.swift */,
+				853D481A2D2CD7A100644A55 /* MagnetometerViewController.swift */,
+				853D481B2D2CD7A100644A55 /* MagnetometerViewModel.swift */,
+				853D481C2D2CD7A100644A55 /* MagnetometerViewController.xib */,
+				853D48212D2CD7BD00644A55 /* MagnetometerView.swift */,
+			);
+			path = Magnetometer;
+			sourceTree = "<group>";
+		};
+		853D48262D2CF2DF00644A55 /* Magnetometer */ = {
+			isa = PBXGroup;
+			children = (
+				853D48272D2CF31500644A55 /* Magnetometer.swift */,
+			);
+			path = Magnetometer;
+			sourceTree = "<group>";
+		};
+		853D48342D2D2A0A00644A55 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				853D48352D2D2A1300644A55 /* ScanOptionItem.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		853D48372D2D320100644A55 /* Feature */ = {
+			isa = PBXGroup;
+			children = (
+				853D48182D2CD79600644A55 /* Magnetometer */,
+				85DA72812D1EA935008F5589 /* InfraredCamera */,
+				852E28E32D2794C800293218 /* CameraDetector */,
+				85E3C5F42D2B9B4500BBAFBE /* BluetoothScanner */,
+				852E29072D27E4D300293218 /* WifiScanner */,
+			);
+			path = Feature;
+			sourceTree = "<group>";
+		};
+		853D48382D2D333200644A55 /* HistoryDetail */ = {
+			isa = PBXGroup;
+			children = (
+				853D48392D2D333E00644A55 /* HistoryDetailCoordinator.swift */,
+				853D483A2D2D333E00644A55 /* HistoryDetailViewController.swift */,
+				853D483B2D2D333E00644A55 /* HistoryDetailViewModel.swift */,
+				853D483C2D2D333E00644A55 /* HistoryDetailViewController.xib */,
+				853D48412D2D337600644A55 /* HistoryDetailView.swift */,
+			);
+			path = HistoryDetail;
 			sourceTree = "<group>";
 		};
 		85699C422D26492D0000E5A6 /* PreviewCameraResult */ = {
@@ -403,14 +488,12 @@
 		85DA723D2D1E9302008F5589 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
-				852E29072D27E4D300293218 /* WifiScanner */,
-				85E3C5F42D2B9B4500BBAFBE /* BluetoothScanner */,
-				85E3C5F12D2B8E7100BBAFBE /* Dialog */,
+				853D48382D2D333200644A55 /* HistoryDetail */,
+				853D48372D2D320100644A55 /* Feature */,
 				24EC7E172D2A383900875752 /* ScannerResult */,
-				852E28E32D2794C800293218 /* CameraDetector */,
+				85E3C5F12D2B8E7100BBAFBE /* Dialog */,
 				85699C592D26942E0000E5A6 /* CameraResultGallery */,
 				85699C422D26492D0000E5A6 /* PreviewCameraResult */,
-				85DA72812D1EA935008F5589 /* InfraredCamera */,
 				85DA723F2D1E9335008F5589 /* Splash */,
 				85DA72402D1E933A008F5589 /* Intro */,
 				85DA723E2D1E932E008F5589 /* Home */,
@@ -490,6 +573,8 @@
 		85DA72652D1EA427008F5589 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				853D48342D2D2A0A00644A55 /* Model */,
+				853D48262D2CF2DF00644A55 /* Magnetometer */,
 				85E3C5EE2D2B883000BBAFBE /* Location */,
 				852E29252D27E90600293218 /* Scanner */,
 				85699C522D2690BB0000E5A6 /* Realm */,
@@ -608,6 +693,9 @@
 			packageProductDependencies = (
 				85DA725C2D1E99F4008F5589 /* SakuraExtension */,
 				852E29322D27E94000293218 /* SwiftyPing */,
+				853D482C2D2CF3C000644A55 /* ComplexModule */,
+				853D482E2D2CF3C000644A55 /* Numerics */,
+				853D48302D2CF3C000644A55 /* RealModule */,
 			);
 			productName = HiddenCamera;
 			productReference = 85DA72262D1E919B008F5589 /* HiddenCamera.app */;
@@ -640,6 +728,7 @@
 			packageReferences = (
 				85DA725B2D1E99F4008F5589 /* XCRemoteSwiftPackageReference "SakuraExtension" */,
 				852E29312D27E94000293218 /* XCRemoteSwiftPackageReference "SwiftyPing" */,
+				853D482B2D2CF3C000644A55 /* XCRemoteSwiftPackageReference "swift-numerics" */,
 			);
 			productRefGroup = 85DA72272D1E919B008F5589 /* Products */;
 			projectDirPath = "";
@@ -658,6 +747,7 @@
 				85DA72522D1E9392008F5589 /* Poppins-BoldItalic.ttf in Resources */,
 				85EC31AE2D27F777009F874A /* blueCircle.json in Resources */,
 				85DA72332D1E919D008F5589 /* Assets.xcassets in Resources */,
+				853D481D2D2CD7A100644A55 /* MagnetometerViewController.xib in Resources */,
 				852E28EB2D2794DA00293218 /* CameraDetectorViewController.xib in Resources */,
 				85DA724F2D1E9392008F5589 /* Poppins-Bold.ttf in Resources */,
 				85DA72512D1E9392008F5589 /* Poppins-Italic.ttf in Resources */,
@@ -666,6 +756,7 @@
 				852E290F2D27E4EC00293218 /* WifiScannerViewController.xib in Resources */,
 				852E29292D27E90600293218 /* macVendors.plist in Resources */,
 				85DA724D2D1E9392008F5589 /* Poppins-SemiBold.ttf in Resources */,
+				853D483D2D2D333E00644A55 /* HistoryDetailViewController.xib in Resources */,
 				85DA72362D1E919D008F5589 /* Base in Resources */,
 				852E29272D27E90600293218 /* iphoneModels.json in Resources */,
 				85DA727C2D1EA53B008F5589 /* HomeViewController.xib in Resources */,
@@ -747,6 +838,9 @@
 				85DA728C2D1EAA1C008F5589 /* InfraredCameraView.swift in Sources */,
 				85DA72892D1EA93C008F5589 /* InfraredCameraViewModel.swift in Sources */,
 				85699C562D2691C20000E5A6 /* RlmCameraResult.swift in Sources */,
+				853D481E2D2CD7A100644A55 /* MagnetometerCoordinator.swift in Sources */,
+				853D481F2D2CD7A100644A55 /* MagnetometerViewController.swift in Sources */,
+				853D48202D2CD7A100644A55 /* MagnetometerViewModel.swift in Sources */,
 				85E3C5F02D2B883900BBAFBE /* LocationManager.swift in Sources */,
 				852E292C2D27E90600293218 /* DeviceService.swift in Sources */,
 				85699C4C2D264A130000E5A6 /* CameraResultView.swift in Sources */,
@@ -758,11 +852,15 @@
 				85DA72792D1EA53B008F5589 /* HomeCoordinator.swift in Sources */,
 				85699C472D2649600000E5A6 /* CameraResultCoordinator.swift in Sources */,
 				85699C482D2649600000E5A6 /* CameraResultViewController.swift in Sources */,
+				853D483E2D2D333E00644A55 /* HistoryDetailCoordinator.swift in Sources */,
+				853D483F2D2D333E00644A55 /* HistoryDetailViewController.swift in Sources */,
+				853D48402D2D333E00644A55 /* HistoryDetailViewModel.swift in Sources */,
 				85699C492D2649600000E5A6 /* CameraResultViewModel.swift in Sources */,
 				85E3C6012D2BB27100BBAFBE /* BluetoothScanner.swift in Sources */,
 				85699C512D268A9B0000E5A6 /* CameraResultItem.swift in Sources */,
 				852E29022D2799EA00293218 /* ShapeData.swift in Sources */,
 				85DA727A2D1EA53B008F5589 /* HomeViewController.swift in Sources */,
+				853D48422D2D337600644A55 /* HistoryDetailView.swift in Sources */,
 				24EC7E1D2D2A385100875752 /* ScannerResultCoordinator.swift in Sources */,
 				24EC7E1E2D2A385100875752 /* ScannerResultViewController.swift in Sources */,
 				24EC7E1F2D2A385100875752 /* ScannerResultViewModel.swift in Sources */,
@@ -785,16 +883,20 @@
 				85699C602D26943F0000E5A6 /* CameraResultGalleryViewModel.swift in Sources */,
 				85DA724C2D1E9392008F5589 /* Poppins.swift in Sources */,
 				85DA722A2D1E919B008F5589 /* AppDelegate.swift in Sources */,
+				853D48172D2CD32500644A55 /* NetworkManager.swift in Sources */,
 				85DA726E2D1EA436008F5589 /* Coordinator.swift in Sources */,
 				24EC7E212D2A391E00875752 /* ScannerResultView.swift in Sources */,
 				852E28FB2D2799EA00293218 /* AVCaptureDeviceExtension.swift in Sources */,
 				85DA725F2D1E9C5B008F5589 /* ToolsView.swift in Sources */,
 				247A67A12D298F8300BA6EC8 /* AppleDevice.swift in Sources */,
 				852E292F2D27E90600293218 /* LocalNetworkDetector.swift in Sources */,
+				853D48362D2D2A1300644A55 /* ScanOptionItem.swift in Sources */,
 				852E28FF2D2799EA00293218 /* DataProcesser.swift in Sources */,
 				85699C632D2696360000E5A6 /* CameraResultGalleryView.swift in Sources */,
 				85DA72642D1E9F0D008F5589 /* HomeTab.swift in Sources */,
 				85DA72702D1EA436008F5589 /* PresentedCoordinator.swift in Sources */,
+				853D48282D2CF31500644A55 /* Magnetometer.swift in Sources */,
+				853D48222D2CD7BD00644A55 /* MagnetometerView.swift in Sources */,
 				852E28E82D2794DA00293218 /* CameraDetectorCoordinator.swift in Sources */,
 				852E292A2D27E90600293218 /* NetServiceExtension.swift in Sources */,
 				852E28E92D2794DA00293218 /* CameraDetectorViewController.swift in Sources */,
@@ -1051,6 +1153,14 @@
 				kind = branch;
 			};
 		};
+		853D482B2D2CF3C000644A55 /* XCRemoteSwiftPackageReference "swift-numerics" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-numerics.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
 		85DA725B2D1E99F4008F5589 /* XCRemoteSwiftPackageReference "SakuraExtension" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Sakurathanh2003/SakuraExtension.git";
@@ -1066,6 +1176,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 852E29312D27E94000293218 /* XCRemoteSwiftPackageReference "SwiftyPing" */;
 			productName = SwiftyPing;
+		};
+		853D482C2D2CF3C000644A55 /* ComplexModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 853D482B2D2CF3C000644A55 /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = ComplexModule;
+		};
+		853D482E2D2CF3C000644A55 /* Numerics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 853D482B2D2CF3C000644A55 /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = Numerics;
+		};
+		853D48302D2CF3C000644A55 /* RealModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 853D482B2D2CF3C000644A55 /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = RealModule;
 		};
 		85DA725C2D1E99F4008F5589 /* SakuraExtension */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -11,9 +11,15 @@ import RxSwift
 final class WifiScannerCoordinator: NavigationBasedCoordinator {
     
     var resultCoordinator: ScannerResultCoordinator?
+    private let scanOption: ScanOptionItem?
+    
+    init(scanOption: ScanOptionItem?, navigationController: UINavigationController) {
+        self.scanOption = scanOption
+        super.init(navigationController: navigationController)
+    }
     
     lazy var controller: WifiScannerViewController = {
-        let viewModel = WifiScannerViewModel()
+        let viewModel = WifiScannerViewModel(hasButtonNext: self.scanOption != nil)
         let controller = WifiScannerViewController(viewModel: viewModel, coordinator: self)
         return controller
     }()
@@ -37,5 +43,9 @@ final class WifiScannerCoordinator: NavigationBasedCoordinator {
         self.resultCoordinator = ScannerResultCoordinator(type: .wifi, devices: device, navigationController: navigationController)
         self.resultCoordinator?.start()
         self.addChild(resultCoordinator!)
+    }
+    
+    func nextTool() {
+        self.send(event: RouteToNextTool())
     }
 }

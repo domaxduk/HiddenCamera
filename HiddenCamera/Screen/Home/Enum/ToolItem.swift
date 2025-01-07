@@ -14,7 +14,6 @@ enum ToolItem: CaseIterable {
     case cameraDetector
     case magnetic
     case infraredCamera
-    case metalSensorDetector
     
     var icon: String {
         switch self {
@@ -26,8 +25,6 @@ enum ToolItem: CaseIterable {
             "ic_tool_infrared_camera"
         case .magnetic:
             "ic_tool_magnetic"
-        case .metalSensorDetector:
-            "ic_tool_metal_sensor_detector"
         case .wifiScanner:
             "ic_tool_wifi"
         }
@@ -42,9 +39,7 @@ enum ToolItem: CaseIterable {
         case .infraredCamera:
             "IR Vision Camera"
         case .magnetic:
-            "Magnetic sensor"
-        case .metalSensorDetector:
-            "Metal sensor detector"
+            "Magnetometer"
         case .wifiScanner:
             "Wifi Devices Finder"
         }
@@ -60,10 +55,23 @@ enum ToolItem: CaseIterable {
             Color(rgb: 0x0CDC08)
         case .magnetic:
             Color(rgb: 0xFF4242)
-        case .metalSensorDetector:
-            Color(rgb: 0xE418E8)
         case .wifiScanner:
             Color(rgb: 0xFFA63D)
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .bluetoothScanner:
+            "Locate bluetooth devices around you"
+        case .wifiScanner:
+            "Find all devices on your wifi"
+        case .cameraDetector:
+            "Detects hidden cameras with AI tool"
+        case .magnetic:
+            "Detect spy cam via magnetic sensor"
+        case .infraredCamera:
+            "Effortlessly spot infrared cameras"
         }
     }
 }
