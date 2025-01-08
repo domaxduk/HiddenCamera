@@ -31,7 +31,9 @@ struct CameraDetectorView: View {
                 content
             }
             
-            if viewModel.isTheFirst {
+            if viewModel.isShowingCameraDialog {
+                PermissionDialogView(type: .camera, isShowing: $viewModel.isShowingCameraDialog)
+            } else if viewModel.isTheFirst {
                 guideView()
             }
         }

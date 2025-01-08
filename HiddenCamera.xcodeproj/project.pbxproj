@@ -73,6 +73,7 @@
 		857F24252D2E57EB00AFDA73 /* ScanHistoryDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24242D2E57EB00AFDA73 /* ScanHistoryDAO.swift */; };
 		857F24272D2E73F800AFDA73 /* ScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24262D2E73F800AFDA73 /* ScanView.swift */; };
 		857F24292D2E746300AFDA73 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24282D2E746300AFDA73 /* HistoryView.swift */; };
+		857F242B2D2E7B2A00AFDA73 /* tapfinger.json in Resources */ = {isa = PBXBuildFile; fileRef = 857F242A2D2E7B2A00AFDA73 /* tapfinger.json */; };
 		85A5EAEF2D23D479008B58EB /* PreviewCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A5EAEE2D23D479008B58EB /* PreviewCameraView.swift */; };
 		85A5EAF42D23DEE2008B58EB /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A5EAF32D23DEE2008B58EB /* CameraManager.swift */; };
 		85DA722A2D1E919B008F5589 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72292D1E919B008F5589 /* AppDelegate.swift */; };
@@ -188,6 +189,7 @@
 		857F24242D2E57EB00AFDA73 /* ScanHistoryDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanHistoryDAO.swift; sourceTree = "<group>"; };
 		857F24262D2E73F800AFDA73 /* ScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanView.swift; sourceTree = "<group>"; };
 		857F24282D2E746300AFDA73 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		857F242A2D2E7B2A00AFDA73 /* tapfinger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tapfinger.json; sourceTree = "<group>"; };
 		85A5EAEE2D23D479008B58EB /* PreviewCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCameraView.swift; sourceTree = "<group>"; };
 		85A5EAF32D23DEE2008B58EB /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		85DA72262D1E919B008F5589 /* HiddenCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HiddenCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -550,6 +552,7 @@
 		85DA72432D1E9376008F5589 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				857F242A2D2E7B2A00AFDA73 /* tapfinger.json */,
 				85EC31AD2D27F777009F874A /* blueCircle.json */,
 				85DA72442D1E937B008F5589 /* Font */,
 			);
@@ -772,6 +775,7 @@
 				85DA724F2D1E9392008F5589 /* Poppins-Bold.ttf in Resources */,
 				85DA72512D1E9392008F5589 /* Poppins-Italic.ttf in Resources */,
 				24EC7E1C2D2A385100875752 /* ScannerResultViewController.xib in Resources */,
+				857F242B2D2E7B2A00AFDA73 /* tapfinger.json in Resources */,
 				85DA72502D1E9392008F5589 /* Poppins-Regular.ttf in Resources */,
 				852E290F2D27E4EC00293218 /* WifiScannerViewController.xib in Resources */,
 				852E29292D27E90600293218 /* macVendors.plist in Resources */,

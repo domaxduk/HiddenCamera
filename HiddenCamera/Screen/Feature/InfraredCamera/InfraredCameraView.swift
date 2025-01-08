@@ -9,6 +9,7 @@ import SwiftUI
 import SakuraExtension
 import RxSwift
 import AVFoundation
+import Lottie
 
 struct InfraredCameraView: View {
     @ObservedObject var viewModel: InfraredCameraViewModel
@@ -23,7 +24,9 @@ struct InfraredCameraView: View {
                 content
             }
             
-            if viewModel.isTheFirst {
+            if viewModel.isShowingCameraDialog {
+                PermissionDialogView(type: .camera, isShowing: $viewModel.isShowingCameraDialog)
+            } else if viewModel.isTheFirst {
                 guideView()
             }
         }
@@ -46,6 +49,15 @@ struct InfraredCameraView: View {
                     recordButton.zIndex(1)
                 }.padding(.bottom, 10)
             }
+            
+            VStack {
+                Spacer()
+                
+                LottieView(animation: .named("tapfinger"))
+                    .playing(loopMode: .loop)
+                    .frame(height: 100)
+                    .offset(x: 20, y: 30)
+            }.allowsHitTesting(false)
         }
         .onTapGesture {
             viewModel.isTheFirst = false

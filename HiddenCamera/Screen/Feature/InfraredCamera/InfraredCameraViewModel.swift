@@ -38,6 +38,7 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
     @Published var showIntro: Bool = true
     @Published var captureSession: AVCaptureSession
     @Published var isTurnFlash: Bool = false
+    @Published var isShowingCameraDialog: Bool = false
     
     private var writer: AssetWriter?
     private var timer: Timer?
@@ -56,7 +57,10 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
         super.init()
         configCaptureSession()
         initAssetWriter()
-        print("screen size: \(UIScreen.main.bounds.size)")
+        
+        if !Permission.grantedCamera {
+            self.isShowingCameraDialog = true
+        }
     }
     
     override func configInput() {
@@ -73,7 +77,15 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
         
         input.didTapRecord.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-           
+            
+            if !Permission.grantedCamera {
+                withAnimation {
+                    self.isShowingCameraDialog = true
+                }
+                
+                return
+            }
+            
             DispatchQueue.main.async {
                 self.isTheFirst = false
                 self.isRecording.toggle()

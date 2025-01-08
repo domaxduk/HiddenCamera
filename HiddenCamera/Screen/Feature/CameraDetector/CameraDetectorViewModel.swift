@@ -41,6 +41,8 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     @Published var showIntro: Bool = true
     @Published var captureSession: AVCaptureSession
     @Published var boxes = [BoundingBox]()
+    @Published var isShowingCameraDialog: Bool = false
+
     private let dataProcess = DataProcesser()
     var lastItem: CameraResultItem?
     
@@ -74,6 +76,10 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
         initAssetWriter()
         print("screen size: \(UIScreen.main.bounds.size)")
         configDataProcesser()
+         
+        if !Permission.grantedCamera {
+            self.isShowingCameraDialog = true
+        }
     }
     
     private func configDataProcesser() {
@@ -89,6 +95,14 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
         
         input.didTapRecord.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
+            
+            if !Permission.grantedCamera {
+                withAnimation {
+                    self.isShowingCameraDialog = true
+                }
+                
+                return
+            }
            
             DispatchQueue.main.async {
                 self.isTheFirst = false
