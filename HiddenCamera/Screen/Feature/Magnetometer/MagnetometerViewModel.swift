@@ -12,6 +12,7 @@ import SwiftUI
 struct MetalDetectorViewModelInput: InputOutputViewModel {
     var didTapBack = PublishSubject<()>()
     var didTapStart = PublishSubject<()>()
+    var didTapNext = PublishSubject<()>()
 }
 
 struct MetalDetectorViewModelOutput: InputOutputViewModel {
@@ -20,6 +21,7 @@ struct MetalDetectorViewModelOutput: InputOutputViewModel {
 
 struct MetalDetectorViewModelRouting: RoutingOutput {
     var stop = PublishSubject<()>()
+    var nextTool = PublishSubject<()>()
 }
 
 final class MagnetometerViewModel: BaseViewModel<MetalDetectorViewModelInput, MetalDetectorViewModelOutput, MetalDetectorViewModelRouting> {
@@ -28,18 +30,30 @@ final class MagnetometerViewModel: BaseViewModel<MetalDetectorViewModelInput, Me
     @Published var y: Double = 0
     @Published var z: Double = 0
     @Published var strength: Double = 0
-    
     @Published var isDetecting: Bool = false
-    let hasButtonNext: Bool
     
-    init(hasButtonNext: Bool) {
-        self.hasButtonNext = hasButtonNext
+    let scanOption: ScanOptionItem?
+    
+    init(scanOption: ScanOptionItem?) {
+        self.scanOption = scanOption
         super.init()
         Magnetometer.shared.locationDelegate = self
     }
     
     override func configInput() {
         super.configInput()
+        
+        input.didTapNext.subscribe(onNext: { [weak self] _ in
+            guard let self else { return }
+            self.isDetecting = false
+            Magnetometer.shared.stop()
+            
+            if scanOption?.suspiciousResult[.magnetic] == nil {
+                scanOption?.suspiciousResult[.magnetic] = 0
+            }
+            
+            self.routing.nextTool.onNext(())
+        }).disposed(by: self.disposeBag)
         
         input.didTapStart.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
@@ -78,5 +92,9 @@ extension MagnetometerViewModel: MagnetometerLocationDelegate {
         self.x = magnet.x
         self.y = magnet.y
         self.z = magnet.z
+        
+        if magnet.magneticStrength >= 200 {
+            self.scanOption?.suspiciousResult[.magnetic] = 1
+        }
     }
 }

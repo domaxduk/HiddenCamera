@@ -32,22 +32,16 @@ class CameraResultViewController: ViewController {
     // MARK: - Config
     func config() {
         configUI()
-        configViewModelInput()
-        configViewModelOutput()
         configRoutingOutput()
-    }
-
-    func configViewModelInput() {
-
-    }
-
-    func configViewModelOutput() {
-        
     }
 
     func configRoutingOutput() {
         viewModel.routing.back.subscribe(onNext: { [weak self] _ in
             self?.coordinator?.stop()
+        }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.nextTool.subscribe(onNext: { [weak self] _ in
+            self?.coordinator?.nextTool()
         }).disposed(by: self.disposeBag)
     }
     

@@ -59,7 +59,7 @@ struct WifiScannerView: View {
             
             Spacer()
             
-            if viewModel.hasButtonNext {
+            if viewModel.scanOption != nil && viewModel.state != .isScanning {
                 Button(action: {
                     viewModel.input.didTapNext.onNext(())
                 }, label: {
@@ -98,7 +98,7 @@ struct WifiScannerView: View {
                             .cornerRadius(24, corners: .allCorners)
                             .overlay(
                                 HStack {
-                                    Image(systemName: "checkmark.circle.fill")
+                                    Image("ic_safe")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 24)
@@ -311,5 +311,5 @@ fileprivate struct LocalDeviceItemView: View {
 }
 
 #Preview {
-    WifiScannerView(viewModel: WifiScannerViewModel(hasButtonNext: true))
+    WifiScannerView(viewModel: WifiScannerViewModel(scanOption: .init()))
 }

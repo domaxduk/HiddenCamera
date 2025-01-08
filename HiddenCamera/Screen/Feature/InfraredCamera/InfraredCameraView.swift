@@ -115,16 +115,18 @@ struct InfraredCameraView: View {
                 ZStack {
                     recordButton.zIndex(1)
                     
-                    HStack {
-                        Spacer()
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.white)
-                            .frame(width: 64, height: 64)
+                    if viewModel.scanOption == nil {
+                        HStack {
+                            Spacer()
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(.white)
+                                .frame(width: 64, height: 64)
+                        }
+                        .onTapGesture {
+                            viewModel.input.didTapGallery.onNext(())
+                        }
+                        .padding(.horizontal, 36)
                     }
-                    .onTapGesture {
-                        viewModel.input.didTapGallery.onNext(())
-                    }
-                    .padding(.horizontal, 36)
                 }.padding(.bottom, 10)
             }
         }
@@ -204,14 +206,25 @@ struct InfraredCameraView: View {
                 .onTapGesture {
                     viewModel.input.back.onNext(())
                 }
+                .padding(.leading, 20)
             
             Text(ToolItem.infraredCamera.name)
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
             
             Spacer()
+            
+            if viewModel.scanOption != nil {
+                Button(action: {
+                    viewModel.input.didTapNext.onNext(())
+                }, label: {
+                    Text("Next")
+                        .textColor(.app(.main))
+                        .font(Poppins.semibold.font(size: 16))
+                        .padding(20)
+                })
+            }
         }
-        .padding(.horizontal, 20)
         .frame(height: AppConfig.navigationBarHeight)
         .padding(.bottom, 12)
         .background(
@@ -259,5 +272,5 @@ fileprivate struct FilterItemView: View {
 }
 
 #Preview {
-    InfraredCameraView(viewModel: InfraredCameraViewModel(hasButtonNext: true))
+    InfraredCameraView(viewModel: InfraredCameraViewModel(scanOption: .init()))
 }

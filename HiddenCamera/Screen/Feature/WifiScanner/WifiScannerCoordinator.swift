@@ -19,14 +19,31 @@ final class WifiScannerCoordinator: NavigationBasedCoordinator {
     }
     
     lazy var controller: WifiScannerViewController = {
-        let viewModel = WifiScannerViewModel(hasButtonNext: self.scanOption != nil)
+        let viewModel = WifiScannerViewModel(scanOption: self.scanOption)
         let controller = WifiScannerViewController(viewModel: viewModel, coordinator: self)
         return controller
     }()
 
     override func start() {
         super.start()
-        navigationController.pushViewController(controller, animated: true)
+        
+        if controller.viewModel.devices.isEmpty {
+            if navigationController.viewControllers.contains(where: { $0 is WifiScannerViewController }) {
+                navigationController.viewControllers.removeAll(where: { $0 is WifiScannerViewController })
+            }
+            
+            navigationController.pushViewController(controller, animated: true)
+        } else {
+            self.routeToResult(device: controller.viewModel.devices)
+        }
+    }
+    
+    override func childDidStop(_ child: Coordinator) {
+        super.childDidStop(child)
+        
+        if child is ScannerResultCoordinator {
+            self.resultCoordinator = nil
+        }
     }
 
     override func stop(completion: (() -> Void)? = nil) {
@@ -36,11 +53,12 @@ final class WifiScannerCoordinator: NavigationBasedCoordinator {
             navigationController.viewControllers.removeAll(where: { $0 == controller })
         }
         
+        scanOption?.decrease()
         super.stop(completion: completion)
     }
     
     func routeToResult(device: [Device]) {
-        self.resultCoordinator = ScannerResultCoordinator(type: .wifi, devices: device, navigationController: navigationController)
+        self.resultCoordinator = ScannerResultCoordinator(scanOption: scanOption, type: .wifi, devices: device, navigationController: navigationController)
         self.resultCoordinator?.start()
         self.addChild(resultCoordinator!)
     }

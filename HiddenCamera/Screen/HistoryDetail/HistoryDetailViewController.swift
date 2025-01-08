@@ -28,6 +28,11 @@ class HistoryDetailViewController: ViewController {
         super.viewDidLoad()
         self.config()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.objectWillChange.send()
+    }
 
     // MARK: - Config
     func config() {

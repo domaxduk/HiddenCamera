@@ -24,7 +24,7 @@ struct CameraDetectorViewModelOutput: InputOutputViewModel {
 
 struct CameraDetectorViewModelRouting: RoutingOutput {
     var stop = PublishSubject<()>()
-    var previewResult = PublishSubject<URL>()
+    var previewResult = PublishSubject<CameraResultItem>()
     var gallery = PublishSubject<()>()
     var nextTool = PublishSubject<()>()
 }
@@ -42,6 +42,7 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     @Published var captureSession: AVCaptureSession
     @Published var boxes = [BoundingBox]()
     private let dataProcess = DataProcesser()
+    var lastItem: CameraResultItem?
     
     private var writer: AssetWriter?
     private var timer: Timer?
@@ -62,12 +63,12 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     private var startRecordingTimeOnSampleBuffer: CMTime!
     private var currentCIImage: CIImage?
     
-    let hasButtonNext: Bool
+    let scanOption: ScanOptionItem?
     
-    init(hasButtonNext: Bool) {
+    init(scanOption: ScanOptionItem?) {
         self.isTheFirst = true
         self.captureSession = AVCaptureSession()
-        self.hasButtonNext = hasButtonNext
+        self.scanOption = scanOption
         super.init()
         configCaptureSession()
         initAssetWriter()
@@ -169,7 +170,10 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
                 if let outputFileURL = self.writer?.outputURL {
                     let resultURL = FileManager.documentURL().appendingPathComponent("\(UUID().uuidString).mp4")
                     try? FileManager.default.copyItem(at: outputFileURL, to: resultURL)
-                    self.routing.previewResult.onNext(resultURL)
+                    
+                    let item = CameraResultItem(id: UUID().uuidString, fileName: resultURL.lastPathComponent, type: .aiDetector)
+                    self.routing.previewResult.onNext(item)
+                    self.lastItem = item
                 }
             } else {
                 print("error: \(error!)")

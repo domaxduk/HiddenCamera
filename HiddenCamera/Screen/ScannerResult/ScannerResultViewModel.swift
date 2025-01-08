@@ -14,6 +14,7 @@ struct ScannerResultViewModelInput: InputOutputViewModel {
     var moveToSafe = PublishSubject<Device>()
     var remove = PublishSubject<Device>()
     var didTapBack = PublishSubject<()>()
+    var didTapNext = PublishSubject<()>()
 }
 
 struct ScannerResultViewModelOutput: InputOutputViewModel {
@@ -22,6 +23,7 @@ struct ScannerResultViewModelOutput: InputOutputViewModel {
 
 struct ScannerResultViewModelRouting: RoutingOutput {
     var stop = PublishSubject<()>()
+    var nextTool = PublishSubject<()>()
 }
 
 final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, ScannerResultViewModelOutput, ScannerResultViewModelRouting> {
@@ -33,10 +35,12 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
     
     let type: ScannerResultType
     private var lastUpdate: Date?
+    let scanOption: ScanOptionItem?
     
-    init(type: ScannerResultType, devices: [Device]) {
+    init(scanOption: ScanOptionItem?, type: ScannerResultType, devices: [Device]) {
         self.type = type
         self.devices = devices
+        self.scanOption = scanOption
         super.init()
         
         configDiscovery()
@@ -60,6 +64,8 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
                 self.safeID.append(contentsOf: device.keystore)
                 self.changeTabIfNeed()
             }
+            
+            self.scanOption?.suspiciousResult[type == .bluetooth ? .bluetoothScanner : .wifiScanner] = numberOfSuspiciousDevice()
         }).disposed(by: self.disposeBag)
         
         input.remove.subscribe(onNext: { [weak self] device in
@@ -68,11 +74,17 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
                 self.selectedDevice = nil
                 self.removedDevice.append(device)
             }
+            
+            self.scanOption?.suspiciousResult[type == .bluetooth ? .bluetoothScanner : .wifiScanner] = numberOfSuspiciousDevice()
         }).disposed(by: self.disposeBag)
         
         input.didTapBack.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
             self.routing.stop.onNext(())
+        }).disposed(by: self.disposeBag)
+        
+        input.didTapNext.subscribe(onNext: { [weak self] _ in
+            self?.routing.nextTool.onNext(())
         }).disposed(by: self.disposeBag)
     }
     
@@ -117,6 +129,9 @@ extension ScannerResultViewModel: LocalNetworkDetectorDelegate, BluetoothScanner
         if let id = selectedDevice?.id, let device = devices.first(where: { $0.id == id }) {
             self.selectedDevice = device
         }
+        
+        let toolItem: ToolItem = type == .bluetooth ? .bluetoothScanner : .wifiScanner
+        self.scanOption?.suspiciousResult[toolItem] = numberOfSuspiciousDevice()
     }
     
     func localNetworkDetector(_ detector: LocalNetworkDetector, updateListDevice devices: [LANDevice]) {

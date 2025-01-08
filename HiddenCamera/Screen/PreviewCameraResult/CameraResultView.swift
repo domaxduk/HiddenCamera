@@ -238,16 +238,32 @@ struct CameraResultView: View {
                         }
                     }
                 }
+                .padding(.leading, 20)
             
             Text(viewModel.title)
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
             
             Spacer()
+            
+            if viewModel.scanOption != nil {
+                Button(action: {
+                    if viewModel.tag != nil {
+                        viewModel.input.didTapNext.onNext(())
+                    } else {
+                        withAnimation {
+                            isShowingConfirmDialog = true
+                        }
+                    }
+                }, label: {
+                    Text("Next")
+                        .textColor(.app(.main))
+                        .font(Poppins.semibold.font(size: 16))
+                        .padding(20)
+                })
+            }
         }
-        .padding(.horizontal, 20)
         .frame(height: AppConfig.navigationBarHeight)
-        .frame(height: 56)
     }
     
     var videoView: some View {
@@ -265,7 +281,7 @@ struct CameraResultView: View {
     
     @ViewBuilder
     func tag() -> some View {
-        if let tag = viewModel.item.tag {
+        if let tag = viewModel.tag {
             HStack(spacing: 4) {
                 
                 Image(systemName: tag == .risk ? "exclamationmark.triangle.fill" : "checkmark.circle.fill")
@@ -290,5 +306,5 @@ struct CameraResultView: View {
 }
 
 #Preview {
-    CameraResultView(viewModel: CameraResultViewModel(item: .init(id: "", fileName: "test", type: .infrared)))
+    CameraResultView(viewModel: CameraResultViewModel(item: .init(id: "", fileName: "test", type: .infrared), scanOption: ScanOptionItem()))
 }

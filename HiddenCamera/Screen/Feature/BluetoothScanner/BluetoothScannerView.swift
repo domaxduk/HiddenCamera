@@ -86,7 +86,7 @@ struct BluetoothScannerView: View {
                     .cornerRadius(24, corners: .allCorners)
                     .overlay(
                         HStack {
-                            Image(systemName: "checkmark.circle.fill")
+                            Image("ic_safe")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 24)

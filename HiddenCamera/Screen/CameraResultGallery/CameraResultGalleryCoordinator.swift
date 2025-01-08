@@ -9,8 +9,8 @@ import UIKit
 import RxSwift
 
 final class CameraResultGalleryCoordinator: NavigationBasedCoordinator {
+    
     var previewCoordinator: CameraResultCoordinator?
-
     let type: CameraType
     
     init(type: CameraType, navigationController: UINavigationController) {
@@ -48,7 +48,7 @@ final class CameraResultGalleryCoordinator: NavigationBasedCoordinator {
     }
     
     func routeToPreview(item: CameraResultItem) {
-        self.previewCoordinator = CameraResultCoordinator(item: item, navigationController: navigationController)
+        self.previewCoordinator = CameraResultCoordinator(scanOption: nil, item: item, navigationController: navigationController)
         self.previewCoordinator?.start()
         self.addChild(self.previewCoordinator!)
     }

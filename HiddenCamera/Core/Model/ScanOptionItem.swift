@@ -8,32 +8,68 @@
 import Foundation
 
 class ScanOptionItem {
+    var id: String
+    var date: Date?
     var suspiciousResult: [ToolItem: Int] = [:]
     var tools: [ToolItem]
-    private var index: Int = -1
+    var step: Int = -1
+    
+    var isSave: Bool = false
     var isEnd: Bool = false
+    var isScanOption: Bool = false
     
     init() {
+        self.id = UUID().uuidString
         self.tools = [.bluetoothScanner, .wifiScanner, .cameraDetector]
-        self.isEnd = false
     }
     
-    init(suspiciousResult: [ToolItem : Int], tools: [ToolItem], index: Int, isEnd: Bool) {
-        self.suspiciousResult = suspiciousResult
+    init(tools: [ToolItem]) {
+        self.id = UUID().uuidString
         self.tools = tools
-        self.index = index
-        self.isEnd = isEnd
+        self.isScanOption = true
+    }
+    
+    init(rlm: RlmScanHistory) {
+        self.id = rlm.id
+        self.isSave = true
+        self.isEnd = true
+        self.isScanOption = rlm.isScanOption
+        self.date = Date(timeIntervalSince1970: rlm.date)
+        
+        self.suspiciousResult = Dictionary(uniqueKeysWithValues: rlm.results.components(separatedBy: ",").compactMap({ item in
+            let components = item.components(separatedBy: ":")
+            if let firstComponent = components.first,
+               let secondComponent = components.last,
+               let tool = ToolItem(rawValue: firstComponent), let value = Int(secondComponent) {
+                return (tool, value)
+            }
+            
+            return nil
+        }))
+        
+        self.tools = rlm.tools.components(separatedBy: ",").compactMap({ ToolItem(rawValue: $0) })
     }
     
     var nextTool: ToolItem? {
-        if index + 1 >= tools.count {
+        if step + 1 >= tools.count {
             return nil
         }
         
-        return tools[index + 1]
+        return tools[step + 1]
     }
     
     func increase() {
-        self.index += 1
+        self.step += 1
+    }
+    
+    func decrease() {
+        if isEnd { return }
+        
+        if step < tools.count {
+            let tool = tools[step]
+            self.suspiciousResult.removeValue(forKey: tool)
+        }
+        
+        self.step -= 1
     }
 }

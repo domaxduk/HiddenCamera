@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum ToolItem: CaseIterable {
+enum ToolItem: String, CaseIterable {
     case bluetoothScanner
     case wifiScanner
     case cameraDetector

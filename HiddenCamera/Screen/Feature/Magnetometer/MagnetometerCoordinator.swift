@@ -18,13 +18,17 @@ final class MagnetometerCoordinator: NavigationBasedCoordinator {
     }
     
     lazy var controller: MagnetometerViewController = {
-        let viewModel = MagnetometerViewModel(hasButtonNext: self.scanOption != nil)
+        let viewModel = MagnetometerViewModel(scanOption: self.scanOption)
         let controller = MagnetometerViewController(viewModel: viewModel, coordinator: self)
         return controller
     }()
 
     override func start() {
         super.start()
+        if navigationController.viewControllers.contains(where: { $0 is MagnetometerViewController }) {
+            navigationController.viewControllers.removeAll(where: { $0 is MagnetometerViewController })
+        }
+        
         navigationController.pushViewController(controller, animated: true)
     }
 
@@ -35,10 +39,11 @@ final class MagnetometerCoordinator: NavigationBasedCoordinator {
             navigationController.viewControllers.removeAll(where: { $0 == controller })
         }
         
+        scanOption?.decrease()
         super.stop(completion: completion)
     }
     
     func nextTool() {
-        
+        self.send(event: RouteToNextTool())
     }
 }

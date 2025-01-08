@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 struct HistoryDetailViewModelInput: InputOutputViewModel {
-    var didTapFix = PublishSubject<ToolItem>()
+    var reopenTool = PublishSubject<ToolItem>()
 }
 
 struct HistoryDetailViewModelOutput: InputOutputViewModel {
@@ -32,8 +32,12 @@ final class HistoryDetailViewModel: BaseViewModel<HistoryDetailViewModelInput, H
     override func configInput() {
         super.configInput()
         
-        input.didTapFix.subscribe(onNext: { [weak self] tool in
+        input.reopenTool.subscribe(onNext: { [weak self] tool in
             self?.routing.routeToTool.onNext(tool)
         }).disposed(by: self.disposeBag)
+    }
+    
+    var numberOfTool: Int {
+        return scanOption.tools.count
     }
 }

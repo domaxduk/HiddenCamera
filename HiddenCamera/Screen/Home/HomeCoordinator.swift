@@ -47,28 +47,33 @@ final class HomeCoordinator: WindowBasedCoordinator {
     override func childDidStop(_ child: Coordinator) {
         super.childDidStop(child)
         
-        if child is InfraredCameraCoordinator {
-            self.infraredCameraCoordinator = nil
-        }
-        
-        if child is CameraDetectorCoordinator {
-            self.cameraDetectorCoordinator = nil
-        }
-        
-        if child is WifiScannerCoordinator {
-            self.wifiScannerCoordinator = nil
-        }
-        
-        if child is BluetoothScannerCoordinator {
-            self.bluetoothScannerCoordinator = nil
-        }
-        
-        if child is MagnetometerCoordinator {
-            self.magneticCoordinator = nil
+        if scanOptionItem == nil || scanOptionItem != nil && !scanOptionItem!.isEnd {
+            if child is InfraredCameraCoordinator {
+                self.infraredCameraCoordinator = nil
+            }
+            
+            if child is CameraDetectorCoordinator {
+                self.cameraDetectorCoordinator = nil
+            }
+            
+            if child is WifiScannerCoordinator {
+                self.wifiScannerCoordinator = nil
+                LocalNetworkDetector.shared.stopScan()
+            }
+            
+            if child is BluetoothScannerCoordinator {
+                self.bluetoothScannerCoordinator = nil
+                BluetoothScanner.shared.stopScanning()
+            }
+            
+            if child is MagnetometerCoordinator {
+                self.magneticCoordinator = nil
+            }
         }
         
         if child is HistoryDetailCoordinator {
             self.historyDetailCoordinator = nil
+            self.scanOptionItem = nil
             self.stopAllChild()
         }
     }
@@ -76,7 +81,7 @@ final class HomeCoordinator: WindowBasedCoordinator {
     override func handle(event: any CoordinatorEvent) -> Bool {
         if event is RouteToNextTool {
             if let item = scanOptionItem {
-                if let tool = item.nextTool {
+                if let tool = item.nextTool, !item.isEnd {
                     self.routeToTool(tool: tool, option: item)
                 } else {
                     routeToHistoryDetail(item: item)
@@ -89,15 +94,15 @@ final class HomeCoordinator: WindowBasedCoordinator {
         if let event = event as? HistoryDetailRouteToToolEvent {
             switch event.tool {
             case .bluetoothScanner:
-                self.bluetoothScannerCoordinator?.start()
+                self.routeToBluetoothScanner(scanOption: event.scanOption)
             case .wifiScanner:
-                break
+                self.routeToWifiScanner(scanOption: event.scanOption)
             case .cameraDetector:
-                break
+                self.routeToCameraDetector(scanOption: event.scanOption)
             case .magnetic:
-                break
+                self.routeToMagnetic(scanOption: event.scanOption)
             case .infraredCamera:
-                break
+                self.routeToInfraredCamera(scanOption: event.scanOption)
             }
             return true
         }
@@ -133,67 +138,80 @@ extension HomeCoordinator {
         option.increase()
     }
     
-    private func routeToHistoryDetail(item: ScanOptionItem) {
-        self.historyDetailCoordinator = HistoryDetailCoordinator(scanOption: item, navigationController: self.navigationController)
+    func routeToHistoryDetail(item: ScanOptionItem) {
+        if self.historyDetailCoordinator == nil {
+            self.historyDetailCoordinator = HistoryDetailCoordinator(scanOption: item, navigationController: self.navigationController)
+            self.addChild(self.historyDetailCoordinator!)
+        }
+        
         self.historyDetailCoordinator?.start()
-        self.addChild(self.historyDetailCoordinator!)
     }
     
     func routeToInfraredCamera(scanOption: ScanOptionItem? = nil) {
-        Permission.requestCamera { [weak self] granted in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                self.infraredCameraCoordinator = InfraredCameraCoordinator(scanOption: scanOption, navigationController: self.navigationController)
-                self.infraredCameraCoordinator?.start()
-                self.addChild(self.infraredCameraCoordinator!)
+        if self.infraredCameraCoordinator == nil {
+            Permission.requestCamera { [weak self] granted in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    self.infraredCameraCoordinator = InfraredCameraCoordinator(scanOption: scanOption, navigationController: self.navigationController)
+                    self.infraredCameraCoordinator?.start()
+                    self.addChild(self.infraredCameraCoordinator!)
+                }
             }
+        } else {
+            self.infraredCameraCoordinator?.start()
         }
     }
     
     func routeToCameraDetector(scanOption: ScanOptionItem? = nil) {
-        Permission.requestCamera { [weak self] granted in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                self.cameraDetectorCoordinator = CameraDetectorCoordinator(scanOption: scanOption, navigationController: self.navigationController)
-                self.cameraDetectorCoordinator?.start()
-                self.addChild(self.cameraDetectorCoordinator!)
+        if self.cameraDetectorCoordinator == nil {
+            Permission.requestCamera { [weak self] granted in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    self.cameraDetectorCoordinator = CameraDetectorCoordinator(scanOption: scanOption, navigationController: self.navigationController)
+                    self.cameraDetectorCoordinator?.start()
+                    self.addChild(self.cameraDetectorCoordinator!)
+                }
             }
+        } else {
+            self.cameraDetectorCoordinator?.start()
         }
     }
     
     func routeToWifiScanner(scanOption: ScanOptionItem? = nil) {
-        LocationManager.shared.statusObserver.take(1).subscribe(onNext: { [weak self] _ in
-            guard let self else { return }
-            
-            if self.wifiScannerCoordinator == nil {
-                DispatchQueue.main.async {
-                    self.wifiScannerCoordinator = WifiScannerCoordinator(scanOption: scanOption, navigationController: self.navigationController)
-                    self.wifiScannerCoordinator?.start()
-                    self.addChild(self.wifiScannerCoordinator!)
+        if self.wifiScannerCoordinator == nil {
+            LocationManager.shared.statusObserver.take(1).subscribe(onNext: { [weak self] _ in
+                guard let self else { return }
+                
+                if self.wifiScannerCoordinator == nil {
+                    DispatchQueue.main.async {
+                        self.wifiScannerCoordinator = WifiScannerCoordinator(scanOption: scanOption, navigationController: self.navigationController)
+                        self.wifiScannerCoordinator?.start()
+                        self.addChild(self.wifiScannerCoordinator!)
+                    }
                 }
-            }
-        }).disposed(by: controller.disposeBag)
-        
-        LocationManager.shared.requestPermission()
+            }).disposed(by: controller.disposeBag)
+            
+            LocationManager.shared.requestPermission()
+        } else {
+            self.wifiScannerCoordinator?.start()
+        }
     }
     
     func routeToBluetoothScanner(scanOption: ScanOptionItem? = nil) {
-        if self.bluetoothScannerCoordinator != nil {
-            return
+        if self.bluetoothScannerCoordinator == nil {
+            self.bluetoothScannerCoordinator = BluetoothScannerCoordinator(scanOption: scanOption, navigationController: navigationController)
+            self.addChild(bluetoothScannerCoordinator!)
         }
         
-        self.bluetoothScannerCoordinator = BluetoothScannerCoordinator(scanOption: scanOption, navigationController: navigationController)
         self.bluetoothScannerCoordinator?.start()
-        self.addChild(bluetoothScannerCoordinator!)
     }
     
     func routeToMagnetic(scanOption: ScanOptionItem? = nil) {
-        if self.magneticCoordinator != nil {
-            return
+        if self.magneticCoordinator == nil {
+            self.magneticCoordinator = MagnetometerCoordinator(scanOption: scanOption, navigationController: navigationController)
+            self.addChild(magneticCoordinator!)
         }
         
-        self.magneticCoordinator = MagnetometerCoordinator(scanOption: scanOption, navigationController: navigationController)
         self.magneticCoordinator?.start()
-        self.addChild(magneticCoordinator!)
     }
 }

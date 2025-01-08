@@ -10,11 +10,12 @@ import RxSwift
 
 struct HistoryDetailRouteToToolEvent: CoordinatorEvent {
     var tool: ToolItem
+    var scanOption: ScanOptionItem
 }
 
 final class HistoryDetailCoordinator: NavigationBasedCoordinator {
     
-    private let scanOption: ScanOptionItem
+    private var scanOption: ScanOptionItem
     
     init(scanOption: ScanOptionItem, navigationController: UINavigationController) {
         self.scanOption = scanOption
@@ -29,6 +30,18 @@ final class HistoryDetailCoordinator: NavigationBasedCoordinator {
 
     override func start() {
         super.start()
+        
+        scanOption.isEnd = true
+        
+        if !scanOption.isSave {
+            let dao = ScanHistoryDAO()
+            dao.addObject(item: scanOption)
+        }
+        
+        if navigationController.viewControllers.contains(where: { $0 is HistoryDetailViewController }) {
+            navigationController.viewControllers.removeAll(where: { $0 is HistoryDetailViewController })
+        }
+        
         navigationController.pushViewController(controller, animated: true)
     }
 
@@ -43,6 +56,6 @@ final class HistoryDetailCoordinator: NavigationBasedCoordinator {
     }
     
     func routeToTool(tool: ToolItem) {
-        self.send(event: HistoryDetailRouteToToolEvent(tool: tool))
+        self.send(event: HistoryDetailRouteToToolEvent(tool: tool, scanOption: scanOption))
     }
 }

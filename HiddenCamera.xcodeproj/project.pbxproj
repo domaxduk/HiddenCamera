@@ -69,6 +69,10 @@
 		85699C602D26943F0000E5A6 /* CameraResultGalleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C5C2D26943F0000E5A6 /* CameraResultGalleryViewModel.swift */; };
 		85699C612D26943F0000E5A6 /* CameraResultGalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85699C5D2D26943F0000E5A6 /* CameraResultGalleryViewController.xib */; };
 		85699C632D2696360000E5A6 /* CameraResultGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C622D2696350000E5A6 /* CameraResultGalleryView.swift */; };
+		857F24232D2E568700AFDA73 /* RlmScanHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24222D2E568700AFDA73 /* RlmScanHistory.swift */; };
+		857F24252D2E57EB00AFDA73 /* ScanHistoryDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24242D2E57EB00AFDA73 /* ScanHistoryDAO.swift */; };
+		857F24272D2E73F800AFDA73 /* ScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24262D2E73F800AFDA73 /* ScanView.swift */; };
+		857F24292D2E746300AFDA73 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24282D2E746300AFDA73 /* HistoryView.swift */; };
 		85A5EAEF2D23D479008B58EB /* PreviewCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A5EAEE2D23D479008B58EB /* PreviewCameraView.swift */; };
 		85A5EAF42D23DEE2008B58EB /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A5EAF32D23DEE2008B58EB /* CameraManager.swift */; };
 		85DA722A2D1E919B008F5589 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72292D1E919B008F5589 /* AppDelegate.swift */; };
@@ -180,6 +184,10 @@
 		85699C5C2D26943F0000E5A6 /* CameraResultGalleryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultGalleryViewModel.swift; sourceTree = "<group>"; };
 		85699C5D2D26943F0000E5A6 /* CameraResultGalleryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CameraResultGalleryViewController.xib; sourceTree = "<group>"; };
 		85699C622D2696350000E5A6 /* CameraResultGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultGalleryView.swift; sourceTree = "<group>"; };
+		857F24222D2E568700AFDA73 /* RlmScanHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RlmScanHistory.swift; sourceTree = "<group>"; };
+		857F24242D2E57EB00AFDA73 /* ScanHistoryDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanHistoryDAO.swift; sourceTree = "<group>"; };
+		857F24262D2E73F800AFDA73 /* ScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanView.swift; sourceTree = "<group>"; };
+		857F24282D2E746300AFDA73 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		85A5EAEE2D23D479008B58EB /* PreviewCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCameraView.swift; sourceTree = "<group>"; };
 		85A5EAF32D23DEE2008B58EB /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		85DA72262D1E919B008F5589 /* HiddenCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HiddenCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -419,9 +427,10 @@
 		85699C522D2690BB0000E5A6 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
+				857F24212D2E567500AFDA73 /* Model */,
 				85699C532D2690C50000E5A6 /* RealmDAO.swift */,
-				85699C552D2691C20000E5A6 /* RlmCameraResult.swift */,
 				85699C572D2692480000E5A6 /* CameraResultDAO.swift */,
+				857F24242D2E57EB00AFDA73 /* ScanHistoryDAO.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -436,6 +445,15 @@
 				85699C622D2696350000E5A6 /* CameraResultGalleryView.swift */,
 			);
 			path = CameraResultGallery;
+			sourceTree = "<group>";
+		};
+		857F24212D2E567500AFDA73 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				85699C552D2691C20000E5A6 /* RlmCameraResult.swift */,
+				857F24222D2E568700AFDA73 /* RlmScanHistory.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		85A5EAED2D23D471008B58EB /* Camera */ = {
@@ -611,6 +629,8 @@
 			children = (
 				85DA72412D1E9343008F5589 /* HomeView.swift */,
 				85DA725E2D1E9C5B008F5589 /* ToolsView.swift */,
+				857F24262D2E73F800AFDA73 /* ScanView.swift */,
+				857F24282D2E746300AFDA73 /* HistoryView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -841,15 +861,18 @@
 				853D481E2D2CD7A100644A55 /* MagnetometerCoordinator.swift in Sources */,
 				853D481F2D2CD7A100644A55 /* MagnetometerViewController.swift in Sources */,
 				853D48202D2CD7A100644A55 /* MagnetometerViewModel.swift in Sources */,
+				857F24252D2E57EB00AFDA73 /* ScanHistoryDAO.swift in Sources */,
 				85E3C5F02D2B883900BBAFBE /* LocationManager.swift in Sources */,
 				852E292C2D27E90600293218 /* DeviceService.swift in Sources */,
 				85699C4C2D264A130000E5A6 /* CameraResultView.swift in Sources */,
 				85DA72552D1E942B008F5589 /* AppColor.swift in Sources */,
 				85E3C6032D2BB5AE00BBAFBE /* LANDevice.swift in Sources */,
 				85699C542D2690C50000E5A6 /* RealmDAO.swift in Sources */,
+				857F24232D2E568700AFDA73 /* RlmScanHistory.swift in Sources */,
 				852E28ED2D2794E200293218 /* CameraDetectorView.swift in Sources */,
 				85DA72422D1E9343008F5589 /* HomeView.swift in Sources */,
 				85DA72792D1EA53B008F5589 /* HomeCoordinator.swift in Sources */,
+				857F24292D2E746300AFDA73 /* HistoryView.swift in Sources */,
 				85699C472D2649600000E5A6 /* CameraResultCoordinator.swift in Sources */,
 				85699C482D2649600000E5A6 /* CameraResultViewController.swift in Sources */,
 				853D483E2D2D333E00644A55 /* HistoryDetailCoordinator.swift in Sources */,
@@ -895,6 +918,7 @@
 				85699C632D2696360000E5A6 /* CameraResultGalleryView.swift in Sources */,
 				85DA72642D1E9F0D008F5589 /* HomeTab.swift in Sources */,
 				85DA72702D1EA436008F5589 /* PresentedCoordinator.swift in Sources */,
+				857F24272D2E73F800AFDA73 /* ScanView.swift in Sources */,
 				853D48282D2CF31500644A55 /* Magnetometer.swift in Sources */,
 				853D48222D2CD7BD00644A55 /* MagnetometerView.swift in Sources */,
 				852E28E82D2794DA00293218 /* CameraDetectorCoordinator.swift in Sources */,

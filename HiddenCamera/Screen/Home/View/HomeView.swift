@@ -24,22 +24,38 @@ struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
     
     var body: some View {
-        ZStack {
-            Color.app(.light03).ignoresSafeArea()
-            
-            VStack {
-                navigationBar.padding(.horizontal, 24)
-                content
-                tabbar
-            }
-        }.environmentObject(viewModel)
+        NavigationView(content: {
+            ZStack {
+                Color.app(.light03).ignoresSafeArea()
+                
+                VStack(spacing: 0) {
+                    navigationBar.padding(.horizontal, 24)
+                    content
+                    tabbar
+                }
+                
+            }.environmentObject(viewModel)
+        }).navigationBarHidden(true)
     }
     
     // MARK: - NavigationBar
     var navigationBar: some View {
         HStack {
-            Text(AppConfig.appName)
-                .font(Poppins.bold.font(size: 20))
+            switch viewModel.currentTab {
+            case .scan:
+                Text(AppConfig.appName)
+                    .font(Poppins.bold.font(size: 20))
+            case .tools:
+                Text("Tools")
+                    .font(Poppins.bold.font(size: 20))
+            case .history:
+                Text("History")
+                    .font(Poppins.bold.font(size: 20))
+            case .setting:
+                Text("Setting")
+                    .font(Poppins.bold.font(size: 20))
+            }
+            
             
             Spacer()
         }.frame(height: AppConfig.navigationBarHeight)
@@ -85,83 +101,11 @@ struct HomeView: View {
             case .tools:
                 ToolsView()
             case .history:
-                Color.clear
+                HistoryView()
             case .setting:
                 Color.clear
             }
-            
         }
-    }
-}
-
-struct ScanView: View {
-    @EnvironmentObject var viewModel: HomeViewModel
-
-    var body: some View {
-        VStack(spacing: 0) {
-            Text("Press the button bellow to scan full ")
-                .font(Poppins.regular.font(size: 14))
-                .textColor(.app(.light09))
-                .padding(.top, 20)
-            
-            LottieView(animation: .named("blueCircle"))
-                .playing(loopMode: .loop)
-                .overlay(
-                    Image("ic_home_eye")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 72)
-                )
-                .frame(height: UIScreen.main.bounds.width - 40 * 2)
-            
-            ScrollView {
-                HStack {
-                    ToolItemView(color: .init(rgb: 0x9747FF), icon: "ic_tool_quickscan", name: "Quick Scan")
-                        .onTapGesture {
-                            viewModel.input.didTapQuickScan.onNext(())
-                        }
-                    
-                    Spacer()
-                    
-                    ToolItemView(color: .init(rgb: 0xFFA63D), icon: "ic_tool_scanoption", name: "Scan Options")
-                }
-                .padding(.horizontal, Const.padding)
-                .padding(.bottom, 100)
-            }
-        }
-    }
-}
-
-fileprivate struct ToolItemView: View {
-    var color: Color
-    var icon: String
-    var name: String
-    var body: some View {
-        VStack(spacing: 0) {
-            Spacer(minLength: 0)
-            
-            Circle()
-                .fill(color.opacity(0.1))
-                .frame(height: Const.circleHeight)
-                .overlay(
-                    Image(icon)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: Const.circleHeight / 72 * 40)
-                )
-            
-            Text(name)
-                .multilineTextAlignment(.center)
-                .font(Poppins.semibold.font(size: Const.fontSize))
-                .padding(.top, Const.circleHeight / 72 * 16)
-            
-            Spacer(minLength: 0)
-        }
-        .padding(Const.itemPadding)
-        .frame(width: Const.itemWidth,
-               height: Const.itemHeight)
-        .background(Color.white)
-        .cornerRadius(20, corners: .allCorners)
     }
 }
 

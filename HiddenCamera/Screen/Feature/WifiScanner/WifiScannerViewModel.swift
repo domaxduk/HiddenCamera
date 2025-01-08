@@ -50,10 +50,10 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
 
     private var index: Int = 0
     private var timer: Timer?
-    let hasButtonNext: Bool
+    let scanOption: ScanOptionItem?
     
-    init(hasButtonNext: Bool) {
-        self.hasButtonNext = hasButtonNext
+    init(scanOption: ScanOptionItem?) {
+        self.scanOption = scanOption
         super.init()
     }
     
@@ -87,12 +87,10 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
         }).disposed(by: self.disposeBag)
         
         input.didTapBack.subscribe(onNext: { [weak self] _ in
-            LocalNetworkDetector.shared.stopScan()
             self?.routing.stop.onNext(())
         }).disposed(by: self.disposeBag)
         
         input.didTapNext.subscribe(onNext: { [weak self] _ in
-            LocalNetworkDetector.shared.stopScan()
             self?.routing.nextTool.onNext(())
         }).disposed(by: self.disposeBag)
     }
@@ -137,6 +135,7 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
                         
             if seconds >= AppConfig.wifiDuration {
                 timer?.invalidate()
+                self.scanOption?.suspiciousResult[.wifiScanner] = suspiciousDevices().count
                 
                 withAnimation {
                     self.state = .done
@@ -159,6 +158,7 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
     }
     
     private func resetData() {
+        LocalNetworkDetector.shared.stopScan()
         self.devices.removeAll()
         self.showingDevice = nil
         self.index = 0
@@ -194,7 +194,7 @@ extension WifiScannerViewModel: LocalNetworkDetectorDelegate {
         if state == .done {
             return
         }
-        
+                
         DispatchQueue.main.async {
             withAnimation {
                 self.devices = devices

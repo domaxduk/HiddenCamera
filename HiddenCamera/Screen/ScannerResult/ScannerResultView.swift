@@ -243,14 +243,25 @@ struct ScannerResultView: View {
                 .onTapGesture {
                     viewModel.input.didTapBack.onNext(())
                 }
+                .padding(.leading, 20)
             
             Text("Scan Result")
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
             
             Spacer()
+            
+            if viewModel.scanOption != nil {
+                Button(action: {
+                    viewModel.input.didTapNext.onNext(())
+                }, label: {
+                    Text("Next")
+                        .textColor(.app(.main))
+                        .font(Poppins.semibold.font(size: 16))
+                        .padding(20)
+                })
+            }
         }
-        .padding(.horizontal, 20)
         .frame(height: AppConfig.navigationBarHeight)
         .frame(height: 56)
     }
@@ -617,7 +628,7 @@ fileprivate struct DeviceItemView: View {
 }
 
 #Preview {
-    ScannerResultView(viewModel: ScannerResultViewModel(type: .bluetooth, devices: [
+    ScannerResultView(viewModel: ScannerResultViewModel(scanOption: ScanOptionItem(), type: .bluetooth, devices: [
         LANDevice(ipAddress: UUID().uuidString, name: "TV", model: nil),
         BluetoothDevice(id: UUID().uuidString, rssi: 12, peripheral: nil)
     ]))

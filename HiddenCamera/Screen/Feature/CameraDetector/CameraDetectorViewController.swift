@@ -59,8 +59,8 @@ class CameraDetectorViewController: ViewController {
             }
         }).disposed(by: self.disposeBag)
         
-        viewModel.routing.previewResult.subscribe(onNext: { [weak self] url in
-            self?.coordinator?.routeToResult(url: url)
+        viewModel.routing.previewResult.subscribe(onNext: { [weak self] item in
+            self?.coordinator?.routeToResult(item: item)
         }).disposed(by: self.disposeBag)
         
         viewModel.routing.gallery.subscribe(onNext: { [weak self] url in

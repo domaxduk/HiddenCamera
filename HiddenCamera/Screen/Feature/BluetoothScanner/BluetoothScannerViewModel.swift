@@ -67,11 +67,9 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
         input.viewResult.subscribe(onNext: { [weak self] _ in
             guard let self else {return}
             self.routing.routeToResult.onNext(devices)
-            self.state = .ready
         }).disposed(by: self.disposeBag)
         
         input.didTapBack.subscribe(onNext: { [weak self] _ in
-            BluetoothScanner.shared.stopScanning()
             self?.routing.stop.onNext(())
         }).disposed(by: self.disposeBag)
         
@@ -133,6 +131,7 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
                         
             if seconds >= AppConfig.bluetoothDuration {
                 timer?.invalidate()
+                self.scanOption?.suspiciousResult[.bluetoothScanner] = devices.count
                 
                 withAnimation {
                     self.state = .done
@@ -150,7 +149,6 @@ extension BluetoothScannerViewModel: BluetoothScannerDelegate {
         }
         
         self.devices = devices
-        self.scanOption?.suspiciousResult[.bluetoothScanner] = devices.count
     }
     
     func bluetoothScanner(_ scanner: BluetoothScanner, didUpdateState state: CBManagerState) {

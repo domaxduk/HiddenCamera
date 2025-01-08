@@ -16,6 +16,7 @@ struct InfraredCameraViewModelInput: InputOutputViewModel {
     var toggleFlash = PublishSubject<()>()
     var didTapRecord = PublishSubject<()>()
     var didTapGallery = PublishSubject<()>()
+    var didTapNext = PublishSubject<()>()
 }
 
 struct InfraredCameraViewModelOutput: InputOutputViewModel {
@@ -24,8 +25,9 @@ struct InfraredCameraViewModelOutput: InputOutputViewModel {
 
 struct InfraredCameraViewModelRouting: RoutingOutput {
     var stop = PublishSubject<()>()
-    var previewResult = PublishSubject<URL>()
+    var previewResult = PublishSubject<CameraResultItem>()
     var gallery = PublishSubject<()>()
+    var nextTool = PublishSubject<()>()
 }
 
 final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput, InfraredCameraViewModelOutput, InfraredCameraViewModelRouting> {
@@ -45,10 +47,11 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
     
     private var needToStart: Bool = false
     private var startRecordingTimeOnSampleBuffer: CMTime!
-    let hasButtonNext: Bool
-    
-    init(hasButtonNext: Bool) {
-        self.hasButtonNext = hasButtonNext
+    let scanOption: ScanOptionItem?
+    var lastItem: CameraResultItem?
+
+    init(scanOption: ScanOptionItem?) {
+        self.scanOption = scanOption
         self.captureSession = AVCaptureSession()
         super.init()
         configCaptureSession()
@@ -86,6 +89,10 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
         
         input.didTapGallery.subscribe(onNext: { [weak self] _ in
             self?.routing.gallery.onNext(())
+        }).disposed(by: self.disposeBag)
+        
+        input.didTapNext.subscribe(onNext: { [weak self] _ in
+            self?.routing.nextTool.onNext(())
         }).disposed(by: self.disposeBag)
     }
     
@@ -161,7 +168,10 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
                 if let outputFileURL = self.writer?.outputURL {
                     let resultURL = FileManager.documentURL().appendingPathComponent("\(UUID().uuidString).mp4")
                     try? FileManager.default.copyItem(at: outputFileURL, to: resultURL)
-                    self.routing.previewResult.onNext(resultURL)
+                    
+                    let item = CameraResultItem(id: UUID().uuidString, fileName: resultURL.lastPathComponent, type: .infrared)
+                    self.routing.previewResult.onNext(item)
+                    self.lastItem = item
                 }
             } else {
                 print("error: \(error!)")
@@ -207,12 +217,6 @@ extension InfraredCameraViewModel: AVCaptureVideoDataOutputSampleBufferDelegate,
             }
         }
         
-        if needToStart {
-            self.startRecordingTimeOnSampleBuffer = time
-            self.writer?.startWriting(atSourceTime: self.startRecordingTimeOnSampleBuffer ?? .zero)
-            self.needToStart = false
-        }
-        
         let screenSize = UIScreen.main.bounds.size
         let currentSize = ciImage.image.size
         let targetSize = screenSize.scale(currentSize.height / screenSize.height)
@@ -220,8 +224,12 @@ extension InfraredCameraViewModel: AVCaptureVideoDataOutputSampleBufferDelegate,
         ciImage = ciImage.cropped(to: rect)
         
         let image = ciImage.image
-                
-        if isRecording {
+        
+        if needToStart {
+            self.startRecordingTimeOnSampleBuffer = time
+            self.writer?.startWriting(atSourceTime: self.startRecordingTimeOnSampleBuffer ?? .zero)
+            self.needToStart = false
+        } else if isRecording {
             self.writer?.append(pixelBuffer: ciImage.buffer ?? videoPixelBuffer, withPresentationTime: time)
         }
                 

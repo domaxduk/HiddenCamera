@@ -32,22 +32,16 @@ class ScannerResultViewController: ViewController {
     // MARK: - Config
     func config() {
         configUI()
-        configViewModelInput()
-        configViewModelOutput()
         configRoutingOutput()
-    }
-
-    func configViewModelInput() {
-
-    }
-
-    func configViewModelOutput() {
-        
     }
 
     func configRoutingOutput() {
         self.viewModel.routing.stop.subscribe(onNext: { [weak  self] _  in
             self?.coordinator?.stop()
+        }).disposed(by: self.disposeBag)
+        
+        self.viewModel.routing.nextTool.subscribe(onNext: { [weak  self] _  in
+            self?.coordinator?.nextTool()
         }).disposed(by: self.disposeBag)
     }
     

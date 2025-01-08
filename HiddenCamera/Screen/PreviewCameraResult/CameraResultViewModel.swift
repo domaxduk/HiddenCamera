@@ -15,6 +15,7 @@ struct CameraResultViewModelInput: InputOutputViewModel {
     var didTapPlay = PublishSubject<()>()
     var mask =  PublishSubject<CameraResultTag>()
     var didTapBack = PublishSubject<()>()
+    var didTapNext = PublishSubject<()>()
 }
 
 struct CameraResultViewModelOutput: InputOutputViewModel {
@@ -23,6 +24,7 @@ struct CameraResultViewModelOutput: InputOutputViewModel {
 
 struct CameraResultViewModelRouting: RoutingOutput {
     var back = PublishSubject<()>()
+    var nextTool = PublishSubject<()>()
 }
 
 final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, CameraResultViewModelOutput, CameraResultViewModelRouting> {
@@ -30,13 +32,24 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
     @Published var percent: CGFloat = 0
     @Published var isPlaying: Bool = false
     @Published var isSeeking: Bool = false
-    var asset: AVAsset!
     @Published var item: CameraResultItem
+    @Published var tag: CameraResultTag?
     
+    var asset: AVAsset!
+
     private let dao = CameraResultDAO()
+    let scanOption: ScanOptionItem?
     
-    init(item: CameraResultItem) {
+    init(item: CameraResultItem, scanOption: ScanOptionItem?) {
         self.item = item
+        self.scanOption = scanOption
+        
+        if scanOption == nil {
+            self.tag = item.tag
+        } else {
+            self.tag = nil
+        }
+        
         let url = FileManager.documentURL().appendingPathComponent(item.fileName)
         self.asset = AVAsset(url: url)
         let playerItem = AVPlayerItem(asset: asset)
@@ -47,6 +60,12 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
     
     override func configInput() {
         super.configInput()
+        
+        input.didTapNext.subscribe(onNext: { [weak self] _ in
+            guard let self else { return }
+            self.dao.addObject(item: item)
+            self.routing.nextTool.onNext(())
+        }).disposed(by: self.disposeBag)
         
         input.didTapPlay.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
@@ -61,7 +80,14 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
         
         input.mask.subscribe(onNext: { [weak self] tag in
             guard let self else { return }
+            self.tag = tag
             self.item.tag = tag
+            
+            if item.type == .aiDetector {
+                self.scanOption?.suspiciousResult[.cameraDetector] = item.tag == .risk ? 1 : 0
+            } else {
+                self.scanOption?.suspiciousResult[.infraredCamera] = item.tag == .risk ? 1 : 0
+            }
             
             withAnimation {
                 self.objectWillChange.send()
@@ -131,10 +157,6 @@ extension CameraResultViewModel {
         }
     }
     
-    var tag: CameraResultTag? {
-        return item.tag
-    }
-    
     func duration() -> CMTime {
         return player.duration
     }
@@ -164,6 +186,6 @@ extension CameraResultViewModel {
 }
 
 #Preview {
-    CameraResultView(viewModel: CameraResultViewModel(item: .init(id: "", fileName: "test", type: .infrared)))
+    CameraResultView(viewModel: CameraResultViewModel(item: .init(id: "", fileName: "test", type: .infrared), scanOption: .init()))
 }
 

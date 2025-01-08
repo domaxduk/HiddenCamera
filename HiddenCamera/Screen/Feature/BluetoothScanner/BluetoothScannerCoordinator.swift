@@ -17,7 +17,6 @@ final class BluetoothScannerCoordinator: NavigationBasedCoordinator {
         self.scanOption = scanOption
         super.init(navigationController: navigationController)
     }
-    
 
     lazy var controller: BluetoothScannerViewController = {
         let viewModel = BluetoothScannerViewModel(scanOption: self.scanOption)
@@ -28,13 +27,13 @@ final class BluetoothScannerCoordinator: NavigationBasedCoordinator {
     override func start() {
         super.start()
         
-        if navigationController.viewControllers.contains(where: { $0 is BluetoothScannerViewController }) {
-            navigationController.viewControllers.removeAll(where: { $0 is BluetoothScannerViewController })
-        }
-        
-        navigationController.pushViewController(controller, animated: true)
-        
-        if !controller.viewModel.devices.isEmpty {
+        if controller.viewModel.devices.isEmpty {
+            if navigationController.viewControllers.contains(where: { $0 is BluetoothScannerViewController }) {
+                navigationController.viewControllers.removeAll(where: { $0 is BluetoothScannerViewController })
+            }
+            
+            navigationController.pushViewController(controller, animated: true)
+        } else {
             self.routeToResult(device: controller.viewModel.devices)
         }
     }
@@ -46,13 +45,20 @@ final class BluetoothScannerCoordinator: NavigationBasedCoordinator {
             navigationController.viewControllers.removeAll(where: { $0 == controller })
         }
         
-        if scanOption == nil {
-            super.stop(completion: completion)
+        scanOption?.decrease()
+        super.stop(completion: completion)
+    }
+    
+    override func childDidStop(_ child: Coordinator) {
+        super.childDidStop(child)
+        
+        if child is ScannerResultCoordinator {
+            self.resultCoordinator = nil
         }
     }
     
     func routeToResult(device: [BluetoothDevice]) {
-        self.resultCoordinator = ScannerResultCoordinator(type: .bluetooth, devices: device, navigationController: navigationController)
+        self.resultCoordinator = ScannerResultCoordinator(scanOption: scanOption, type: .bluetooth, devices: device, navigationController: navigationController)
         self.resultCoordinator?.start()
         self.addChild(resultCoordinator!)
     }

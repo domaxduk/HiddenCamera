@@ -20,14 +20,23 @@ final class CameraDetectorCoordinator: NavigationBasedCoordinator {
     }
     
     lazy var controller: CameraDetectorViewController = {
-        let viewModel = CameraDetectorViewModel(hasButtonNext: true)
+        let viewModel = CameraDetectorViewModel(scanOption: scanOption)
         let controller = CameraDetectorViewController(viewModel: viewModel, coordinator: self)
         return controller
     }()
 
     override func start() {
         super.start()
-        navigationController.pushViewController(controller, animated: true)
+        
+        if let item = controller.viewModel.lastItem {
+            self.routeToResult(item: item)
+        } else {
+            if navigationController.viewControllers.contains(where: { $0 is CameraDetectorViewController }) {
+                navigationController.viewControllers.removeAll(where: { $0 is CameraDetectorViewController })
+            }
+            
+            navigationController.pushViewController(controller, animated: true)
+        }
     }
 
     override func stop(completion: (() -> Void)? = nil) {
@@ -37,6 +46,7 @@ final class CameraDetectorCoordinator: NavigationBasedCoordinator {
             navigationController.viewControllers.removeAll(where: { $0 == controller })
         }
         
+        scanOption?.decrease()
         super.stop(completion: completion)
     }
     
@@ -52,11 +62,13 @@ final class CameraDetectorCoordinator: NavigationBasedCoordinator {
         }
     }
     
-    func routeToResult(url: URL) {
-        let item = CameraResultItem(id: UUID().uuidString, fileName: url.lastPathComponent, type: .aiDetector)
-        self.previewResult = CameraResultCoordinator(item: item, navigationController: navigationController)
+    func routeToResult(item: CameraResultItem) {
+        if self.previewResult == nil {
+            self.previewResult = CameraResultCoordinator(scanOption: scanOption, item: item, navigationController: navigationController)
+            self.addChild(self.previewResult!)
+        }
+        
         self.previewResult?.start()
-        self.addChild(self.previewResult!)
     }
     
     func routeToGallery() {

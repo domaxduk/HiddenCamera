@@ -60,6 +60,10 @@ class HomeViewController: ViewController {
         viewModel.routing.routeToScanOption.subscribe(onNext: { [weak self] item in
             self?.coordinator?.startScanOption(item: item)
         }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.routeToHistoryDetail.subscribe(onNext: { [weak self] item in
+            self?.coordinator?.routeToHistoryDetail(item: item)
+        }).disposed(by: self.disposeBag)
     }
     
     // MARK: - ConfigUI

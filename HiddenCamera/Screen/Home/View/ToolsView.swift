@@ -39,7 +39,7 @@ struct ToolsView: View {
 }
 
 // MARK: - ToolItemView
-fileprivate struct ToolItemView: View {
+struct ToolItemView: View {
     let tool: ToolItem
     var body: some View {
         VStack {

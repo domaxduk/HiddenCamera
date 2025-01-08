@@ -39,16 +39,26 @@ struct MagnetometerView: View {
                 .onTapGesture {
                     viewModel.input.didTapBack.onNext(())
                 }
-            
+                .padding(.leading, 20)
+
             Text(ToolItem.magnetic.name)
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
             
             Spacer()
+            
+            if viewModel.scanOption != nil {
+                Button(action: {
+                    viewModel.input.didTapNext.onNext(())
+                }, label: {
+                    Text("Next")
+                        .textColor(.app(.main))
+                        .font(Poppins.semibold.font(size: 16))
+                        .padding(20)
+                })
+            }
         }
-        .padding(.horizontal, 20)
         .frame(height: AppConfig.navigationBarHeight)
-        .frame(height: 56)
     }
     
     // MARK: - content
@@ -320,5 +330,5 @@ struct SeverityCircleView: View {
 }
 
 #Preview {
-    MagnetometerView(viewModel: MagnetometerViewModel(hasButtonNext: true))
+    MagnetometerView(viewModel: MagnetometerViewModel(scanOption: .init()))
 }
