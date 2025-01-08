@@ -26,7 +26,7 @@ struct ScanView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Text("Press the button bellow to scan full")
+            Text("Choose options to scan")
                 .font(Poppins.regular.font(size: 14))
                 .textColor(.app(.light09))
                 .padding(.top, 20)

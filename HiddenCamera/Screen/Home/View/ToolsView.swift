@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import SakuraExtension
+import RxSwift
 
 fileprivate struct Const {
     static let screenWidth = UIScreen.main.bounds.width
@@ -42,7 +44,9 @@ struct ToolsView: View {
 struct ToolItemView: View {
     let tool: ToolItem
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
+            Spacer(minLength: 0)
+            
             Circle()
                 .fill(tool.color.opacity(0.1))
                 .frame(height: Const.circleHeight)
@@ -56,6 +60,12 @@ struct ToolItemView: View {
             Text(tool.name)
                 .multilineTextAlignment(.center)
                 .font(Poppins.semibold.font(size: Const.fontSize))
+                .padding(.top, Const.circleHeight / 72 * 16)
+                .foreColor(.app(.light12))
+                .scaledToFit()
+                .minimumScaleFactor(0.5)
+                .lineLimit(1)
+                
             
             Spacer(minLength: 0)
         }

@@ -46,7 +46,11 @@ class BluetoothScannerViewController: ViewController {
         }).disposed(by: self.disposeBag)
         
         viewModel.routing.showErrorMessage.subscribe(onNext: { [weak self] message in
-            self?.presentAlert(title: "Oops!", message: message)
+            guard let self else { return }
+            
+            if self.isDisplaying {
+                self.presentAlert(title: "Oops!", message: message)
+            }
         }).disposed(by: self.disposeBag)
         
         viewModel.routing.nextTool.subscribe(onNext: { [weak self] _ in

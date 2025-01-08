@@ -109,10 +109,24 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
             return
         }
                 
-        // TODO: - Check Local network permission
-        resetData()
-        startScan()
-        startTimer()
+        self.isLoading = true
+        Task {
+            let granted = try await requestLocalNetworkAuthorization()
+            
+            DispatchQueue.main.async {
+                self.isLoading = false
+                
+                if granted {
+                    self.resetData()
+                    self.startTimer()
+                    self.startScan()
+                } else {
+                    withAnimation {
+                        self.isShowingLocalNetworkDialog = true
+                    }
+                }
+            }
+        }
     }
     
     private func startTimer() {
@@ -145,12 +159,16 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
     }
     
     private func startScan() {
+        print("startScan")
         if state == .isScanning {
              return
         }
         
         self.state = .isScanning
-        LocalNetworkDetector.shared.start()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            LocalNetworkDetector.shared.start()
+        }
     }
     
     private func configLocalNetworkDetector() {

@@ -152,7 +152,11 @@ extension BluetoothScannerViewModel: BluetoothScannerDelegate {
     }
     
     func bluetoothScanner(_ scanner: BluetoothScanner, didUpdateState state: CBManagerState) {
-        
+        switch state {
+        case .poweredOff:
+            self.routing.showErrorMessage.onNext("Your bluetooth is off. Please turn on bluetooth to continue this feature")
+        default: break
+        }
     }
 }
 

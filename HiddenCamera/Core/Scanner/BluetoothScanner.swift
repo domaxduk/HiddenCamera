@@ -34,7 +34,6 @@ class BluetoothScanner: NSObject, ObservableObject {
     
     var currentState: CBManagerState = .unknown
 
-    
     private override init() {
         super.init()
         self.manager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: false])
@@ -47,7 +46,9 @@ class BluetoothScanner: NSObject, ObservableObject {
         }
         
         isScanning = true
+        
         if self.currentState == .poweredOn  {
+            print("start scan bluetooth device")
             manager?.scanForPeripherals(withServices: nil,
                                         options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
         }
@@ -65,6 +66,7 @@ class BluetoothScanner: NSObject, ObservableObject {
 // MARK: - Handle bluetooth updates
 extension BluetoothScanner: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        self.currentState = central.state
         switch central.state {
         case .unknown:
             print("Bluetooth is unknown.")
@@ -82,11 +84,10 @@ extension BluetoothScanner: CBCentralManagerDelegate {
             }
             
             print("Bluetooth is poweredOn.")
-        @unknown default:
+        default:
             break
         }
         
-        self.currentState = central.state
         self.delegate?.bluetoothScanner?(self, didUpdateState: central.state)
     }
     
@@ -114,6 +115,8 @@ extension BluetoothScanner: CBCentralManagerDelegate {
                 print("Tên thiết bị: \(deviceName)")
             }
         }
+        
+        print("is scanning")
         
         self.delegate?.bluetoothScanner(self, updateListDevice: devices)
     }

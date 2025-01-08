@@ -74,6 +74,7 @@
 		857F24272D2E73F800AFDA73 /* ScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24262D2E73F800AFDA73 /* ScanView.swift */; };
 		857F24292D2E746300AFDA73 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24282D2E746300AFDA73 /* HistoryView.swift */; };
 		857F242B2D2E7B2A00AFDA73 /* tapfinger.json in Resources */ = {isa = PBXBuildFile; fileRef = 857F242A2D2E7B2A00AFDA73 /* tapfinger.json */; };
+		857F242D2D2E805D00AFDA73 /* RequestLocalNetworkAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F242C2D2E805D00AFDA73 /* RequestLocalNetworkAuthorization.swift */; };
 		85A5EAEF2D23D479008B58EB /* PreviewCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A5EAEE2D23D479008B58EB /* PreviewCameraView.swift */; };
 		85A5EAF42D23DEE2008B58EB /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A5EAF32D23DEE2008B58EB /* CameraManager.swift */; };
 		85DA722A2D1E919B008F5589 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72292D1E919B008F5589 /* AppDelegate.swift */; };
@@ -190,6 +191,7 @@
 		857F24262D2E73F800AFDA73 /* ScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanView.swift; sourceTree = "<group>"; };
 		857F24282D2E746300AFDA73 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		857F242A2D2E7B2A00AFDA73 /* tapfinger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tapfinger.json; sourceTree = "<group>"; };
+		857F242C2D2E805D00AFDA73 /* RequestLocalNetworkAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestLocalNetworkAuthorization.swift; sourceTree = "<group>"; };
 		85A5EAEE2D23D479008B58EB /* PreviewCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCameraView.swift; sourceTree = "<group>"; };
 		85A5EAF32D23DEE2008B58EB /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		85DA72262D1E919B008F5589 /* HiddenCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HiddenCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -347,6 +349,7 @@
 				852E29182D27E90600293218 /* Extension */,
 				852E291B2D27E90600293218 /* Model */,
 				852E29232D27E90600293218 /* LocalNetworkDetector.swift */,
+				857F242C2D2E805D00AFDA73 /* RequestLocalNetworkAuthorization.swift */,
 				85E3C6002D2BB27100BBAFBE /* BluetoothScanner.swift */,
 				852E29242D27E90600293218 /* NetworkUtils.swift */,
 				853D48162D2CD32500644A55 /* NetworkManager.swift */,
@@ -914,6 +917,7 @@
 				85DA726E2D1EA436008F5589 /* Coordinator.swift in Sources */,
 				24EC7E212D2A391E00875752 /* ScannerResultView.swift in Sources */,
 				852E28FB2D2799EA00293218 /* AVCaptureDeviceExtension.swift in Sources */,
+				857F242D2D2E805D00AFDA73 /* RequestLocalNetworkAuthorization.swift in Sources */,
 				85DA725F2D1E9C5B008F5589 /* ToolsView.swift in Sources */,
 				247A67A12D298F8300BA6EC8 /* AppleDevice.swift in Sources */,
 				852E292F2D27E90600293218 /* LocalNetworkDetector.swift in Sources */,

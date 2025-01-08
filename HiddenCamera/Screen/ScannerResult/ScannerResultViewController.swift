@@ -43,6 +43,14 @@ class ScannerResultViewController: ViewController {
         self.viewModel.routing.nextTool.subscribe(onNext: { [weak  self] _  in
             self?.coordinator?.nextTool()
         }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.showErrorMessage.subscribe(onNext: { [weak self] message in
+            guard let self else { return }
+            
+            if self.isDisplaying {
+                self.presentAlert(title: "Oops!", message: message)
+            }
+        }).disposed(by: self.disposeBag)
     }
     
     private func configUI() {

@@ -8,6 +8,7 @@
 import UIKit
 import SwiftUI
 import RxSwift
+import CoreBluetooth
 
 struct ScannerResultViewModelInput: InputOutputViewModel {
     var didTapFix = PublishSubject<Device>()
@@ -23,6 +24,7 @@ struct ScannerResultViewModelOutput: InputOutputViewModel {
 
 struct ScannerResultViewModelRouting: RoutingOutput {
     var stop = PublishSubject<()>()
+    var showErrorMessage = PublishSubject<String>()
     var nextTool = PublishSubject<()>()
 }
 
@@ -132,6 +134,14 @@ extension ScannerResultViewModel: LocalNetworkDetectorDelegate, BluetoothScanner
         
         let toolItem: ToolItem = type == .bluetooth ? .bluetoothScanner : .wifiScanner
         self.scanOption?.suspiciousResult[toolItem] = numberOfSuspiciousDevice()
+    }
+    
+    func bluetoothScanner(_ scanner: BluetoothScanner, didUpdateState state: CBManagerState) {
+        switch state {
+        case .poweredOff:
+            self.routing.showErrorMessage.onNext("Your bluetooth is off. Please turn on bluetooth to continue this feature")
+        default: break
+        }
     }
     
     func localNetworkDetector(_ detector: LocalNetworkDetector, updateListDevice devices: [LANDevice]) {

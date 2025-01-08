@@ -88,11 +88,13 @@ extension MagnetometerViewModel: MagnetometerLocationDelegate {
     }
     
     func getUpdatedData(magnet: Magnetometer) {
-        self.strength = magnet.magneticStrength
-        self.x = magnet.x
-        self.y = magnet.y
-        self.z = magnet.z
-        
+        DispatchQueue.main.async {
+            self.strength = magnet.magneticStrength
+            self.x = magnet.x
+            self.y = magnet.y
+            self.z = magnet.z
+        }
+       
         if magnet.magneticStrength >= 200 {
             self.scanOption?.suspiciousResult[.magnetic] = 1
         }

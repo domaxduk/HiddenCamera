@@ -22,6 +22,7 @@ class LocalNetworkDetector: NSObject {
     private var services: [NetService] = []
     private var browsers: [NetServiceBrowser] = []
     private var pingers: [String: SwiftyPing] = [:]
+    var isScanning: Bool = false
     
     private var servicesToMonitor: Set<String> = [
         "_device-info._tcp.",
@@ -43,12 +44,14 @@ class LocalNetworkDetector: NSObject {
     }
 
     func start() {
-        stopScan()
+        if isScanning { return }
+        self.isScanning = true
         startSearchService()
         startPing()
     }
     
     func stopScan() {
+        self.isScanning = false
         for pinger in pingers.values {
             pinger.stopPinging()
         }
