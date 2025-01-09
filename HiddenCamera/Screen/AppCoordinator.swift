@@ -10,17 +10,22 @@ import RxSwift
 
 class AppCoordinator: WindowBasedCoordinator {
     private var homeCoordinator: HomeCoordinator?
-    let dispose = DisposeBag()
+    private var introCoodinator: IntroCoordinator?
     
     override func start() {
         super.start()
         
-        routeToHome()
+      //  routeToHome()
+        routeToIntro()
     }
     
     override func childDidStop(_ child: Coordinator) {
         super.childDidStop(child)
         
+        if child is IntroCoordinator {
+            self.introCoodinator = nil
+            self.routeToHome()
+        }
     }
 }
 
@@ -31,5 +36,12 @@ extension AppCoordinator {
         coordinator.start()
         addChild(coordinator)
         self.homeCoordinator = coordinator
+    }
+    
+    func routeToIntro() {
+        let coordinator = IntroCoordinator(window: window)
+        coordinator.start()
+        addChild(coordinator)
+        self.introCoodinator = coordinator
     }
 }

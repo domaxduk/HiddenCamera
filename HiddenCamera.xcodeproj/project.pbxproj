@@ -69,6 +69,14 @@
 		85699C602D26943F0000E5A6 /* CameraResultGalleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C5C2D26943F0000E5A6 /* CameraResultGalleryViewModel.swift */; };
 		85699C612D26943F0000E5A6 /* CameraResultGalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85699C5D2D26943F0000E5A6 /* CameraResultGalleryViewController.xib */; };
 		85699C632D2696360000E5A6 /* CameraResultGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C622D2696350000E5A6 /* CameraResultGalleryView.swift */; };
+		857AF91D2D2F68CF004C8016 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857AF91C2D2F68CF004C8016 /* LoadingView.swift */; };
+		857AF9202D2F6D9F004C8016 /* RateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857AF91F2D2F6D9F004C8016 /* RateManager.swift */; };
+		857AF9232D2F6E44004C8016 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857AF9222D2F6E44004C8016 /* SubscriptionView.swift */; };
+		857AF9252D2F6EE8004C8016 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857AF9242D2F6EE8004C8016 /* IntroView.swift */; };
+		857AF92A2D2F6EF1004C8016 /* IntroCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857AF9262D2F6EF1004C8016 /* IntroCoordinator.swift */; };
+		857AF92B2D2F6EF1004C8016 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857AF9272D2F6EF1004C8016 /* IntroViewController.swift */; };
+		857AF92C2D2F6EF1004C8016 /* IntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857AF9282D2F6EF1004C8016 /* IntroViewModel.swift */; };
+		857AF92D2D2F6EF1004C8016 /* IntroViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 857AF9292D2F6EF1004C8016 /* IntroViewController.xib */; };
 		857F24232D2E568700AFDA73 /* RlmScanHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24222D2E568700AFDA73 /* RlmScanHistory.swift */; };
 		857F24252D2E57EB00AFDA73 /* ScanHistoryDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24242D2E57EB00AFDA73 /* ScanHistoryDAO.swift */; };
 		857F24272D2E73F800AFDA73 /* ScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24262D2E73F800AFDA73 /* ScanView.swift */; };
@@ -186,6 +194,14 @@
 		85699C5C2D26943F0000E5A6 /* CameraResultGalleryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultGalleryViewModel.swift; sourceTree = "<group>"; };
 		85699C5D2D26943F0000E5A6 /* CameraResultGalleryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CameraResultGalleryViewController.xib; sourceTree = "<group>"; };
 		85699C622D2696350000E5A6 /* CameraResultGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultGalleryView.swift; sourceTree = "<group>"; };
+		857AF91C2D2F68CF004C8016 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		857AF91F2D2F6D9F004C8016 /* RateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateManager.swift; sourceTree = "<group>"; };
+		857AF9222D2F6E44004C8016 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
+		857AF9242D2F6EE8004C8016 /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
+		857AF9262D2F6EF1004C8016 /* IntroCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCoordinator.swift; sourceTree = "<group>"; };
+		857AF9272D2F6EF1004C8016 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		857AF9282D2F6EF1004C8016 /* IntroViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewModel.swift; sourceTree = "<group>"; };
+		857AF9292D2F6EF1004C8016 /* IntroViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IntroViewController.xib; sourceTree = "<group>"; };
 		857F24222D2E568700AFDA73 /* RlmScanHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RlmScanHistory.swift; sourceTree = "<group>"; };
 		857F24242D2E57EB00AFDA73 /* ScanHistoryDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanHistoryDAO.swift; sourceTree = "<group>"; };
 		857F24262D2E73F800AFDA73 /* ScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanView.swift; sourceTree = "<group>"; };
@@ -452,6 +468,30 @@
 			path = CameraResultGallery;
 			sourceTree = "<group>";
 		};
+		857AF91B2D2F68C2004C8016 /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				857AF91C2D2F68CF004C8016 /* LoadingView.swift */,
+			);
+			path = Custom;
+			sourceTree = "<group>";
+		};
+		857AF91E2D2F6D97004C8016 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				857AF91F2D2F6D9F004C8016 /* RateManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		857AF9212D2F6E37004C8016 /* Subscription */ = {
+			isa = PBXGroup;
+			children = (
+				857AF9222D2F6E44004C8016 /* SubscriptionView.swift */,
+			);
+			path = Subscription;
+			sourceTree = "<group>";
+		};
 		857F24212D2E567500AFDA73 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -500,6 +540,7 @@
 				85DA72342D1E919D008F5589 /* LaunchScreen.storyboard */,
 				85DA722F2D1E919B008F5589 /* Main.storyboard */,
 				85DA72322D1E919D008F5589 /* Assets.xcassets */,
+				857AF91B2D2F68C2004C8016 /* Custom */,
 				85DA72532D1E9422008F5589 /* Const */,
 				85DA72652D1EA427008F5589 /* Core */,
 				85DA72432D1E9376008F5589 /* Resources */,
@@ -511,6 +552,7 @@
 		85DA723D2D1E9302008F5589 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				857AF9212D2F6E37004C8016 /* Subscription */,
 				853D48382D2D333200644A55 /* HistoryDetail */,
 				853D48372D2D320100644A55 /* Feature */,
 				24EC7E172D2A383900875752 /* ScannerResult */,
@@ -548,6 +590,11 @@
 		85DA72402D1E933A008F5589 /* Intro */ = {
 			isa = PBXGroup;
 			children = (
+				857AF9242D2F6EE8004C8016 /* IntroView.swift */,
+				857AF9262D2F6EF1004C8016 /* IntroCoordinator.swift */,
+				857AF9272D2F6EF1004C8016 /* IntroViewController.swift */,
+				857AF9282D2F6EF1004C8016 /* IntroViewModel.swift */,
+				857AF9292D2F6EF1004C8016 /* IntroViewController.xib */,
 			);
 			path = Intro;
 			sourceTree = "<group>";
@@ -597,6 +644,7 @@
 		85DA72652D1EA427008F5589 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				857AF91E2D2F6D97004C8016 /* Manager */,
 				853D48342D2D2A0A00644A55 /* Model */,
 				853D48262D2CF2DF00644A55 /* Magnetometer */,
 				85E3C5EE2D2B883000BBAFBE /* Location */,
@@ -781,6 +829,7 @@
 				857F242B2D2E7B2A00AFDA73 /* tapfinger.json in Resources */,
 				85DA72502D1E9392008F5589 /* Poppins-Regular.ttf in Resources */,
 				852E290F2D27E4EC00293218 /* WifiScannerViewController.xib in Resources */,
+				857AF92D2D2F6EF1004C8016 /* IntroViewController.xib in Resources */,
 				852E29292D27E90600293218 /* macVendors.plist in Resources */,
 				85DA724D2D1E9392008F5589 /* Poppins-SemiBold.ttf in Resources */,
 				853D483D2D2D333E00644A55 /* HistoryDetailViewController.xib in Resources */,
@@ -884,6 +933,7 @@
 				85699C482D2649600000E5A6 /* CameraResultViewController.swift in Sources */,
 				853D483E2D2D333E00644A55 /* HistoryDetailCoordinator.swift in Sources */,
 				853D483F2D2D333E00644A55 /* HistoryDetailViewController.swift in Sources */,
+				857AF9232D2F6E44004C8016 /* SubscriptionView.swift in Sources */,
 				853D48402D2D333E00644A55 /* HistoryDetailViewModel.swift in Sources */,
 				85699C492D2649600000E5A6 /* CameraResultViewModel.swift in Sources */,
 				85E3C6012D2BB27100BBAFBE /* BluetoothScanner.swift in Sources */,
@@ -902,6 +952,9 @@
 				85E3C5F92D2B9B4F00BBAFBE /* BluetoothScannerCoordinator.swift in Sources */,
 				85E3C5FA2D2B9B4F00BBAFBE /* BluetoothScannerViewController.swift in Sources */,
 				85E3C5FB2D2B9B4F00BBAFBE /* BluetoothScannerViewModel.swift in Sources */,
+				857AF92A2D2F6EF1004C8016 /* IntroCoordinator.swift in Sources */,
+				857AF92B2D2F6EF1004C8016 /* IntroViewController.swift in Sources */,
+				857AF92C2D2F6EF1004C8016 /* IntroViewModel.swift in Sources */,
 				852E292B2D27E90600293218 /* Device.swift in Sources */,
 				85E3C6052D2BB60900BBAFBE /* BluetoothDevice.swift in Sources */,
 				852E290C2D27E4EC00293218 /* WifiScannerCoordinator.swift in Sources */,
@@ -923,6 +976,7 @@
 				852E292F2D27E90600293218 /* LocalNetworkDetector.swift in Sources */,
 				853D48362D2D2A1300644A55 /* ScanOptionItem.swift in Sources */,
 				852E28FF2D2799EA00293218 /* DataProcesser.swift in Sources */,
+				857AF9252D2F6EE8004C8016 /* IntroView.swift in Sources */,
 				85699C632D2696360000E5A6 /* CameraResultGalleryView.swift in Sources */,
 				85DA72642D1E9F0D008F5589 /* HomeTab.swift in Sources */,
 				85DA72702D1EA436008F5589 /* PresentedCoordinator.swift in Sources */,
@@ -930,6 +984,8 @@
 				853D48282D2CF31500644A55 /* Magnetometer.swift in Sources */,
 				853D48222D2CD7BD00644A55 /* MagnetometerView.swift in Sources */,
 				852E28E82D2794DA00293218 /* CameraDetectorCoordinator.swift in Sources */,
+				857AF9202D2F6D9F004C8016 /* RateManager.swift in Sources */,
+				857AF91D2D2F68CF004C8016 /* LoadingView.swift in Sources */,
 				852E292A2D27E90600293218 /* NetServiceExtension.swift in Sources */,
 				852E28E92D2794DA00293218 /* CameraDetectorViewController.swift in Sources */,
 				852E28EA2D2794DA00293218 /* CameraDetectorViewModel.swift in Sources */,

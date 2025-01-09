@@ -17,6 +17,7 @@ struct HomeViewModelInput: InputOutputViewModel {
     var didTapStartScanOption = PublishSubject<()>()
     var didTapScanFull = PublishSubject<()>()
     var removeAllScanOption = PublishSubject<()>()
+    var selectSettingItem = PublishSubject<SettingItem>()
 }
 
 struct HomeViewModelOutput: InputOutputViewModel {
@@ -32,6 +33,8 @@ struct HomeViewModelRouting: RoutingOutput {
     
     var routeToScanOption = PublishSubject<ScanOptionItem>()
     var routeToHistoryDetail = PublishSubject<ScanOptionItem>()
+    
+    var shareApp = PublishSubject<()>()
 }
 
 final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput, HomeViewModelRouting> {
@@ -96,6 +99,24 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
                 }
             }
             
+        }).disposed(by: self.disposeBag)
+        
+        input.selectSettingItem.subscribe(onNext: { [weak self] item in
+            guard let self else { return }
+            switch item {
+            case .share:
+                self.routing.shareApp.onNext(())
+            case .policy: break
+               // WatchologyWebViewController.open(input: .init(url: WatchologyConst.policy, title: "Privacy Policy"))
+            case .term: break
+             //   WatchologyWebViewController.open(input: .init(url: WatchologyConst.term, title: "Terms of Conditions"))
+            case .contact: break
+             //   WatchologyWebViewController.open(input: .init(url: WatchologyConst.contact, title: "Contact us"))
+            case .rate:
+                RateManager.rate()
+            case .restore:
+                break
+            }
         }).disposed(by: self.disposeBag)
     }
     

@@ -64,6 +64,27 @@ class HomeViewController: ViewController {
         viewModel.routing.routeToHistoryDetail.subscribe(onNext: { [weak self] item in
             self?.coordinator?.routeToHistoryDetail(item: item)
         }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.shareApp
+            .subscribe(onNext: { [weak self] _ in
+                guard let self else { return }
+                self.showLoading()
+                let items = ["https://apps.apple.com/app/apple-store/id\(AppConfig.appID)"]
+                let shareActVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+                shareActVC.view.tintColor = UIColor.orange
+                shareActVC.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+                shareActVC.completionWithItemsHandler = { _, _, _, _ in }
+                
+                if let popoverController = shareActVC.popoverPresentationController {
+                    popoverController.sourceRect = self.view.bounds
+                    popoverController.sourceView = self.view
+                    popoverController.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
+                }
+                
+                self.present(shareActVC, animated: true, completion: {
+                    self.hideLoading()
+                })
+            }).disposed(by: self.disposeBag)
     }
     
     // MARK: - ConfigUI

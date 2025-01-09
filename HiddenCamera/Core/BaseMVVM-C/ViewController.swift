@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 import RxSwift
+import SwiftUI
 
 open class ViewController: UIViewController {
     private(set) var viewWillAppeared: Bool = false
@@ -13,6 +14,7 @@ open class ViewController: UIViewController {
         
     public var isDisplaying: Bool = false
     public let disposeBag = DisposeBag()
+    private var loadingView: UIHostingController<LoadingView>!
     
     open override var preferredStatusBarStyle: UIStatusBarStyle {
         return .default
@@ -77,5 +79,35 @@ open class ViewController: UIViewController {
     
     @objc func updatePremiumVersion() {
        
+    }
+}
+
+// MARK: - Loading
+extension ViewController {
+    func showLoading() {
+        if self.loadingView == nil {
+            self.loadingView = UIHostingController(rootView: LoadingView())
+            self.loadingView.view.backgroundColor = .clear
+            self.loadingView.modalPresentationStyle = .overFullScreen
+            self.loadingView.modalTransitionStyle = .crossDissolve
+        }
+        
+        self.view.addSubview(self.loadingView.view)
+        self.loadingView.view.alpha = 0
+        self.loadingView.view.fitSuperviewConstraint()
+        
+        UIView.animate(withDuration: 0.3) {
+            self.loadingView.view.alpha = 1
+        }
+    }
+    
+    func hideLoading() {
+        if self.loadingView != nil {
+            UIView.animate(withDuration: 0.3) {
+                self.loadingView.view.alpha = 0
+            } completion: { [weak self] isDone in
+                self?.loadingView.view.removeFromSuperview()
+            }
+        }
     }
 }

@@ -13,6 +13,7 @@ enum AppColor: Int {
     case light01 = 0xFCFCFC
     case light03 = 0xF0F0F0
     case light04 = 0xE8E8E8
+    case light05 = 0xE0E0E0
     case light06 = 0xD9D9D9
     case light09 = 0x8D8D8D
     case light10 = 0x838383
