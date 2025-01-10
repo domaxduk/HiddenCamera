@@ -171,14 +171,18 @@ struct WifiScannerView: View {
                 .padding(.top, 40)
                 .padding(.horizontal, 20)
             }
-                        
-            if let device = viewModel.showingDevice, viewModel.state == .isScanning {
-                LocalDeviceItemView(device: device)
-                    .padding(.bottom, 28)
+            
+            if viewModel.state == .isScanning {
+                ZStack {
+                    ForEach(viewModel.showingDevice, id: \.id) { device in
+                        LocalDeviceItemView(device: device)
+                            .padding(.bottom, 28)
+                    }
+                }
             }
             
             if viewModel.state != .done {
-                Text("Network name : \(viewModel.networkName ?? "Unknow")")
+                Text("Network name : \(viewModel.networkName ?? "Unknown")")
                     .font(Poppins.regular.font(size: 14))
                     .textColor(.app(.light09))
                 
@@ -244,7 +248,7 @@ struct WifiScannerView: View {
     
     @ViewBuilder
     var scanView: some View {
-        LottieView(animation: .named("blueCircle"))
+        LottieView(animation: .named(viewModel.state != .isScanning ? "blueCircle" : "scanning"))
             .playing()
             .looping()
             .overlay(
@@ -271,42 +275,47 @@ struct WifiScannerView: View {
 
 // MARK:  - LocalDeviceItemView
 fileprivate struct LocalDeviceItemView: View {
-    @ObservedObject var device: LANDevice
-        
+    @State var didAppear: Bool = false
+    var device: LANDevice?
+
+    @ViewBuilder
     var body: some View {
-        HStack(spacing: 16) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.app(.main).opacity(0.1))
-                .frame(width: 44, height: 44)
-                .overlay(
-                    Image(imageName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24)
-                )
+        if let device {
+            HStack(spacing: 16) {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.app(.main).opacity(0.1))
+                    .frame(width: 44, height: 44)
+                    .overlay(
+                        Image(device.imageName)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24)
+                    )
+                    
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(device.deviceName() ?? "Unknown")
+                        .font(Poppins.semibold.font(size: 14))
+                        .frame(height: 20)
+                    
+                    Text("IP Address: " + (device.ipAddress ?? ""))
+                        .font(Poppins.regular.font(size: 12))
+                        .textColor(.app(.light11))
+                        .lineLimit(1)
+                        .frame(height: 18)
+                }
                 
-            VStack(alignment: .leading, spacing: 4) {
-                Text(device.deviceName() ?? "Unknown")
-                    .font(Poppins.semibold.font(size: 14))
-                    .frame(height: 20)
-                
-                Text("IP Address: " + (device.ipAddress ?? ""))
-                    .font(Poppins.regular.font(size: 12))
-                    .textColor(.app(.light11))
-                    .lineLimit(1)
-                    .frame(height: 18)
+                Spacer(minLength: 0)
             }
-            
-            Spacer(minLength: 0)
+            .padding(20)
+            .background(Color.white)
+            .cornerRadius(16, corners: .allCorners)
+            .padding(.horizontal, 20)
+            .offset(x: didAppear ? 0 : UIScreen.main.bounds.width)
+            .animation(.easeInOut(duration: 0.3), value: didAppear)
+            .onAppear(perform: {
+                self.didAppear = true
+            })
         }
-        .padding(20)
-        .background(Color.white)
-        .cornerRadius(16, corners: .allCorners)
-        .padding(.horizontal, 20)
-    }
-    
-    var imageName: String {
-        return device.imageName
     }
 }
 

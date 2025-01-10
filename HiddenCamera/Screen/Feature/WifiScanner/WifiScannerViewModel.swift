@@ -39,7 +39,7 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
     @Published var percent: Double = 0
     @Published var seconds: Double = 0
     @Published var devices = [LANDevice]()
-    @Published var showingDevice: LANDevice?
+    @Published var showingDevice = [LANDevice]()
     
     @Published var isLoading: Bool = false
     @Published var isShowingLocationDialog: Bool = false
@@ -139,9 +139,7 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
             
             if Double(Int(seconds)) == seconds {
                 if devices.count > index {
-                    withAnimation {
-                        self.showingDevice = self.devices[self.index]
-                    }
+                    self.showingDevice.append(self.devices[self.index])
                     
                     index += 1
                 }
@@ -178,7 +176,7 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
     private func resetData() {
         LocalNetworkDetector.shared.stopScan()
         self.devices.removeAll()
-        self.showingDevice = nil
+        self.showingDevice.removeAll()
         self.index = 0
         self.seconds = 0
         self.percent = 0

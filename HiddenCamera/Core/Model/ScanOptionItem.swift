@@ -7,6 +7,12 @@
 
 import Foundation
 
+enum ScanOptionType: Int {
+    case quick = 0
+    case full = 1
+    case option = 2
+}
+
 class ScanOptionItem {
     var id: String
     var date: Date?
@@ -16,24 +22,25 @@ class ScanOptionItem {
     
     var isSave: Bool = false
     var isEnd: Bool = false
-    var isScanOption: Bool = false
+    var type: ScanOptionType = .quick
     
     init() {
         self.id = UUID().uuidString
         self.tools = [.bluetoothScanner, .wifiScanner, .cameraDetector]
+        self.type = .quick
     }
     
-    init(tools: [ToolItem]) {
+    init(tools: [ToolItem], type: ScanOptionType) {
         self.id = UUID().uuidString
         self.tools = tools
-        self.isScanOption = true
+        self.type = type
     }
     
     init(rlm: RlmScanHistory) {
         self.id = rlm.id
         self.isSave = true
         self.isEnd = true
-        self.isScanOption = rlm.isScanOption
+        self.type = ScanOptionType(rawValue: rlm.type) ?? .quick
         self.date = Date(timeIntervalSince1970: rlm.date)
         
         self.suspiciousResult = Dictionary(uniqueKeysWithValues: rlm.results.components(separatedBy: ",").compactMap({ item in

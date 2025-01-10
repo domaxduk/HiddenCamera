@@ -33,7 +33,7 @@ struct HistoryDetailView: View {
                                     if viewModel.numberOfTool != 1 {
                                         let isUsed = viewModel.scanOption.suspiciousResult.contains(where: { $0.key == tool })
                                         HStack(spacing: 0) {
-                                            Text("\(index)")
+                                            Text("\(index + 1)")
                                                 .font(Poppins.semibold.font(size: 14))
                                                 .textColor(isUsed ? .white : .app(.light11))
                                                 .frame(width: 36, height: 36)
@@ -72,8 +72,7 @@ struct HistoryDetailView: View {
                 .onTapGesture {
                     viewModel.routing.stop.onNext(())
                 }
-            
-            Text("Scan Full")
+            Text(title)
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
             
@@ -88,6 +87,17 @@ struct HistoryDetailView: View {
         .padding(.horizontal, 20)
         .frame(height: AppConfig.navigationBarHeight)
         .frame(height: 56)
+    }
+    
+    var title: String {
+        switch viewModel.scanOption.type {
+        case .quick:
+            "Quick Scan"
+        case .full:
+            "Scan Full"
+        case .option:
+            "Scan Options"
+        }
     }
     
     var dateString: String? {

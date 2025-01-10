@@ -11,12 +11,21 @@ import RxSwift
 class AppCoordinator: WindowBasedCoordinator {
     private var homeCoordinator: HomeCoordinator?
     private var introCoodinator: IntroCoordinator?
+    private var splashCoodinator: SplashCoordinator?
     
+    var didShowIntro: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "didShowIntro")
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "didShowIntro")
+        }
+    }
+
     override func start() {
         super.start()
         
-      //  routeToHome()
-        routeToIntro()
+        routeToSplash()
     }
     
     override func childDidStop(_ child: Coordinator) {
@@ -24,7 +33,18 @@ class AppCoordinator: WindowBasedCoordinator {
         
         if child is IntroCoordinator {
             self.introCoodinator = nil
+            self.didShowIntro = true
             self.routeToHome()
+        }
+        
+        if child is SplashCoordinator {
+            self.splashCoodinator = nil
+            
+            if didShowIntro {
+                self.routeToHome()
+            } else {
+                self.routeToIntro()
+            }
         }
     }
 }
@@ -43,5 +63,12 @@ extension AppCoordinator {
         coordinator.start()
         addChild(coordinator)
         self.introCoodinator = coordinator
+    }
+    
+    func routeToSplash() {
+        let coordinator = SplashCoordinator(window: window)
+        coordinator.start()
+        addChild(coordinator)
+        self.splashCoodinator = coordinator
     }
 }

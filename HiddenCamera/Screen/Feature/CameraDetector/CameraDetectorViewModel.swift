@@ -42,6 +42,7 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     @Published var captureSession: AVCaptureSession
     @Published var boxes = [BoundingBox]()
     @Published var isShowingCameraDialog: Bool = false
+    @Published var previewGalleryImage: UIImage?
 
     private let dataProcess = DataProcesser()
     var lastItem: CameraResultItem?
@@ -80,6 +81,14 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
         if !Permission.grantedCamera {
             self.isShowingCameraDialog = true
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(getPreviewGalleryImage), name: .updateCameraHistory, object: nil)
+        getPreviewGalleryImage()
+    }
+    
+    @objc private func getPreviewGalleryImage() {
+        let item = CameraResultDAO().getAll().filter({ $0.type == .aiDetector }).last
+        self.previewGalleryImage = item?.thumbnailImage
     }
     
     private func configDataProcesser() {

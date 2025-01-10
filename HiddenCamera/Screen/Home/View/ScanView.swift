@@ -53,12 +53,12 @@ struct ScanView: View {
                     
                     Spacer()
                     
-                    NavigationLink {
-                        ScanOptionView(viewModel: viewModel)
-                            .navigationBarBackButtonHidden()
-                    } label: {
-                        ScanItemView(color: .init(rgb: 0xFFA63D), icon: "ic_tool_scanoption", name: "Scan Options")
-                    }
+                    ScanItemView(color: .init(rgb: 0xFFA63D), icon: "ic_tool_scanoption", name: "Scan Options")
+                        .onTapGesture {
+                            withAnimation {
+                                self.viewModel.isShowingScanOption = true
+                            }
+                        }
                 }
                 .padding(.horizontal, Const.padding)
                 .padding(.bottom, 100)
@@ -69,7 +69,6 @@ struct ScanView: View {
 
 // MARK: - ScanOptionView
 struct ScanOptionView: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var viewModel: HomeViewModel
 
     var body: some View {
@@ -83,7 +82,9 @@ struct ScanOptionView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24)
                         .onTapGesture {
-                            presentationMode.wrappedValue.dismiss()
+                            withAnimation {
+                                viewModel.isShowingScanOption = false
+                            }
                         }
                         .padding(.leading, 20)
                     

@@ -321,6 +321,7 @@ fileprivate struct FindView: View {
                         .animation(
                             .easeInOut(duration: 2)
                             .repeatForever(autoreverses: false)
+                            , value: isAnimation
                         )
                     
                     Circle()
@@ -331,6 +332,7 @@ fileprivate struct FindView: View {
                             .easeInOut(duration: 2)
                             .repeatForever(autoreverses: false)
                             .delay(0.25)
+                            , value: isAnimation
                         )
                        
                     Circle()
@@ -341,6 +343,7 @@ fileprivate struct FindView: View {
                             .easeInOut(duration: 2)
                             .repeatForever(autoreverses: false)
                             .delay(0.5)
+                            , value: isAnimation
                         )
                     
                     Circle()
@@ -355,9 +358,6 @@ fileprivate struct FindView: View {
                                 .lineLimit(1)
                         )
                 }
-                .onAppear(perform: {
-                    isAnimation = true
-                })
                 
                 Spacer()
                 
@@ -376,6 +376,9 @@ fileprivate struct FindView: View {
                     .padding(.bottom, 100)
             }
             .background(Color.app(.light03).ignoresSafeArea())
+            .onAppear(perform: {
+                self.isAnimation = true
+            })
         }
         .navigationBarTitle("")
         .navigationBarHidden(true)

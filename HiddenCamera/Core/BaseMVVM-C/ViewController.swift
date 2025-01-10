@@ -7,6 +7,7 @@ import Foundation
 import UIKit
 import RxSwift
 import SwiftUI
+import SwiftUI
 
 open class ViewController: UIViewController {
     private(set) var viewWillAppeared: Bool = false
@@ -79,6 +80,15 @@ open class ViewController: UIViewController {
     
     @objc func updatePremiumVersion() {
        
+    }
+    
+    func insertSwiftUIView<Content: View>(rootView: Content) {
+        let hostingView = UIHostingController(rootView: rootView)
+        hostingView.view.backgroundColor = .clear
+        self.addChild(hostingView)
+        hostingView.didMove(toParent: self)
+        self.view.addSubview(hostingView.view)
+        hostingView.view.fitSuperviewConstraint()
     }
 }
 

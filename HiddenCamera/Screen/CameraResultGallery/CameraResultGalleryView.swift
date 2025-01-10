@@ -32,9 +32,10 @@ struct CameraResultGalleryView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 64)
-                    Text("Your gallery is empty. Scan now to ensure your area is safe and save video evidence.")
+                    Text("Your gallery is empty. Scan now to ensure your\narea is safe and save video evidence.")
                         .textColor(.app(.light09))
                         .font(Poppins.regular.font(size: 14))
+                        .autoResize(numberLines: 2)
                         .padding(.horizontal, 44)
                         .padding(.top, 12)
                         .multilineTextAlignment(.center)
@@ -147,7 +148,7 @@ struct CameraResultGalleryView: View {
                     .padding(.horizontal, 20)
                 }
             }
-        }
+        }.frame(width: UIScreen.main.bounds.width)
     }
     
     var navigationBar: some View {
@@ -163,6 +164,7 @@ struct CameraResultGalleryView: View {
             Text(viewModel.title())
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
+                .autoResize(numberLines: 1)
             
             Spacer(minLength: 0)
             

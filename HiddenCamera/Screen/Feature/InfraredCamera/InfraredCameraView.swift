@@ -127,12 +127,17 @@ struct InfraredCameraView: View {
                 ZStack {
                     recordButton.zIndex(1)
                     
-                    if viewModel.scanOption == nil {
+                    if let image = viewModel.previewGalleryImage, viewModel.scanOption == nil {
                         HStack {
                             Spacer()
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(.white)
                                 .frame(width: 64, height: 64)
+                                .overlay(
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                )
                         }
                         .onTapGesture {
                             viewModel.input.didTapGallery.onNext(())
@@ -157,7 +162,7 @@ struct InfraredCameraView: View {
                 if CameraManager.isFlashAvailable() {
                     Circle().fill(.white.opacity(0.25))
                         .overlay(
-                            Image("ic_flash")
+                            Image(viewModel.isTurnFlash ? "ic_flash_off" : "ic_flash")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 24)

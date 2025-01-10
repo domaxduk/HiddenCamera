@@ -41,6 +41,7 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
     @Published var currentTab: HomeTab = .scan
     @Published var historyItems = [ScanOptionItem]()
     @Published var scanOptions = [ToolItem]()
+    @Published var isShowingScanOption: Bool = false
     
     override func config() {
         super.config()
@@ -72,13 +73,13 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
         
         input.didTapStartScanOption.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            let item = ScanOptionItem(tools: self.scanOptions)
+            let item = ScanOptionItem(tools: self.scanOptions, type: .option)
             self.routing.routeToScanOption.onNext(item)
         }).disposed(by: self.disposeBag)
         
         input.didTapScanFull.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            let item = ScanOptionItem(tools: ToolItem.allCases)
+            let item = ScanOptionItem(tools: ToolItem.allCases, type: .full)
             self.routing.routeToScanOption.onNext(item)
         }).disposed(by: self.disposeBag)
         
@@ -106,12 +107,12 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
             switch item {
             case .share:
                 self.routing.shareApp.onNext(())
-            case .policy: break
-               // WatchologyWebViewController.open(input: .init(url: WatchologyConst.policy, title: "Privacy Policy"))
-            case .term: break
-             //   WatchologyWebViewController.open(input: .init(url: WatchologyConst.term, title: "Terms of Conditions"))
-            case .contact: break
-             //   WatchologyWebViewController.open(input: .init(url: WatchologyConst.contact, title: "Contact us"))
+            case .policy:
+                WebViewController.open(urlString: AppConfig.policy, title: "Privacy Policy")
+            case .term:
+                WebViewController.open(urlString: AppConfig.term, title: "Terms of Conditions")
+            case .contact:
+                WebViewController.open(urlString: AppConfig.term, title: "Contact us")
             case .rate:
                 RateManager.rate()
             case .restore:

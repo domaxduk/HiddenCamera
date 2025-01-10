@@ -10,7 +10,7 @@ import RxSwift
 import SwiftUI
 
 class InfraredCameraViewController: ViewController {
-    @IBOutlet weak var image: UIImageView!
+    private var previewImage: UIImageView!
     var viewModel: InfraredCameraViewModel
     weak var coordinator: InfraredCameraCoordinator?
 
@@ -46,7 +46,7 @@ class InfraredCameraViewController: ViewController {
         viewModel.output.updatePreview.subscribe(onNext: { [weak self] image in
             guard let self else { return }            
             DispatchQueue.main.async {
-                self.image.image = image
+                self.previewImage.image = image
             }
         }).disposed(by: self.disposeBag)
     }
@@ -86,6 +86,12 @@ class InfraredCameraViewController: ViewController {
     }
     
     private func configUI() {
+        self.previewImage = UIImageView()
+        self.previewImage.backgroundColor = .black
+        self.previewImage.contentMode = .scaleAspectFill
+        self.view.addSubview(previewImage)
+        previewImage.fitSuperviewConstraint()
+        
         let mainView = InfraredCameraView(viewModel: viewModel)
         let hostingView = UIHostingController(rootView: mainView)
         hostingView.view.backgroundColor = .clear

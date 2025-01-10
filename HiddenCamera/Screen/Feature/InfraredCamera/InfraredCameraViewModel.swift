@@ -39,7 +39,8 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
     @Published var captureSession: AVCaptureSession
     @Published var isTurnFlash: Bool = false
     @Published var isShowingCameraDialog: Bool = false
-    
+    @Published var previewGalleryImage: UIImage?
+
     private var writer: AssetWriter?
     private var timer: Timer?
     
@@ -50,6 +51,7 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
     private var startRecordingTimeOnSampleBuffer: CMTime!
     let scanOption: ScanOptionItem?
     var lastItem: CameraResultItem?
+    private let dao = CameraResultDAO()
 
     init(scanOption: ScanOptionItem?) {
         self.scanOption = scanOption
@@ -61,6 +63,14 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
         if !Permission.grantedCamera {
             self.isShowingCameraDialog = true
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(getPreviewGalleryImage), name: .updateCameraHistory, object: nil)
+        getPreviewGalleryImage()
+    }
+    
+    @objc private func getPreviewGalleryImage() {
+        let item = dao.getAll().filter({ $0.type == .infrared }).last
+        self.previewGalleryImage = item?.thumbnailImage
     }
     
     override func configInput() {

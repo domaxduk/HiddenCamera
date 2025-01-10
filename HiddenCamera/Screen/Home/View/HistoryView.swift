@@ -106,15 +106,36 @@ fileprivate struct HistoryItemView: View {
     }
     
     var titleString: String {
-        return item.isScanOption ? "Scan Option" : "Quick Scan"
+        switch item.type {
+        case .quick:
+            "Quick Scan"
+        case .full:
+            "Scan Full"
+        case .option:
+            "Scan Options"
+        }
     }
     
     var imageName: String {
-        return item.isScanOption ? "ic_tool_scanoption" : "ic_tool_quickscan"
+        switch item.type {
+        case .quick:
+            "ic_tool_quickscan"
+        case .full:
+            "ic_tool_scanfull"
+        case .option:
+            "ic_tool_scanoption"
+        }
     }
     
     var color: Color {
-        return item.isScanOption ? .init(rgb: 0xFFA63D) : .init(rgb: 0x9747FF)
+        switch item.type {
+        case .quick:
+                .init(rgb: 0x9747FF)
+        case .full:
+                .init(rgb: 0x0090FF)
+        case .option:
+                .init(rgb: 0xFFA63D)
+        }
     }
     
     var isSafe: Bool {

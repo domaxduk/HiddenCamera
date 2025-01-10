@@ -72,6 +72,10 @@ final class HomeCoordinator: WindowBasedCoordinator {
         }
         
         if child is HistoryDetailCoordinator {
+            self.controller.viewModel.currentTab = .history
+            self.controller.viewModel.isShowingScanOption = false
+            self.controller.viewModel.scanOptions = []
+            
             self.historyDetailCoordinator = nil
             self.scanOptionItem = nil
             self.stopAllChild()

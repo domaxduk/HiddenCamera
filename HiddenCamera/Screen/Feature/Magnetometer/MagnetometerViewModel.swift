@@ -47,12 +47,11 @@ final class MagnetometerViewModel: BaseViewModel<MetalDetectorViewModelInput, Me
             guard let self else { return }
             self.isDetecting = false
             Magnetometer.shared.stop()
-            
-            if scanOption?.suspiciousResult[.magnetic] == nil {
-                scanOption?.suspiciousResult[.magnetic] = 0
-            }
-            
             self.routing.nextTool.onNext(())
+            self.strength = 0
+            self.x = 0
+            self.y = 0
+            self.z = 0
         }).disposed(by: self.disposeBag)
         
         input.didTapStart.subscribe(onNext: { [weak self] _ in
@@ -63,6 +62,7 @@ final class MagnetometerViewModel: BaseViewModel<MetalDetectorViewModelInput, Me
             
             if isDetecting {
                 Magnetometer.shared.start()
+                scanOption?.suspiciousResult[.magnetic] = 0
             } else {
                 Magnetometer.shared.stop()
                 withAnimation {

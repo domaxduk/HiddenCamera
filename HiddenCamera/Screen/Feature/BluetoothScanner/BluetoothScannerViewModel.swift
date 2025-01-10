@@ -33,7 +33,7 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
     @Published var state: ScannerState = .ready
     @Published var percent: Double = 0
     @Published var seconds: Double = 0
-    @Published var showingDevice: BluetoothDevice?
+    @Published var showingDevice = [BluetoothDevice]()
     @Published var devices = [BluetoothDevice]()
     
     @Published var isShowingBluetoothDialog: Bool = false
@@ -105,7 +105,7 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
         BluetoothScanner.shared.stopScanning()
         self.timer?.invalidate()
         self.devices.removeAll()
-        self.showingDevice = nil
+        self.showingDevice.removeAll()
         self.index = 0
         self.seconds = 0
         self.percent = 0
@@ -122,7 +122,7 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
             if Double(Int(seconds)) == seconds {
                 if devices.count > index {
                     withAnimation {
-                        self.showingDevice = self.devices[self.index]
+                        self.showingDevice.append(self.devices[self.index])
                     }
                     
                     index += 1

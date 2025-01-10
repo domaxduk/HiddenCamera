@@ -35,31 +35,31 @@ struct IntroView: View {
             
             VStack {
                 thumbnailImage
-                    
+                
                 ScrollViewReader(content: { proxy in
                     ZStack {
                         ScrollView {
                             if viewModel.isRequested && viewModel.currentIndex != viewModel.intros.count {
-                                ZStack(alignment: .leading) {
-                                
-                                    VStack(alignment: .leading, spacing: 0) {
-                                        ForEach(viewModel.intros.indices, id: \.self) { index in
-                                            let intro = viewModel.intros[index]
+                                VStack(alignment: .leading, spacing: 0) {
+                                    ForEach(viewModel.intros.indices, id: \.self) { index in
+                                        let intro = viewModel.intros[index]
+                                        ZStack {
+                                            Color.clear.frame(height: 1)
                                             HStack(spacing: 0) {
                                                 Circle()
                                                     .fill(Color.app(viewModel.currentIndex >= index ? .main : .light01))
-                                                     .frame(height: Const.indexCircleSize)
-                                                     .overlay(
+                                                    .frame(height: Const.indexCircleSize)
+                                                    .overlay(
                                                         Text("\(index + 1)")
                                                             .font(Poppins.semibold.font(size: Const.normalSize))
                                                             .textColor(.app(viewModel.currentIndex >= index ? .light01 : .light11))
-                                                     )
-
+                                                    )
                                                 
                                                 Circle()
-                                                     .fill(Color.app(.main))
-                                                     .frame(height: Const.subCircleSize)
-                                                     .padding(.leading, 16)
+                                                    .fill(Color.app(.main))
+                                                    .frame(height: Const.subCircleSize)
+                                                    .padding(.leading, 16)
+                                                
                                                 
                                                 VStack(alignment: .leading) {
                                                     Color.clear.frame(height: 0)
@@ -69,49 +69,47 @@ struct IntroView: View {
                                                     
                                                     if viewModel.currentIndex == index {
                                                         Text(intro.description)
-                                                            .font(Poppins.regular.font(size: Const.smallTextSize))
                                                             .textColor(.app(.light10))
+                                                            .font(Poppins.regular.font(size: Const.smallTextSize))
+                                                            .fixedSize(horizontal: false, vertical: true)
                                                     }
                                                 }
                                                 .padding(16)
                                                 .background(viewModel.currentIndex == index ? Color.white : .clear)
                                                 .cornerRadius(16, corners: .allCorners)
                                                 .padding(.leading, 16)
-                                                
-                                                Spacer(minLength: 0)
                                             }
-                                            .background(
-                                                HStack {
-                                                    Color.clear
-                                                        .frame(width: Const.screenWidth / 428 * 4)
-                                                        .background(
-                                                            GeometryReader(content: { geometry in
-                                                                VStack(spacing: 0) {
-                                                                    if viewModel.currentIndex == index {
-                                                                        Color.app(.main)
-                                                                            .frame(height: geometry.size.height / 2)
-                                                                        
-                                                                        if viewModel.currentIndex != viewModel.intros.count - 1 {
-                                                                            Color.app(.light05)
-                                                                        }
-                                                                    } else if viewModel.currentIndex > index {
-                                                                        Color.app(.main)
-                                                                            .frame(height: geometry.size.height)
-                                                                    } else {
+                                        }
+                                        .background(
+                                            HStack {
+                                                Color.clear
+                                                    .frame(width: Const.screenWidth / 428 * 4)
+                                                    .background(
+                                                        GeometryReader(content: { geometry in
+                                                            VStack(spacing: 0) {
+                                                                if viewModel.currentIndex == index {
+                                                                    Color.app(.main)
+                                                                        .frame(height: geometry.size.height / 2)
+                                                                    
+                                                                    if viewModel.currentIndex != viewModel.intros.count - 1 {
                                                                         Color.app(.light05)
                                                                     }
+                                                                } else if viewModel.currentIndex > index {
+                                                                    Color.app(.main)
+                                                                        .frame(height: geometry.size.height)
+                                                                } else {
+                                                                    Color.app(.light05)
                                                                 }
-                                                                
-                                                            })
-                                                        )
-                                                        .padding(.leading, Const.indexCircleSize + 16 + Const.subCircleSize / 2 - Const.screenWidth / 428 * 4 / 2)
-                                                    
-                                                    Spacer()
-                                                }
-                                            )
-                                            .id("\(index)")
-                                            
-                                        }
+                                                            }
+                                                            
+                                                        })
+                                                    )
+                                                    .padding(.leading, Const.indexCircleSize + 16 + Const.subCircleSize / 2 - Const.screenWidth / 428 * 4 / 2)
+                                                
+                                                Spacer()
+                                            }
+                                        )
+                                        .id("\(index)")
                                     }
                                 }
                                 .padding(.horizontal, 20)
@@ -155,6 +153,12 @@ struct IntroView: View {
                Circle()
                     .fill(Color.app(.main).opacity(0.1))
                     .frame(height: Const.circleSize)
+                    .overlay(
+                        Image("ic_intro_allow_2")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: Const.circleSize / 44 * 24)
+                    )
                 
                 Text("Improve with personalized ads experience")
                     .font(Poppins.regular.font(size: Const.normalSize))
@@ -167,6 +171,12 @@ struct IntroView: View {
                Circle()
                     .fill(Color.app(.main).opacity(0.1))
                     .frame(height: Const.circleSize)
+                    .overlay(
+                        Image("ic_intro_allow_1")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: Const.circleSize / 44 * 24)
+                    )
                 
                 Text("Allow businesses to reach customers with ads")
                     .font(Poppins.regular.font(size: Const.normalSize))
@@ -175,10 +185,17 @@ struct IntroView: View {
                 Spacer(minLength: 0)
             }.padding(.top, 16)
             
-            Text("Tap Allow and allow us to provide a better experience with personalized ad, we need permission to use future activity that other apps and websites send us from this device. This permission will not give us access to any new types of information.")
-                .font(Poppins.regular.font(size: Const.normalSize))
-                .textColor(.app(.light11))
-                .padding(.top, 24)
+            Group {
+                Text("Tap")
+                    .font(Poppins.regular.font(size: Const.normalSize))
+                    .textColor(.app(.light11))
+                
+                + Text(" Allow").textColor(.black).font(Poppins.bold.font(size: Const.normalSize))
+                
+                + Text(" and allow us to provide a better experience with personalized ad, we need permission to use future activity that other apps and websites send us from this device. This permission will not give us access to any new types of information.")
+                    .font(Poppins.regular.font(size: Const.normalSize))
+                    .textColor(.app(.light11))
+            }.padding(.top, 20)
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 100)

@@ -28,7 +28,7 @@ extension ScanOptionItem {
         let rlm = RlmScanHistory()
         rlm.id = self.id
         rlm.date = Date().timeIntervalSince1970
-        rlm.isScanOption = self.isScanOption
+        rlm.type = self.type.rawValue
         rlm.tools = self.tools.map({ $0.rawValue + ","}).joined()
         rlm.results = self.suspiciousResult.map({ "\($0.key.rawValue):\($0.value),"}).joined()
         

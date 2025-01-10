@@ -125,12 +125,17 @@ struct CameraDetectorView: View {
                 ZStack {
                     recordButton.zIndex(1)
                     
-                    if viewModel.scanOption == nil {
+                    if let image = viewModel.previewGalleryImage, viewModel.scanOption == nil {
                         HStack {
                             Spacer()
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(.white)
                                 .frame(width: 64, height: 64)
+                                .overlay(
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                )
                         }
                         .onTapGesture {
                             viewModel.input.didTapGallery.onNext(())
@@ -299,5 +304,5 @@ fileprivate struct OverlayView: View {
 }
 
 #Preview {
-    CameraDetectorView(viewModel: CameraDetectorViewModel(scanOption: .init()))
+    CameraDetectorView(viewModel: CameraDetectorViewModel(scanOption: nil))
 }

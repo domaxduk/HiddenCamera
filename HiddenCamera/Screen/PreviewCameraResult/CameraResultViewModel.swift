@@ -63,7 +63,6 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
         
         input.didTapNext.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            self.dao.addObject(item: item)
             self.routing.nextTool.onNext(())
         }).disposed(by: self.disposeBag)
         
@@ -82,7 +81,7 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
             guard let self else { return }
             self.tag = tag
             self.item.tag = tag
-            
+            self.dao.addObject(item: item)
             if item.type == .aiDetector {
                 self.scanOption?.suspiciousResult[.cameraDetector] = item.tag == .risk ? 1 : 0
             } else {
@@ -97,7 +96,6 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
         input.didTapBack.subscribe(onNext: { [weak self] tag in
             guard let self else { return }
             self.player.removePlayerObserver()
-            self.dao.addObject(item: item)
             self.routing.back.onNext(())
         }).disposed(by: self.disposeBag)
     }

@@ -35,7 +35,9 @@ struct ToolsView: View {
                         })
                     }
                 })
-            }.padding(Const.padding)
+            }
+            .padding(.horizontal, Const.padding)
+            .padding(.bottom, Const.padding)
         }
     }
 }
