@@ -9,10 +9,12 @@ import SwiftUI
 import SakuraExtension
 import Lottie
 import RxSwift
+import GoogleMobileAds
 
 struct WifiScannerView: View {
     @ObservedObject var viewModel: WifiScannerViewModel
     @State var currentTab: Int = 0
+    @State var isShowingBanner: Bool = false
     
     @ViewBuilder
     var body: some View {
@@ -21,7 +23,9 @@ struct WifiScannerView: View {
             
             VStack(spacing: 0) {
                 navigationBar
-                content
+                ScrollView {
+                    content.padding(.bottom, 100)
+                }
             }
             
             if viewModel.isLoading {
@@ -31,13 +35,26 @@ struct WifiScannerView: View {
             }
             
             if viewModel.isShowingLocationDialog {
-                PermissionDialogView(type: .location, 
+                PermissionDialogView(type: .location,
                                      isShowing: $viewModel.isShowingLocationDialog)
             }
             
             if viewModel.isShowingLocalNetworkDialog {
                 PermissionDialogView(type: .localNetwork,
                                      isShowing: $viewModel.isShowingLocalNetworkDialog)
+            }
+            
+            
+            
+            if !viewModel.isPremium {
+                VStack {
+                    Spacer()
+                    
+                    let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
+                    
+                    BannerView(isCollapse: false, isShowingBanner: $isShowingBanner)
+                        .frame(height: isShowingBanner ? adSize.size.height : 0)
+                }
             }
         }
     }
@@ -219,9 +236,7 @@ struct WifiScannerView: View {
                     .font(Poppins.semibold.font(size: 14))
                     .textColor(.app(.light11))
             }
-            
-            Spacer()
-            
+                        
             if viewModel.state == .ready {
                 VStack(alignment: .leading) {
                     HStack(spacing: 0) {
@@ -243,7 +258,9 @@ struct WifiScannerView: View {
                 .cornerRadius(16, corners: .allCorners)
                 .padding(20)
             }
-        }
+            
+            Spacer()
+        }.frame(width: UIScreen.main.bounds.width)
     }
     
     @ViewBuilder

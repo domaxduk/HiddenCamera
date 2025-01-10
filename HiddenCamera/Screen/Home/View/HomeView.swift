@@ -9,6 +9,7 @@ import SwiftUI
 import SakuraExtension
 import Lottie
 import RxSwift
+import GoogleMobileAds
 
 fileprivate struct Const {
     static let screenWidth = UIScreen.main.bounds.width
@@ -23,7 +24,7 @@ fileprivate struct Const {
 
 struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
-    
+    @State var isShowingBanner: Bool = false
     var body: some View {
         NavigationView(content: {
             ZStack {
@@ -66,30 +67,39 @@ struct HomeView: View {
     
     // MARK: - Tabbar
     var tabbar: some View {
-        HStack {
-            Spacer()
-            ForEach(HomeTab.allCases, id: \.rawValue) { tab in
-                VStack(spacing: 4) {
-                    Image("ic_tab_\(tab.rawValue)")
-                        .renderingMode(.template)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foreColor(.app(tab == viewModel.currentTab ? .main : .light06))
-                        .frame(width: 24)
-                    
-                    Text(tab.rawValue.capitalized)
-                        .font(Poppins.medium.font(size: 14))
-                        .foreColor(.app(tab == viewModel.currentTab ? .main : .light06))
-                        .frame(height: 20)
-                }
-                .animation(.bouncy, value: viewModel.currentTab)
-                .padding()
-                .background(Color.clearInteractive)
-                .onTapGesture {
-                    viewModel.currentTab = tab
-                }
-                
+        VStack(spacing: 0) {
+            HStack {
                 Spacer()
+                ForEach(HomeTab.allCases, id: \.rawValue) { tab in
+                    VStack(spacing: 4) {
+                        Image("ic_tab_\(tab.rawValue)")
+                            .renderingMode(.template)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foreColor(.app(tab == viewModel.currentTab ? .main : .light06))
+                            .frame(width: 24)
+                        
+                        Text(tab.rawValue.capitalized)
+                            .font(Poppins.medium.font(size: 14))
+                            .foreColor(.app(tab == viewModel.currentTab ? .main : .light06))
+                            .frame(height: 20)
+                    }
+                    .animation(.bouncy, value: viewModel.currentTab)
+                    .padding()
+                    .background(Color.clearInteractive)
+                    .onTapGesture {
+                        viewModel.input.selectTab.onNext(tab)
+                    }
+                    
+                    Spacer()
+                }
+            }
+            
+            if !viewModel.isPremium {
+                let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
+                
+                BannerView(isCollapse: true, isShowingBanner: $isShowingBanner)
+                    .frame(height: isShowingBanner ? adSize.size.height : 0)
             }
         }
         .background(Color.white.cornerRadius(28, corners: [.topLeft, .topRight]).ignoresSafeArea())

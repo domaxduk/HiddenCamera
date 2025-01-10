@@ -10,10 +10,12 @@ import SakuraExtension
 import RxSwift
 import AVFoundation
 import Lottie
+import GoogleMobileAds
 
 struct InfraredCameraView: View {
     @ObservedObject var viewModel: InfraredCameraViewModel
     @State var isShowingNoteView: Bool = false
+    @State var isShowingBanner: Bool = false
     
     var body: some View {
         ZStack {
@@ -145,6 +147,13 @@ struct InfraredCameraView: View {
                         .padding(.horizontal, 36)
                     }
                 }.padding(.bottom, 10)
+                
+                if !viewModel.isPremium {
+                    let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
+                    
+                    BannerView(isCollapse: false, isShowingBanner: $isShowingBanner)
+                        .frame(height: isShowingBanner ? adSize.size.height : 0)
+                }
             }
         }
     }

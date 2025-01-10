@@ -65,8 +65,7 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
         }).disposed(by: self.disposeBag)
         
         input.viewResult.subscribe(onNext: { [weak self] _ in
-            guard let self else {return}
-            self.routing.routeToResult.onNext(devices)
+            self?.routeToResultScreen()
         }).disposed(by: self.disposeBag)
         
         input.didTapBack.subscribe(onNext: { [weak self] _ in
@@ -138,6 +137,13 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
                 }
             }
         })
+    }
+    
+    private func routeToResultScreen() {
+        AdsInterstitial.shared.tryToPresent { [weak self] in
+            guard let self else { return }
+            self.routing.routeToResult.onNext(devices)
+        }
     }
 }
 

@@ -9,10 +9,12 @@ import SwiftUI
 import SakuraExtension
 import Lottie
 import RxSwift
+import GoogleMobileAds
 
 struct BluetoothScannerView: View {
     @ObservedObject var viewModel: BluetoothScannerViewModel
     @State var currentTab: Int = 0
+    @State var isShowingBanner: Bool = false
     
     @ViewBuilder
     var body: some View {
@@ -21,11 +23,24 @@ struct BluetoothScannerView: View {
             
             VStack(spacing: 0) {
                 navigationBar
-                content
+                ScrollView {
+                    content.padding(.bottom, 100)
+                }
             }
             
             if viewModel.isShowingBluetoothDialog {
                 PermissionDialogView(type: .bluetooth, isShowing: $viewModel.isShowingBluetoothDialog)
+            }
+            
+            if !viewModel.isPremium {
+                VStack {
+                    Spacer()
+                    
+                    let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
+                    
+                    BannerView(isCollapse: false, isShowingBanner: $isShowingBanner)
+                        .frame(height: isShowingBanner ? adSize.size.height : 0)
+                }
             }
         }
     }
@@ -195,9 +210,6 @@ struct BluetoothScannerView: View {
                     .font(Poppins.semibold.font(size: 14))
                     .textColor(.app(.light11))
             }
-            
-            Spacer()
-            
             
             if viewModel.state == .ready {
                 VStack(alignment: .leading) {

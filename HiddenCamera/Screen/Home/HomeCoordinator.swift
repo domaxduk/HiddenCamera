@@ -86,7 +86,9 @@ final class HomeCoordinator: WindowBasedCoordinator {
         if event is RouteToNextTool {
             if let item = scanOptionItem {
                 if let tool = item.nextTool, !item.isEnd {
-                    self.routeToTool(tool: tool, option: item)
+                    AdsInterstitial.shared.tryToPresent { [weak self] in
+                        self?.routeToTool(tool: tool, option: item)
+                    }
                 } else {
                     routeToHistoryDetail(item: item)
                 }

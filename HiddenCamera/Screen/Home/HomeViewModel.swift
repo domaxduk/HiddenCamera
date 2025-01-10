@@ -11,13 +11,21 @@ import CoreLocation
 import SwiftUI
 
 struct HomeViewModelInput: InputOutputViewModel {
+    // Tool
     var didSelectTool = PublishSubject<ToolItem>()
-    var didTapQuickScan = PublishSubject<()>()
-    var didSelectToolOption = PublishSubject<ToolItem>()
-    var didTapStartScanOption = PublishSubject<()>()
-    var didTapScanFull = PublishSubject<()>()
-    var removeAllScanOption = PublishSubject<()>()
+   
     var selectSettingItem = PublishSubject<SettingItem>()
+    
+    // Scan
+    var didTapScanFull = PublishSubject<()>()
+    var didTapQuickScan = PublishSubject<()>()
+    var didTapStartScanOption = PublishSubject<()>()
+    var didTapScanOption = PublishSubject<()>()
+    var didSelectToolOption = PublishSubject<ToolItem>()
+    var removeAllScanOption = PublishSubject<()>()
+    
+    // Tab
+    var selectTab = PublishSubject<HomeTab>()
 }
 
 struct HomeViewModelOutput: InputOutputViewModel {
@@ -38,6 +46,7 @@ struct HomeViewModelRouting: RoutingOutput {
 }
 
 final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput, HomeViewModelRouting> {
+    @Published var didAppear: Bool = false
     @Published var currentTab: HomeTab = .scan
     @Published var historyItems = [ScanOptionItem]()
     @Published var scanOptions = [ToolItem]()
@@ -52,35 +61,38 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
     override func configInput() {
         super.configInput()
         
-        input.didSelectTool.subscribe(onNext: { [weak self] tool in
-            switch tool {
-            case .infraredCamera:
-                self?.routeToInfraredCamera()
-            case .cameraDetector:
-                self?.routeToCameraDetector()
-            case .wifiScanner:
-                self?.routeToWifiScanner()
-            case .bluetoothScanner:
-                self?.routing.routeToBluetoothScanner.onNext(())
-            case .magnetic:
-                self?.routeToMetalDetector()
+        input.didSelectTool.subscribe(onNext: { [unowned self] tool in
+            AdsInterstitial.shared.tryToPresent { [weak self] in
+                guard let self else { return }
+                switch tool {
+                case .infraredCamera:
+                    self.routing.routeToInfraredCamera.onNext(())
+                case .cameraDetector:
+                    self.routing.routeToCameraDetector.onNext(())
+                case .wifiScanner:
+                    self.routing.routeToWifiScanner.onNext(())
+                case .bluetoothScanner:
+                    self.routing.routeToBluetoothScanner.onNext(())
+                case .magnetic:
+                    self.routing.routeToMagnetic.onNext(())
+                }
             }
         }).disposed(by: self.disposeBag)
         
         input.didTapQuickScan.subscribe(onNext: { [weak self] _ in 
-            self?.routing.routeToScanOption.onNext(.init())
+            self?.startScan(item: ScanOptionItem())
         }).disposed(by: self.disposeBag)
         
         input.didTapStartScanOption.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
             let item = ScanOptionItem(tools: self.scanOptions, type: .option)
-            self.routing.routeToScanOption.onNext(item)
+            self.startScan(item: item)
         }).disposed(by: self.disposeBag)
         
         input.didTapScanFull.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
             let item = ScanOptionItem(tools: ToolItem.allCases, type: .full)
-            self.routing.routeToScanOption.onNext(item)
+            self.startScan(item: item)
         }).disposed(by: self.disposeBag)
         
         input.removeAllScanOption.subscribe(onNext: { [weak self] _ in
@@ -119,6 +131,20 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
                 break
             }
         }).disposed(by: self.disposeBag)
+        
+        input.didTapScanOption.subscribe(onNext: { [unowned self] in
+            self.routeToScanOption()
+        }).disposed(by: self.disposeBag)
+        
+        input.selectTab.subscribe(onNext: { [unowned self] tab in
+            if tab == .setting {
+                AdsInterstitial.shared.tryToPresent { [weak self] in
+                    self?.currentTab = .setting
+                }
+            } else {
+                self.currentTab = tab
+            }
+        }).disposed(by: self.disposeBag)
     }
     
     @objc private func getListHistory() {
@@ -126,22 +152,23 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
         self.historyItems = dao.getAll()
     }
     
-    private func routeToInfraredCamera() {
-        self.routing.routeToInfraredCamera.onNext(())
+    private func startScan(item: ScanOptionItem) {
+        AdsInterstitial.shared.tryToPresent { [weak self] in
+            self?.routing.routeToScanOption.onNext(item)
+        }
     }
     
-    private func routeToCameraDetector() {
-        self.routing.routeToCameraDetector.onNext(())
+    private func routeToScanOption() {
+        AdsInterstitial.shared.tryToPresent { [weak self] in
+            withAnimation {
+                self?.isShowingScanOption = true
+            }
+        }
     }
-    
-    private func routeToWifiScanner() {
-        self.routing.routeToWifiScanner.onNext(())
-    }
-    
-    private func routeToMetalDetector() {
-        self.routing.routeToMagnetic.onNext(())
-    }
-    
+}
+
+// MARK: - Get
+extension HomeViewModel {
     func isSelected(tool: ToolItem) -> Bool {
         return self.scanOptions.contains(where: { $0 == tool })
     }

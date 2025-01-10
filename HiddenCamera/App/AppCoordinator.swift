@@ -13,14 +13,7 @@ class AppCoordinator: WindowBasedCoordinator {
     private var introCoodinator: IntroCoordinator?
     private var splashCoodinator: SplashCoordinator?
     
-    var didShowIntro: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: "didShowIntro")
-        }
-        set {
-            UserDefaults.standard.setValue(newValue, forKey: "didShowIntro")
-        }
-    }
+    
 
     override func start() {
         super.start()
@@ -33,14 +26,14 @@ class AppCoordinator: WindowBasedCoordinator {
         
         if child is IntroCoordinator {
             self.introCoodinator = nil
-            self.didShowIntro = true
+            UserSetting.didShowIntro = true
             self.routeToHome()
         }
         
         if child is SplashCoordinator {
             self.splashCoodinator = nil
             
-            if didShowIntro {
+            if UserSetting.didShowIntro {
                 self.routeToHome()
             } else {
                 self.routeToIntro()

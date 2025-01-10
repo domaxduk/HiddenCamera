@@ -15,6 +15,7 @@ public protocol RoutingOutput {
 }
 
 public class BaseViewModel<Input: InputOutputViewModel, Output: InputOutputViewModel, Routing: RoutingOutput>: NSObject, ObservableObject {
+    @Published var isPremium: Bool = UserSetting.isPremiumUser
     var input = Input()
     var output = Output()
     var routing = Routing()

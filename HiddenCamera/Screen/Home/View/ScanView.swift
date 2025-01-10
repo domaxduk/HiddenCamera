@@ -55,9 +55,7 @@ struct ScanView: View {
                     
                     ScanItemView(color: .init(rgb: 0xFFA63D), icon: "ic_tool_scanoption", name: "Scan Options")
                         .onTapGesture {
-                            withAnimation {
-                                self.viewModel.isShowingScanOption = true
-                            }
+                            viewModel.input.didTapScanOption.onNext(())
                         }
                 }
                 .padding(.horizontal, Const.padding)

@@ -85,9 +85,7 @@
 		85A5EAEF2D23D479008B58EB /* PreviewCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A5EAEE2D23D479008B58EB /* PreviewCameraView.swift */; };
 		85A5EAF42D23DEE2008B58EB /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A5EAF32D23DEE2008B58EB /* CameraManager.swift */; };
 		85DA722A2D1E919B008F5589 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72292D1E919B008F5589 /* AppDelegate.swift */; };
-		85DA72312D1E919B008F5589 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 85DA72302D1E919B008F5589 /* Base */; };
 		85DA72332D1E919D008F5589 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85DA72322D1E919D008F5589 /* Assets.xcassets */; };
-		85DA72362D1E919D008F5589 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 85DA72352D1E919D008F5589 /* Base */; };
 		85DA72422D1E9343008F5589 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72412D1E9343008F5589 /* HomeView.swift */; };
 		85DA724C2D1E9392008F5589 /* Poppins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72452D1E9392008F5589 /* Poppins.swift */; };
 		85DA724D2D1E9392008F5589 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85DA72462D1E9392008F5589 /* Poppins-SemiBold.ttf */; };
@@ -127,6 +125,12 @@
 		85E3C6032D2BB5AE00BBAFBE /* LANDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E3C6022D2BB5AE00BBAFBE /* LANDevice.swift */; };
 		85E3C6052D2BB60900BBAFBE /* BluetoothDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E3C6042D2BB60900BBAFBE /* BluetoothDevice.swift */; };
 		85EC31AE2D27F777009F874A /* blueCircle.json in Resources */ = {isa = PBXBuildFile; fileRef = 85EC31AD2D27F777009F874A /* blueCircle.json */; };
+		85EDFA512D30F6E1002BF8F3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85EDFA502D30F6E1002BF8F3 /* GoogleService-Info.plist */; };
+		85EDFA542D30F86A002BF8F3 /* GoogleAdsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA532D30F86A002BF8F3 /* GoogleAdsKey.swift */; };
+		85EDFA562D30F8E9002BF8F3 /* AdsAppOpen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA552D30F8E9002BF8F3 /* AdsAppOpen.swift */; };
+		85EDFA582D30FAD9002BF8F3 /* UserSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA572D30FAD9002BF8F3 /* UserSetting.swift */; };
+		85EDFA5A2D310027002BF8F3 /* AdsInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA592D310027002BF8F3 /* AdsInterstitial.swift */; };
+		85EDFA5D2D31096A002BF8F3 /* BannerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA5C2D31096A002BF8F3 /* BannerContentView.swift */; };
 		BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */; };
 /* End PBXBuildFile section */
 
@@ -207,9 +211,7 @@
 		85A5EAF32D23DEE2008B58EB /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		85DA72262D1E919B008F5589 /* HiddenCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HiddenCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85DA72292D1E919B008F5589 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		85DA72302D1E919B008F5589 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		85DA72322D1E919D008F5589 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		85DA72352D1E919D008F5589 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		85DA72372D1E919D008F5589 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85DA72412D1E9343008F5589 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		85DA72452D1E9392008F5589 /* Poppins.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Poppins.swift; sourceTree = "<group>"; };
@@ -249,6 +251,12 @@
 		85E3C6022D2BB5AE00BBAFBE /* LANDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LANDevice.swift; sourceTree = "<group>"; };
 		85E3C6042D2BB60900BBAFBE /* BluetoothDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDevice.swift; sourceTree = "<group>"; };
 		85EC31AD2D27F777009F874A /* blueCircle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blueCircle.json; sourceTree = "<group>"; };
+		85EDFA502D30F6E1002BF8F3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		85EDFA532D30F86A002BF8F3 /* GoogleAdsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAdsKey.swift; sourceTree = "<group>"; };
+		85EDFA552D30F8E9002BF8F3 /* AdsAppOpen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsAppOpen.swift; sourceTree = "<group>"; };
+		85EDFA572D30FAD9002BF8F3 /* UserSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSetting.swift; sourceTree = "<group>"; };
+		85EDFA592D310027002BF8F3 /* AdsInterstitial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsInterstitial.swift; sourceTree = "<group>"; };
+		85EDFA5C2D31096A002BF8F3 /* BannerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerContentView.swift; sourceTree = "<group>"; };
 		9538BCC95076E37CF40E04C0 /* Pods-HiddenCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.debug.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.debug.xcconfig"; sourceTree = "<group>"; };
 		B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HiddenCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D38A84736AD64ED2E350337F /* Pods-HiddenCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.release.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.release.xcconfig"; sourceTree = "<group>"; };
@@ -521,12 +529,12 @@
 			children = (
 				852E29342D27EAC700293218 /* HiddenCamera.entitlements */,
 				85DA72372D1E919D008F5589 /* Info.plist */,
+				85EDFA502D30F6E1002BF8F3 /* GoogleService-Info.plist */,
 				85DA72292D1E919B008F5589 /* AppDelegate.swift */,
-				85DA72342D1E919D008F5589 /* LaunchScreen.storyboard */,
-				85DA722F2D1E919B008F5589 /* Main.storyboard */,
 				85DA72322D1E919D008F5589 /* Assets.xcassets */,
+				85DA72532D1E9422008F5589 /* App */,
+				85EDFA522D30F852002BF8F3 /* GoogleAds */,
 				857AF91B2D2F68C2004C8016 /* Custom */,
-				85DA72532D1E9422008F5589 /* Const */,
 				85DA72652D1EA427008F5589 /* Core */,
 				85DA72432D1E9376008F5589 /* Resources */,
 				85DA723D2D1E9302008F5589 /* Screen */,
@@ -548,7 +556,6 @@
 				85DA723F2D1E9335008F5589 /* Splash */,
 				85DA72402D1E933A008F5589 /* Intro */,
 				85DA723E2D1E932E008F5589 /* Home */,
-				85DA72732D1EA526008F5589 /* AppCoordinator.swift */,
 			);
 			path = Screen;
 			sourceTree = "<group>";
@@ -612,13 +619,15 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
-		85DA72532D1E9422008F5589 /* Const */ = {
+		85DA72532D1E9422008F5589 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				85EDFA572D30FAD9002BF8F3 /* UserSetting.swift */,
+				85DA72732D1EA526008F5589 /* AppCoordinator.swift */,
 				85DA72542D1E942B008F5589 /* AppColor.swift */,
 				85DA72592D1E9561008F5589 /* AppConfig.swift */,
 			);
-			path = Const;
+			path = App;
 			sourceTree = "<group>";
 		};
 		85DA72602D1E9EF5008F5589 /* Enum */ = {
@@ -717,6 +726,25 @@
 			path = BluetoothScanner;
 			sourceTree = "<group>";
 		};
+		85EDFA522D30F852002BF8F3 /* GoogleAds */ = {
+			isa = PBXGroup;
+			children = (
+				85EDFA5B2D31095D002BF8F3 /* SwiftUI */,
+				85EDFA532D30F86A002BF8F3 /* GoogleAdsKey.swift */,
+				85EDFA552D30F8E9002BF8F3 /* AdsAppOpen.swift */,
+				85EDFA592D310027002BF8F3 /* AdsInterstitial.swift */,
+			);
+			path = GoogleAds;
+			sourceTree = "<group>";
+		};
+		85EDFA5B2D31095D002BF8F3 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				85EDFA5C2D31096A002BF8F3 /* BannerContentView.swift */,
+			);
+			path = SwiftUI;
+			sourceTree = "<group>";
+		};
 		DD07395B187A8A3FDE185436 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -746,6 +774,7 @@
 				85DA72232D1E919B008F5589 /* Frameworks */,
 				85DA72242D1E919B008F5589 /* Resources */,
 				455D1788F7346CBCE7E399AE /* [CP] Embed Pods Frameworks */,
+				EBEBFEB0989A2256DE0E1558 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -815,10 +844,9 @@
 				85DA72502D1E9392008F5589 /* Poppins-Regular.ttf in Resources */,
 				852E29292D27E90600293218 /* macVendors.plist in Resources */,
 				85DA724D2D1E9392008F5589 /* Poppins-SemiBold.ttf in Resources */,
-				85DA72362D1E919D008F5589 /* Base in Resources */,
 				852E29272D27E90600293218 /* iphoneModels.json in Resources */,
 				852E28FC2D2799EA00293218 /* best.onnx in Resources */,
-				85DA72312D1E919B008F5589 /* Base in Resources */,
+				85EDFA512D30F6E1002BF8F3 /* GoogleService-Info.plist in Resources */,
 				85DA724E2D1E9392008F5589 /* Poppins-Medium.ttf in Resources */,
 				852E29282D27E90600293218 /* macModels.plist in Resources */,
 				85240FD72D30B712000EEAC6 /* scanning.json in Resources */,
@@ -843,6 +871,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EBEBFEB0989A2256DE0E1558 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FA6D6F4286F71D1609909E40 /* [CP] Check Pods Manifest.lock */ = {
@@ -881,6 +926,7 @@
 				852E28FD2D2799EA00293218 /* BoundingBox.swift in Sources */,
 				85DA72742D1EA526008F5589 /* AppCoordinator.swift in Sources */,
 				85A5EAF42D23DEE2008B58EB /* CameraManager.swift in Sources */,
+				85EDFA5A2D310027002BF8F3 /* AdsInterstitial.swift in Sources */,
 				852E29112D27E87300293218 /* WifiScannerView.swift in Sources */,
 				85DA726D2D1EA436008F5589 /* BaseViewModel.swift in Sources */,
 				85699C582D2692480000E5A6 /* CameraResultDAO.swift in Sources */,
@@ -889,6 +935,7 @@
 				857AF9322D2F888A004C8016 /* SplashCoordinator.swift in Sources */,
 				857AF9332D2F888A004C8016 /* SplashViewController.swift in Sources */,
 				857AF9342D2F888A004C8016 /* SplashViewModel.swift in Sources */,
+				85EDFA582D30FAD9002BF8F3 /* UserSetting.swift in Sources */,
 				85DA72872D1EA93C008F5589 /* InfraredCameraCoordinator.swift in Sources */,
 				85DA72882D1EA93C008F5589 /* InfraredCameraViewController.swift in Sources */,
 				85699C412D26474F0000E5A6 /* AssetWriter.swift in Sources */,
@@ -902,6 +949,7 @@
 				857F24252D2E57EB00AFDA73 /* ScanHistoryDAO.swift in Sources */,
 				85E3C5F02D2B883900BBAFBE /* LocationManager.swift in Sources */,
 				852E292C2D27E90600293218 /* DeviceService.swift in Sources */,
+				85EDFA5D2D31096A002BF8F3 /* BannerContentView.swift in Sources */,
 				85699C4C2D264A130000E5A6 /* CameraResultView.swift in Sources */,
 				85DA72552D1E942B008F5589 /* AppColor.swift in Sources */,
 				85E3C6032D2BB5AE00BBAFBE /* LANDevice.swift in Sources */,
@@ -913,6 +961,7 @@
 				857F24292D2E746300AFDA73 /* HistoryView.swift in Sources */,
 				85699C472D2649600000E5A6 /* CameraResultCoordinator.swift in Sources */,
 				857AF9372D2F88AF004C8016 /* SplashView.swift in Sources */,
+				85EDFA542D30F86A002BF8F3 /* GoogleAdsKey.swift in Sources */,
 				85699C482D2649600000E5A6 /* CameraResultViewController.swift in Sources */,
 				853D483E2D2D333E00644A55 /* HistoryDetailCoordinator.swift in Sources */,
 				853D483F2D2D333E00644A55 /* HistoryDetailViewController.swift in Sources */,
@@ -956,6 +1005,7 @@
 				852E28FB2D2799EA00293218 /* AVCaptureDeviceExtension.swift in Sources */,
 				857F242D2D2E805D00AFDA73 /* RequestLocalNetworkAuthorization.swift in Sources */,
 				85DA725F2D1E9C5B008F5589 /* ToolsView.swift in Sources */,
+				85EDFA562D30F8E9002BF8F3 /* AdsAppOpen.swift in Sources */,
 				247A67A12D298F8300BA6EC8 /* AppleDevice.swift in Sources */,
 				852E292F2D27E90600293218 /* LocalNetworkDetector.swift in Sources */,
 				853D48362D2D2A1300644A55 /* ScanOptionItem.swift in Sources */,
@@ -977,25 +1027,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		85DA722F2D1E919B008F5589 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				85DA72302D1E919B008F5589 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		85DA72342D1E919D008F5589 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				85DA72352D1E919D008F5589 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		85DA72382D1E919D008F5589 /* Debug */ = {

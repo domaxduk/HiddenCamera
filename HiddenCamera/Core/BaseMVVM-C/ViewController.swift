@@ -75,7 +75,7 @@ open class ViewController: UIViewController {
     }
     
     func registerNotificationCenter() {
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePremiumVersion), name: .updatePremiumVersion, object: nil)
     }
     
     @objc func updatePremiumVersion() {

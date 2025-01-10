@@ -5,8 +5,7 @@
 //  Created by Duc apple  on 3/1/25.
 //
 
-import SwiftUI
-
+import GoogleMobileAds
 import SwiftUI
 import SakuraExtension
 import RxSwift
@@ -15,6 +14,7 @@ import AVFoundation
 struct CameraDetectorView: View {
     @ObservedObject var viewModel: CameraDetectorViewModel
     @State var isShowingNoteView: Bool = false
+    @State var isShowingBanner: Bool = false
     
     var body: some View {
         ZStack {
@@ -143,6 +143,13 @@ struct CameraDetectorView: View {
                         .padding(.horizontal, 36)
                     }
                 }.padding(.bottom, 10)
+                
+                if !viewModel.isPremium {
+                    let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
+                    
+                    BannerView(isCollapse: false, isShowingBanner: $isShowingBanner)
+                        .frame(height: isShowingBanner ? adSize.size.height : 0)
+                }
             }
         }
     }

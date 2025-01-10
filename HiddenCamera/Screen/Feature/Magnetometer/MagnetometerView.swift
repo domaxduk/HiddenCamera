@@ -9,6 +9,7 @@ import SwiftUI
 import SakuraExtension
 import RxSwift
 import Charts
+import GoogleMobileAds
 
 fileprivate struct Const {
     static let circleRadius = UIScreen.main.bounds.width / 1.6
@@ -17,7 +18,7 @@ fileprivate struct Const {
 
 struct MagnetometerView: View {
     @ObservedObject var viewModel: MagnetometerViewModel
-    
+    @State var isShowingBanner: Bool = false
     var body: some View {
         ZStack {
             Color.app(.light03).ignoresSafeArea()
@@ -26,7 +27,18 @@ struct MagnetometerView: View {
                 navigationBar
                 content
             }
-        }
+            
+            VStack {
+                Spacer()
+                
+                if !viewModel.isPremium {
+                    let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
+                    
+                    BannerView(isCollapse: false, isShowingBanner: $isShowingBanner)
+                        .frame(height: isShowingBanner ? adSize.size.height : 0)
+                }
+            }
+        }.frame(width: UIScreen.main.bounds.width)
     }
     
     // MARK: - navigationBar
@@ -68,8 +80,15 @@ struct MagnetometerView: View {
             circleView
             
             startButton.padding(.bottom, 16)
-            attributeView
-            noteView
+            
+            ScrollView {
+                VStack {
+                    attributeView
+                    noteView
+                }
+                .padding(.bottom, 100)
+                .frame(width: UIScreen.main.bounds.width)
+            }
         }
     }
     
@@ -101,7 +120,8 @@ struct MagnetometerView: View {
     }
     
     var attributeView: some View {
-        HStack {
+        HStack(spacing: 0) {
+            let width: CGFloat? = (UIScreen.main.bounds.width - 58 * 2 - 20 * 2) / 3
             VStack(spacing: 12) {
                 Text("X")
                     .font(Poppins.semibold.font(size: 18))
@@ -111,11 +131,10 @@ struct MagnetometerView: View {
                 Text(String(format: "%.1f", viewModel.x))
                     .font(Poppins.regular.font(size: 16))
                     .textColor(.app(.light12))
+                    .autoResize(numberLines: 1)
                     .frame(height: 20)
-            }
-            
-            Spacer()
-            
+            }.frame(width: width)
+                        
             VStack(spacing: 12) {
                 Text("Y")
                     .font(Poppins.semibold.font(size: 18))
@@ -125,11 +144,10 @@ struct MagnetometerView: View {
                 Text(String(format: "%.1f", viewModel.y))
                     .font(Poppins.regular.font(size: 16))
                     .textColor(.app(.light12))
+                    .autoResize(numberLines: 1)
                     .frame(height: 20)
-            }
-            
-            Spacer()
-            
+            }.frame(width: width)
+                        
             VStack(spacing: 12) {
                 Text("Z")
                     .font(Poppins.semibold.font(size: 18))
@@ -139,10 +157,11 @@ struct MagnetometerView: View {
                 Text(String(format: "%.1f", viewModel.z))
                     .font(Poppins.regular.font(size: 16))
                     .textColor(.app(.light12))
+                    .autoResize(numberLines: 1)
                     .frame(height: 20)
-            }
+            }.frame(width: width)
         }
-        .padding(.horizontal, 28)
+        .padding(.horizontal, 10)
         .padding(.vertical, 20)
         .background(Color.white)
         .cornerRadius(20, corners: .allCorners)

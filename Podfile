@@ -14,6 +14,11 @@ target 'HiddenCamera' do
   pod 'RealmSwift'
   pod 'onnxruntime-objc', '~> 1.16.0'
 
+  pod 'FirebaseAnalytics'
+  pod 'FirebaseMessaging'
+  pod 'Firebase/Crashlytics'
+  pod 'SwiftyStoreKit'
+  pod 'Google-Mobile-Ads-SDK'
 end
 
 post_install do |installer| 

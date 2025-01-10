@@ -6,6 +6,10 @@
 //
 
 import UIKit
+import FirebaseCore
+import FirebaseMessaging
+import SwiftyStoreKit
+import GoogleMobileAds
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var appCoordinator: AppCoordinator!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        configFirebase()
+        configGoogleAds()
         configAppCoordinator()
         configNetworkManager()
         return true
@@ -32,5 +38,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func configNetworkManager() {
         NetworkManager.shared.config()
     }
+    
+    // MARK: - Firebase
+    private func configFirebase() {
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+    }
+    
+    // MARK: - Google Ads
+    private func configGoogleAds() {
+        GADMobileAds.sharedInstance().start()
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [""]
+        
+        AdsAppOpen.shared.start()
+        AdsInterstitial.shared.start()
+    }
+}
+
+// MARK: - MessagingDelegate
+extension AppDelegate: MessagingDelegate {
+    
 }
 
