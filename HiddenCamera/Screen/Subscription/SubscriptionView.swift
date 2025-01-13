@@ -38,12 +38,19 @@ class SubscriptionItem {
 
 struct SubscriptionView: View {
     @ObservedObject var viewModel: SubscriptionViewModel
-    
     @State var isAnimating: Bool = false
     
     var body: some View {
         ZStack {
             Color.app(.safe).ignoresSafeArea()
+            
+            VStack {
+                Image("sub_background")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    
+                Spacer()
+            }.ignoresSafeArea()
             
             VStack(spacing: 0) {
                 ZStack {
@@ -67,147 +74,159 @@ struct SubscriptionView: View {
                 
                 Spacer()
                 
-                HStack {
-                    Text("100% No Ads")
-                        .textColor(.app(.light12))
-                        .font(Poppins.regular.font(size: 14))
-                        .autoResize(numberLines: 1)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 4)
-                        .background(Color.white)
-                        .cornerRadius(38, corners: .allCorners)
+                VStack(spacing: 0) {
+                    HStack {
+                        Text("100% No Ads")
+                            .textColor(.app(.light12))
+                            .font(Poppins.regular.font(size: 14))
+                            .autoResize(numberLines: 1)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 4)
+                            .background(Color.white)
+                            .cornerRadius(38, corners: .allCorners)
+                        
+                        Text("Fastest find all spy devices")
+                            .textColor(.app(.light12))
+                            .font(Poppins.regular.font(size: 14))
+                            .autoResize(numberLines: 1)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 4)
+                            .background(Color.white)
+                            .cornerRadius(38, corners: .allCorners)
+                    }
+                    .offset(x: isAnimating ? 20 : -20)
+                    .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true))
+                    .shadow(radius: 5)
+                    .padding(.bottom, 15)
                     
-                    Text("Fastest find all spy devices")
-                        .textColor(.app(.light12))
-                        .font(Poppins.regular.font(size: 14))
-                        .autoResize(numberLines: 1)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 4)
-                        .background(Color.white)
-                        .cornerRadius(38, corners: .allCorners)
-                }
-                .offset(x: isAnimating ? 20 : -20)
-                .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true))
-                .padding(.bottom, 15)
-                
-                HStack {
-                    Text("Find all hidden devices")
-                        .textColor(.app(.light12))
-                        .font(Poppins.regular.font(size: 14))
-                        .autoResize(numberLines: 1)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 4)
-                        .background(Color.white)
-                        .cornerRadius(38, corners: .allCorners)
+                    HStack {
+                        Text("Find all hidden devices")
+                            .textColor(.app(.light12))
+                            .font(Poppins.regular.font(size: 14))
+                            .autoResize(numberLines: 1)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 4)
+                            .background(Color.white)
+                            .cornerRadius(38, corners: .allCorners)
+                        
+                        Text("Access to all features")
+                            .textColor(.app(.light12))
+                            .font(Poppins.regular.font(size: 14))
+                            .autoResize(numberLines: 1)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 4)
+                            .background(Color.white)
+                            .cornerRadius(38, corners: .allCorners)
+                    }
+                    .offset(x: isAnimating ? -20 : 20)
+                    .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true))
+                    .shadow(radius: 5)
+                    .padding(.bottom, 30)
                     
-                    Text("Access to all features")
-                        .textColor(.app(.light12))
-                        .font(Poppins.regular.font(size: 14))
-                        .autoResize(numberLines: 1)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 4)
-                        .background(Color.white)
-                        .cornerRadius(38, corners: .allCorners)
-                }
-                .offset(x: isAnimating ? -20 : 20)
-                .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true))
-                .padding(.bottom, 30)
-                
-                HStack(spacing: 20) {
-                    ForEach(viewModel.items, id: \.type) { item in
-                        VStack(spacing: 0) {
-                            Color.clear.frame(height: 0)
-                            RoundedRectangle(cornerRadius: 8)
-                                .frame(width: 48,height: 48)
-                            
-                            Text(item.title)
-                                .font(Poppins.regular.font(size: 16))
-                                .textColor(.app(.light11))
-                                .frame(height: 24)
-                                .padding(.top, 8)
-                            
-                            Text(item.priceString)
-                                .font(Poppins.bold.font(size: 24))
-                                .textColor(.app(.light12))
-                                .frame(height: 26)
-                            
-                            Text(item.noteString)
-                                .font(Poppins.regular.font(size: 12))
-                                .textColor(.app(.light11))
-                                .frame(height: 18)
-                        }
-                        .padding(.bottom, 20)
-                        .padding(.top, 24)
-                        .background(
-                            RoundedRectangle(cornerRadius: 24)
-                                .stroke(Color.app(viewModel.currentItem?.id == item.id ? .warning : .light08),lineWidth: 2)
-                                .background(Color.clearInteractive)
-                        )
-                        .overlay(
-                            VStack {
-                                if !item.noteString.isEmpty {
-                                    Text("Save 50%")
-                                        .font(Poppins.bold.font(size: 12))
-                                        .textColor(.white)
-                                        .frame(height: 24)
-                                        .padding(.horizontal, 20)
-                                        .background(Color.app(.warning))
-                                        .cornerRadius(12, corners: .allCorners)
-                                        .offset(y: -12)
-                                }
+                    HStack(spacing: 20) {
+                        ForEach(viewModel.items, id: \.type) { item in
+                            VStack(spacing: 0) {
+                                Color.clear.frame(height: 0)
+                                RoundedRectangle(cornerRadius: 8)
+                                    .frame(width: 48,height: 48)
                                 
-                                Spacer()
+                                Text(item.title)
+                                    .font(Poppins.regular.font(size: 16))
+                                    .textColor(.app(.light11))
+                                    .frame(height: 24)
+                                    .padding(.top, 8)
+                                
+                                Text(item.priceString)
+                                    .font(Poppins.bold.font(size: 24))
+                                    .textColor(.app(.light12))
+                                    .frame(height: 26)
+                                
+                                Text(item.noteString)
+                                    .font(Poppins.regular.font(size: 12))
+                                    .textColor(.app(.light11))
+                                    .frame(height: 18)
                             }
-                        )
-                        .onTapGesture {
-                            self.viewModel.currentItem = item
+                            .padding(.bottom, 20)
+                            .padding(.top, 24)
+                            .background(
+                                RoundedRectangle(cornerRadius: 24)
+                                    .stroke(Color.app(viewModel.currentItem?.id == item.id ? .warning : .light08),lineWidth: 2)
+                                    .background(Color.clearInteractive)
+                            )
+                            .overlay(
+                                VStack {
+                                    if !item.noteString.isEmpty {
+                                        Text("Save 50%")
+                                            .font(Poppins.bold.font(size: 12))
+                                            .textColor(.white)
+                                            .frame(height: 24)
+                                            .padding(.horizontal, 20)
+                                            .background(Color.app(.warning))
+                                            .cornerRadius(12, corners: .allCorners)
+                                            .offset(y: -12)
+                                    }
+                                    
+                                    Spacer()
+                                }
+                            )
+                            .onTapGesture {
+                                self.viewModel.currentItem = item
+                            }
                         }
                     }
-                }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 16)
-
-                HStack(spacing: 6) {
-                    Image("ic_protect")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 16)
-                    
-                    Text("Secured with Apple Store. Cancel Anytime")
-                        .font(.system(size: 10))
-                        .textColor(.app(.light08))
-                }.padding(.bottom, 10)
-                
-                Color.app(.main).frame(height: 56)
-                    .cornerRadius(28, corners: .allCorners)
-                    .overlay(
-                        Text("CONTINUE")
-                            .font(Poppins.semibold.font(size: 16))
-                            .textColor(.white)
-                    )
-                    .scaleEffect(isAnimating ? 0.9 : 1.1)
-                    .animation(.easeInOut(duration: 0.5).repeatForever(autoreverses: true))
                     .padding(.horizontal, 20)
-                    .padding(.bottom, 24)
-                
-                HStack {
-                    Spacer()
-                    Text("Privacy Policy")
-                        .underline()
-                        .font(.system(size: 12))
-                        .textColor(Color(rgb: 0x787878))
-                    Spacer()
-                    Text("Term of Service")
-                        .underline()
-                        .font(.system(size: 12))
-                        .textColor(Color(rgb: 0x787878))
-                    Spacer()
-                    Text("Restore")
-                        .underline()
-                        .font(.system(size: 12))
-                        .textColor(Color(rgb: 0x787878))
-                    Spacer()
+                    .padding(.bottom, 16)
+
+                    HStack(spacing: 6) {
+                        Image("ic_protect")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 16)
+                        
+                        Text("Secured with Apple Store. Cancel Anytime")
+                            .font(.system(size: 10))
+                            .textColor(.app(.light08))
+                    }.padding(.bottom, 10)
+                    
+                    Color.app(.main).frame(height: 56)
+                        .cornerRadius(28, corners: .allCorners)
+                        .overlay(
+                            Text("CONTINUE")
+                                .font(Poppins.semibold.font(size: 16))
+                                .textColor(.white)
+                        )
+                        .scaleEffect(isAnimating ? 0.9 : 1.1)
+                        .animation(.easeInOut(duration: 0.5).repeatForever(autoreverses: true))
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 24)
+                    
+                    HStack {
+                        Spacer()
+                        Text("Privacy Policy")
+                            .underline()
+                            .font(.system(size: 12))
+                            .textColor(Color(rgb: 0x787878))
+                        Spacer()
+                        Text("Term of Service")
+                            .underline()
+                            .font(.system(size: 12))
+                            .textColor(Color(rgb: 0x787878))
+                        Spacer()
+                        Text("Restore")
+                            .underline()
+                            .font(.system(size: 12))
+                            .textColor(Color(rgb: 0x787878))
+                        Spacer()
+                    }
                 }
+                .background(
+                    VStack(spacing: 0) {
+                        let paddingTop: CGFloat = 30
+                        LinearGradient(colors: [.clear, .white], startPoint: .top, endPoint: .bottom)
+                            .frame(height: paddingTop)
+                        Color.white.ignoresSafeArea()
+                    }
+                )
             }
         }.onAppear(perform: {
             self.viewModel.currentItem = self.viewModel.items.last
