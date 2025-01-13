@@ -7,6 +7,17 @@
 
 import Foundation
 
+enum AppFeature: String {
+    case bluetooth
+    case wifi
+    case aiDetector
+    case ifCamera
+    case magnetometer
+    case quickScan
+    case scanOption
+    case scanFull
+}
+
 class UserSetting {
     static var isPremiumUser: Bool {
         get {
@@ -24,6 +35,19 @@ class UserSetting {
         set {
             UserDefaults.standard.setValue(newValue, forKey: "didShowIntro")
         }
+    }
+    
+    static func numberUsedFeature(_ feature: AppFeature) -> Int {
+        return UserDefaults.standard.integer(forKey: "used_\(feature.rawValue)_number")
+    }
+    
+    static func increaseUsedFeature(_ feature: AppFeature) {
+        let number = numberUsedFeature(feature)
+        UserDefaults.standard.setValue(number + 1, forKey: "used_\(feature.rawValue)_number")
+    }
+    
+    static func canUsingFeature(_ feature: AppFeature) -> Bool {
+        return numberUsedFeature(feature) < AppConfig.limitFeatureNumber || UserSetting.isPremiumUser
     }
 }
 

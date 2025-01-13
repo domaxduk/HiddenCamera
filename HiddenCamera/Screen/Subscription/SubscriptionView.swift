@@ -37,15 +37,8 @@ class SubscriptionItem {
 }
 
 struct SubscriptionView: View {
-    @State var items: [SubscriptionItem] = [
-        SubscriptionItem(type: .week, title: "Weekly",
-                         id: "week", priceString: "$9.99", pricePerWeek: "", color: .black, noteString: ""),
-        SubscriptionItem(type: .year, title: "Yearly",
-                         id: "year", priceString: "$19.99",
-                         pricePerWeek: "Only $.. per week", color: .black, noteString: "Save 50%")
-    ]
+    @ObservedObject var viewModel: SubscriptionViewModel
     
-    @State var currentItem: SubscriptionItem?
     @State var isAnimating: Bool = false
     
     var body: some View {
@@ -64,6 +57,9 @@ struct SubscriptionView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(height: 24)
                             .padding()
+                            .onTapGesture {
+                                viewModel.didTapBack.onNext(())
+                            }
                         
                         Spacer()
                     }
@@ -118,7 +114,7 @@ struct SubscriptionView: View {
                 .padding(.bottom, 30)
                 
                 HStack(spacing: 20) {
-                    ForEach(items, id: \.type) { item in
+                    ForEach(viewModel.items, id: \.type) { item in
                         VStack(spacing: 0) {
                             Color.clear.frame(height: 0)
                             RoundedRectangle(cornerRadius: 8)
@@ -144,7 +140,7 @@ struct SubscriptionView: View {
                         .padding(.top, 24)
                         .background(
                             RoundedRectangle(cornerRadius: 24)
-                                .stroke(Color.app(currentItem?.id == item.id ? .warning : .light08),lineWidth: 2)
+                                .stroke(Color.app(viewModel.currentItem?.id == item.id ? .warning : .light08),lineWidth: 2)
                                 .background(Color.clearInteractive)
                         )
                         .overlay(
@@ -164,7 +160,7 @@ struct SubscriptionView: View {
                             }
                         )
                         .onTapGesture {
-                            self.currentItem = item
+                            self.viewModel.currentItem = item
                         }
                     }
                 }
@@ -214,7 +210,7 @@ struct SubscriptionView: View {
                 }
             }
         }.onAppear(perform: {
-            self.currentItem = self.items.last
+            self.viewModel.currentItem = self.viewModel.items.last
             self.isAnimating = true
         })
         .frame(width: UIScreen.main.bounds.width)
@@ -222,5 +218,7 @@ struct SubscriptionView: View {
 }
 
 #Preview {
-    SubscriptionView()
+    SubscriptionView(viewModel: SubscriptionViewModel(actionAfterDismiss: {
+        
+    }))
 }

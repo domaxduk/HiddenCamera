@@ -63,7 +63,7 @@ struct BannerView: UIViewRepresentable {
             // [START load_ad]
             
             if parent.isCollapse {
-                banner.adUnitID = GoogleAdsKey.collapse
+                banner.adUnitID = GoogleAdsKey.allCollapse
             } else {
                 banner.adUnitID = GoogleAdsKey.banner
             }
@@ -93,12 +93,30 @@ struct BannerView: UIViewRepresentable {
         
         // MARK: - GADBannerViewDelegate methods
         func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
-            print("DID RECEIVE AD.")
+            print("[BANNER] DID RECEIVE AD.")
             parent.isShowingBanner = true
         }
         
         func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
-            print("FAILED TO RECEIVE AD: \(error.localizedDescription)")
+            print("[BANNER] FAILED TO RECEIVE AD: \(error.localizedDescription)")
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                self.reload()
+            }
+        }
+        
+        private func reload() {
+            let request = GADRequest()
+            
+            // Create an extra parameter that aligns the bottom of the expanded ad to
+            // the bottom of the bannerView.
+            if parent.isCollapse {
+                let extras = GADExtras()
+                extras.additionalParameters = ["collapsible" : "bottom"]
+                request.register(extras)
+            }
+            
+            bannerView.load(request)
         }
     }
 }

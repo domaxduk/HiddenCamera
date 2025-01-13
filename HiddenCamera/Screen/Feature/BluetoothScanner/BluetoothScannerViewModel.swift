@@ -15,6 +15,9 @@ struct BluetoothScannerViewModelInput: InputOutputViewModel {
     var viewResult = PublishSubject<()>()
     var didTapBack = PublishSubject<()>()
     var didTapNext = PublishSubject<()>()
+    
+    var didTapRemoveAd = PublishSubject<()>()
+    var didTapContinueAds = PublishSubject<()>()
 }
 
 struct BluetoothScannerViewModelOutput: InputOutputViewModel {
@@ -37,7 +40,8 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
     @Published var devices = [BluetoothDevice]()
     
     @Published var isShowingBluetoothDialog: Bool = false
-    
+    @Published var isShowingRemoveAdDialog: Bool = false
+
     private var index: Int = 0
     private var timer: Timer?
     let scanOption: ScanOptionItem?
@@ -61,7 +65,23 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
         
         input.didTapScan.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            prepareToStart()
+            
+            if state == .done && !UserSetting.isPremiumUser {
+                SubscriptionViewController.open { }
+                return
+            }
+            
+            if scanOption != nil {
+                prepareToStart()
+                return
+            }
+            
+            if UserSetting.canUsingFeature(.bluetooth) {
+                prepareToStart()
+                UserSetting.increaseUsedFeature(.bluetooth)
+            } else {
+                SubscriptionViewController.open { }
+            }
         }).disposed(by: self.disposeBag)
         
         input.viewResult.subscribe(onNext: { [weak self] _ in
@@ -69,12 +89,36 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
         }).disposed(by: self.disposeBag)
         
         input.didTapBack.subscribe(onNext: { [weak self] _ in
-            self?.routing.stop.onNext(())
+            guard let self else{ return }
+            
+            if state == .done && !UserSetting.isPremiumUser {
+                withAnimation {
+                    self.isShowingRemoveAdDialog = true
+                }
+            } else {
+                self.routing.stop.onNext(())
+            }
         }).disposed(by: self.disposeBag)
         
         input.didTapNext.subscribe(onNext: { [weak self] _ in
             self?.routing.nextTool.onNext(())
         }).disposed(by: self.disposeBag)
+        
+        input.didTapRemoveAd.subscribe(onNext: { [unowned self] in
+            SubscriptionViewController.open { [weak self] in
+                self?.backWithAd()
+            }
+        }).disposed(by: self.disposeBag)
+        
+        input.didTapContinueAds.subscribe(onNext: { [unowned self] in
+            self.backWithAd()
+        }).disposed(by: self.disposeBag)
+    }
+    
+    private func backWithAd() {
+        AdsInterstitial.shared.tryToPresent { [weak self] in
+            self?.routing.stop.onNext(())
+        }
     }
     
     private func prepareToStart() {

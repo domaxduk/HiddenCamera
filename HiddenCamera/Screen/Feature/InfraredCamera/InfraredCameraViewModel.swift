@@ -70,7 +70,10 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
     
     @objc private func getPreviewGalleryImage() {
         let item = dao.getAll().filter({ $0.type == .infrared }).last
-        self.previewGalleryImage = item?.thumbnailImage
+        
+        if item != nil {
+            self.previewGalleryImage = item?.thumbnailImage ?? UIImage()
+        }
     }
     
     override func configInput() {
@@ -87,25 +90,10 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
         
         input.didTapRecord.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            
-            if !Permission.grantedCamera {
-                withAnimation {
-                    self.isShowingCameraDialog = true
-                }
-                
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.isTheFirst = false
-                self.isRecording.toggle()
-                self.invalidateTimer()
-                
-                if self.isRecording {
-                    self.startRecord()
-                } else {
-                    self.stopRecord()
-                }
+            if scanOption != nil || isRecording || UserSetting.canUsingFeature(.aiDetector) {
+                prepareToRecord()
+            } else {
+                SubscriptionViewController.open { }
             }
         }).disposed(by: self.disposeBag)
         
@@ -116,6 +104,29 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
         input.didTapNext.subscribe(onNext: { [weak self] _ in
             self?.routing.nextTool.onNext(())
         }).disposed(by: self.disposeBag)
+    }
+    
+    private func prepareToRecord() {
+        if !Permission.grantedCamera {
+            withAnimation {
+                self.isShowingCameraDialog = true
+            }
+            
+            return
+        }
+        
+        DispatchQueue.main.async {
+            self.isTheFirst = false
+            self.isRecording.toggle()
+            self.invalidateTimer()
+            
+            if self.isRecording {
+                self.startRecord()
+                UserSetting.increaseUsedFeature(.ifCamera)
+            } else {
+                self.stopRecord()
+            }
+        }
     }
     
     private func initAssetWriter() {

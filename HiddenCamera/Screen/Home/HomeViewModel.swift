@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import CoreLocation
 import SwiftUI
+import GoogleMobileAds
 
 struct HomeViewModelInput: InputOutputViewModel {
     // Tool
@@ -47,10 +48,24 @@ struct HomeViewModelRouting: RoutingOutput {
 
 final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput, HomeViewModelRouting> {
     @Published var didAppear: Bool = false
-    @Published var currentTab: HomeTab = .scan
+    @Published var currentTab: HomeTab {
+        didSet {
+            if !didLoadTab.contains(where: { $0 == currentTab }) {
+                didLoadTab.append(currentTab)
+            }
+        }
+    }
+    
+    @Published var didLoadTab = [HomeTab]()
     @Published var historyItems = [ScanOptionItem]()
     @Published var scanOptions = [ToolItem]()
     @Published var isShowingScanOption: Bool = false
+    
+    override init() {
+        self.currentTab = .scan
+        super.init()
+        self.didLoadTab.append(.scan)
+    }
     
     override func config() {
         super.config()
@@ -62,37 +77,79 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
         super.configInput()
         
         input.didSelectTool.subscribe(onNext: { [unowned self] tool in
-            AdsInterstitial.shared.tryToPresent { [weak self] in
-                guard let self else { return }
-                switch tool {
-                case .infraredCamera:
-                    self.routing.routeToInfraredCamera.onNext(())
-                case .cameraDetector:
-                    self.routing.routeToCameraDetector.onNext(())
-                case .wifiScanner:
-                    self.routing.routeToWifiScanner.onNext(())
-                case .bluetoothScanner:
-                    self.routing.routeToBluetoothScanner.onNext(())
-                case .magnetic:
-                    self.routing.routeToMagnetic.onNext(())
+            switch tool {
+            case .infraredCamera:
+                if UserSetting.canUsingFeature(.ifCamera) {
+                    AdsInterstitial.shared.tryToPresent { [weak self] in
+                        self?.routing.routeToInfraredCamera.onNext(())
+                    }
+                } else {
+                    SubscriptionViewController.open { }
+                }
+            case .cameraDetector:
+                if UserSetting.canUsingFeature(.aiDetector) {
+                    AdsInterstitial.shared.tryToPresent { [weak self] in
+                        self?.routing.routeToCameraDetector.onNext(())
+                    }
+                } else {
+                    SubscriptionViewController.open { }
+                }
+            case .wifiScanner:
+                if UserSetting.canUsingFeature(.wifi) {
+                    AdsInterstitial.shared.tryToPresent { [weak self] in
+                        self?.routing.routeToWifiScanner.onNext(())
+                    }
+                } else {
+                    SubscriptionViewController.open { }
+                }
+            case .bluetoothScanner:
+                if UserSetting.canUsingFeature(.bluetooth) {
+                    AdsInterstitial.shared.tryToPresent { [weak self] in
+                        self?.routing.routeToBluetoothScanner.onNext(())
+                    }
+                } else {
+                    SubscriptionViewController.open { }
+                }
+            case .magnetic:
+                if UserSetting.canUsingFeature(.magnetometer) {
+                    AdsInterstitial.shared.tryToPresent { [weak self] in
+                        self?.routing.routeToMagnetic.onNext(())
+                    }
+                } else {
+                    SubscriptionViewController.open { }
                 }
             }
         }).disposed(by: self.disposeBag)
         
         input.didTapQuickScan.subscribe(onNext: { [weak self] _ in 
-            self?.startScan(item: ScanOptionItem())
+            if UserSetting.canUsingFeature(.quickScan) {
+                self?.startScan(item: ScanOptionItem())
+                UserSetting.increaseUsedFeature(.quickScan)
+            } else {
+                SubscriptionViewController.open { }
+            }
         }).disposed(by: self.disposeBag)
         
         input.didTapStartScanOption.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            let item = ScanOptionItem(tools: self.scanOptions, type: .option)
-            self.startScan(item: item)
+            if UserSetting.canUsingFeature(.scanOption) {
+                let item = ScanOptionItem(tools: self.scanOptions, type: .option)
+                self.startScan(item: item)
+                UserSetting.increaseUsedFeature(.scanOption)
+            } else {
+                SubscriptionViewController.open { }
+            }
         }).disposed(by: self.disposeBag)
         
         input.didTapScanFull.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            let item = ScanOptionItem(tools: ToolItem.allCases, type: .full)
-            self.startScan(item: item)
+            if UserSetting.canUsingFeature(.scanFull) {
+                let item = ScanOptionItem(tools: ToolItem.allCases, type: .full)
+                self.startScan(item: item)
+                UserSetting.increaseUsedFeature(.scanFull)
+            } else {
+                SubscriptionViewController.open { }
+            }
         }).disposed(by: self.disposeBag)
         
         input.removeAllScanOption.subscribe(onNext: { [weak self] _ in

@@ -50,6 +50,8 @@ struct ScannerResultView: View {
                 .font(Poppins.regular.font(size: 14))
                 .textColor(.app(.light09))
                 .padding(.top, 8)
+            
+            NativeContentView().padding(.horizontal, 20)
             Spacer()
         }
     }
@@ -80,25 +82,61 @@ struct ScannerResultView: View {
                 
                 tabView
                 
-                let devices = viewModel.currentTab == .safe ? viewModel.safeDevices() : viewModel.suspiciousDevices()
-                if devices.isEmpty {
+                if viewModel.safeDevices().isEmpty && viewModel.suspiciousDevices().isEmpty {
                     emptyView
                 } else {
-                    ScrollView(.vertical) {
-                        LazyVGrid(columns: [.init()], spacing: 16.0, content: {
-                            ForEach(devices, id: \.id) { device in
-                                DeviceItemView(viewModel: viewModel, device: device)
-                            }
-                            
-                            Spacer()
-                        })
-                        .padding(.bottom, 100)
-                    }
-                    .padding(.top, 20)
-                    .ignoresSafeArea()
+                    TabView(selection: $viewModel.currentTab,
+                            content:  {
+                        if !viewModel.safeDevices().isEmpty {
+                            safeDeviceView.tag(ScannerResultTab.safe)
+                        }
+                        
+                        if !viewModel.suspiciousDevices().isEmpty {
+                            suspiciousDevicesView.tag(ScannerResultTab.suspicious)
+                        }
+                    })
+                    .tabViewStyle(.page(indexDisplayMode: .never))
                 }
             }
         }
+    }
+    
+    @ViewBuilder
+    var safeDeviceView: some View {
+        ScrollView(.vertical) {
+            VStack(spacing: 16.0) {
+                ForEach(viewModel.safeDevices().indices, id: \.self) { index in
+                    let device = viewModel.safeDevices()[index]
+                    
+                    if index % 4 == 0 {
+                        NativeContentView().padding(.horizontal, 20)
+                    }
+                    
+                    DeviceItemView(viewModel: viewModel, device: device)
+                }
+            }.padding(.bottom, 100)
+        }
+        .padding(.top, 20)
+        .ignoresSafeArea()
+    }
+    
+    @ViewBuilder
+    var suspiciousDevicesView: some View {
+        ScrollView(.vertical) {
+            VStack(spacing: 16.0) {
+                ForEach(viewModel.suspiciousDevices().indices, id: \.self) { index in
+                    let device = viewModel.suspiciousDevices()[index]
+                    
+                    if index % 4 == 0 {
+                        NativeContentView().padding(.horizontal, 20)
+                    }
+                    
+                    DeviceItemView(viewModel: viewModel, device: device)
+                }
+            }.padding(.bottom, 100)
+        }
+        .padding(.top, 20)
+        .ignoresSafeArea()
     }
     
     // MARK: - Tab View
@@ -632,7 +670,6 @@ fileprivate struct DeviceItemView: View {
 
 #Preview {
     ScannerResultView(viewModel: ScannerResultViewModel(scanOption: ScanOptionItem(), type: .bluetooth, devices: [
-        LANDevice(ipAddress: UUID().uuidString, name: "TV", model: nil),
-        BluetoothDevice(id: UUID().uuidString, rssi: 12, peripheral: nil)
+        
     ]))
 }

@@ -82,11 +82,14 @@ public final class AssetWriter {
 
     public func finishWriting(completion: ((Error?) -> Void)? = nil) {
         self.isRecording = false
-        self.assetWriter?.finishWriting {
-            self.videoWriterInput.markAsFinished()
-            DispatchQueue.main.async {
-                completion?(self.assetWriter?.error)
-                self.assetWriter = nil
+        
+        if assetWriter?.status != .unknown {
+            self.assetWriter?.finishWriting {
+                self.videoWriterInput.markAsFinished()
+                DispatchQueue.main.async {
+                    completion?(self.assetWriter?.error)
+                    self.assetWriter = nil
+                }
             }
         }
     }

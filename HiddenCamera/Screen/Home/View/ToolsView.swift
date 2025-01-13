@@ -25,7 +25,7 @@ struct ToolsView: View {
     
     var body: some View {
         ScrollView(.vertical) {
-            VStack {
+            VStack(spacing: 12) {
                 LazyVGrid(columns: [.init(), .init()], content: {
                     ForEach(ToolItem.allCases, id: \.self) { tool in
                         Button(action: {
@@ -35,6 +35,8 @@ struct ToolsView: View {
                         })
                     }
                 })
+                
+                NativeContentView()
             }
             .padding(.horizontal, Const.padding)
             .padding(.bottom, Const.padding)

@@ -44,7 +44,11 @@ struct WifiScannerView: View {
                                      isShowing: $viewModel.isShowingLocalNetworkDialog)
             }
             
-            
+            if viewModel.isShowingRemoveAdDialog {
+                RemoveAdDialogView(isShowing: $viewModel.isShowingRemoveAdDialog,
+                                   didTapRemoveAd: viewModel.input.didTapRemoveAd,
+                                   didTapContinueAds: viewModel.input.didTapContinueAds)
+            }
             
             if !viewModel.isPremium {
                 VStack {
@@ -257,6 +261,8 @@ struct WifiScannerView: View {
                 .background(Color.white)
                 .cornerRadius(16, corners: .allCorners)
                 .padding(20)
+            } else {
+                NativeContentView()
             }
             
             Spacer()

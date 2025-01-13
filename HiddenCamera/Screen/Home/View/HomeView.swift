@@ -26,20 +26,18 @@ struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
     @State var isShowingBanner: Bool = false
     var body: some View {
-        NavigationView(content: {
-            ZStack {
-                Color.app(.light03).ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    navigationBar.padding(.horizontal, 24)
-                    content
-                    tabbar
-                }
-                
-                ScanOptionView(viewModel: viewModel)
-                    .offset(x: viewModel.isShowingScanOption ? 0 : UIScreen.main.bounds.width)
-            }.environmentObject(viewModel)
-        }).navigationBarHidden(true)
+        ZStack {
+            Color.app(.light03).ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                navigationBar.padding(.horizontal, 24)
+                content
+                tabbar
+            }
+            
+            ScanOptionView(viewModel: viewModel)
+                .offset(x: viewModel.isShowingScanOption ? 0 : UIScreen.main.bounds.width)
+        }.environmentObject(viewModel)
     }
     
     // MARK: - NavigationBar
@@ -95,7 +93,7 @@ struct HomeView: View {
                 }
             }
             
-            if !viewModel.isPremium {
+            if !viewModel.isPremium && viewModel.didAppear {
                 let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
                 
                 BannerView(isCollapse: true, isShowingBanner: $isShowingBanner)
@@ -108,15 +106,20 @@ struct HomeView: View {
     // MARK: - Content
     var content: some View {
         ZStack {
-            switch viewModel.currentTab {
-            case .scan:
-                ScanView()
-            case .tools:
-                ToolsView()
-            case .history:
-                HistoryView()
-            case .setting:
-                SettingView()
+            if viewModel.didLoadTab.contains(where: { $0 == .scan}) {
+                ScanView().opacity(viewModel.currentTab == .scan ? 1 : 0)
+            }
+            
+            if viewModel.didLoadTab.contains(where: { $0 == .tools}) {
+                ToolsView().opacity(viewModel.currentTab == .tools ? 1 : 0)
+            }
+            
+            if viewModel.didLoadTab.contains(where: { $0 == .history}) {
+                HistoryView().opacity(viewModel.currentTab == .history ? 1 : 0)
+            }
+            
+            if viewModel.didLoadTab.contains(where: { $0 == .setting}) {
+                SettingView().opacity(viewModel.currentTab == .setting ? 1 : 0)
             }
         }
     }

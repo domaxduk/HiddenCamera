@@ -13,10 +13,11 @@ final class CameraResultDAO: RealmDAO {
         
         do {
             try self.addAndUpdateObject([object])
-            NotificationCenter.default.post(name: .updateCameraHistory, object: nil)
         } catch {
-            print(error)
+            print("[CameraResultDAO] error: \(error)")
         }
+        
+        NotificationCenter.default.post(name: .updateCameraHistory, object: nil)
     }
     
     func getAll() -> [CameraResultItem] {

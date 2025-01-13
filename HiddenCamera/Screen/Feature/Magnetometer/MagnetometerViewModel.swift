@@ -56,6 +56,18 @@ final class MagnetometerViewModel: BaseViewModel<MetalDetectorViewModelInput, Me
         
         input.didTapStart.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
+            
+            if !self.isDetecting {
+                if !UserSetting.canUsingFeature(.magnetometer) && scanOption == nil {
+                    SubscriptionViewController.open { }
+                    return
+                }
+                
+                if scanOption == nil {
+                    UserSetting.increaseUsedFeature(.magnetometer)
+                }
+            }
+            
             withAnimation {
                 self.isDetecting.toggle()
             }

@@ -36,9 +36,16 @@ class HomeViewController: ViewController {
         viewModel.isPremium = UserSetting.isPremiumUser
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        viewModel.didAppear = true
+    override func viewDidFirstAppear() {
+        super.viewDidFirstAppear()
+        
+        if UserSetting.isPremiumUser {
+            self.viewModel.didAppear = true
+        } else {
+            SubscriptionViewController.open { [weak self] in
+                self?.viewModel.didAppear = true
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

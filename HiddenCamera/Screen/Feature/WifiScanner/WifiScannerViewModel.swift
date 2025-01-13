@@ -20,6 +20,9 @@ struct WifiScannerViewModelInput: InputOutputViewModel {
     var viewResult = PublishSubject<()>()
     var didTapBack = PublishSubject<()>()
     var didTapNext = PublishSubject<()>()
+    
+    var didTapRemoveAd = PublishSubject<()>()
+    var didTapContinueAds = PublishSubject<()>()
 }
 
 struct WifiScannerViewModelOutput: InputOutputViewModel {
@@ -44,6 +47,7 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
     @Published var isLoading: Bool = false
     @Published var isShowingLocationDialog: Bool = false
     @Published var isShowingLocalNetworkDialog: Bool = false
+    @Published var isShowingRemoveAdDialog: Bool = false
     
     @Published var networkName = NetworkUtils.getWifiName()
     @Published var ip = NetworkUtils.currentIPAddress()
@@ -77,7 +81,23 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
         
         input.didTapScan.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            prepareToScan()
+            
+            if state == .done && !UserSetting.isPremiumUser {
+                SubscriptionViewController.open { }
+                return
+            }
+            
+            if scanOption != nil {
+                prepareToScan()
+                return
+            }
+            
+            if UserSetting.canUsingFeature(.wifi) {
+                prepareToScan()
+                UserSetting.increaseUsedFeature(.wifi)
+            } else {
+                SubscriptionViewController.open { }
+            }
         }).disposed(by: self.disposeBag)
         
         input.viewResult.subscribe(onNext: { [weak self] _ in
@@ -87,12 +107,36 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
         }).disposed(by: self.disposeBag)
         
         input.didTapBack.subscribe(onNext: { [weak self] _ in
-            self?.routing.stop.onNext(())
+            guard let self else{ return }
+            
+            if state == .done && !UserSetting.isPremiumUser {
+                withAnimation {
+                    self.isShowingRemoveAdDialog = true
+                }
+            } else {
+                self.routing.stop.onNext(())
+            }
         }).disposed(by: self.disposeBag)
         
         input.didTapNext.subscribe(onNext: { [weak self] _ in
             self?.routing.nextTool.onNext(())
         }).disposed(by: self.disposeBag)
+        
+        input.didTapRemoveAd.subscribe(onNext: { [unowned self] in
+            SubscriptionViewController.open { [weak self] in
+                self?.backWithAd()
+            }
+        }).disposed(by: self.disposeBag)
+        
+        input.didTapContinueAds.subscribe(onNext: { [unowned self] in
+            self.backWithAd()
+        }).disposed(by: self.disposeBag)
+    }
+    
+    private func backWithAd() {
+        AdsInterstitial.shared.tryToPresent { [weak self] in
+            self?.routing.stop.onNext(())
+        }
     }
     
     private func prepareToScan() {

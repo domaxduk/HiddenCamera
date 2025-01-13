@@ -42,18 +42,26 @@ struct HistoryView: View {
                         .cornerRadius(36, corners: .allCorners)
                 })
                 .padding(.top, 28)
+                
+                NativeContentView().padding(.top, 20)
+                
                 Spacer()
             }
         } else {
             ScrollView(.vertical) {
                 VStack {
-                    ForEach(viewModel.historyItems, id: \.id) { item in
+                    ForEach(viewModel.historyItems.indices, id: \.self) { index in
+                        let item = viewModel.historyItems[index]
+                        
+                        if index % 4 == 0 {
+                            NativeContentView()
+                        }
+                        
                         HistoryItemView(item: item)
                             .onTapGesture {
                                 viewModel.routing.routeToHistoryDetail.onNext(item)
                             }
                     }
-                    
                 }.padding(.horizontal, 20)
             }
         }

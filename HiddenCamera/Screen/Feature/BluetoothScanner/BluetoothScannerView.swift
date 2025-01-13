@@ -32,6 +32,12 @@ struct BluetoothScannerView: View {
                 PermissionDialogView(type: .bluetooth, isShowing: $viewModel.isShowingBluetoothDialog)
             }
             
+            if viewModel.isShowingRemoveAdDialog {
+                RemoveAdDialogView(isShowing: $viewModel.isShowingRemoveAdDialog,
+                                   didTapRemoveAd: viewModel.input.didTapRemoveAd,
+                                   didTapContinueAds: viewModel.input.didTapContinueAds)
+            }
+            
             if !viewModel.isPremium {
                 VStack {
                     Spacer()
@@ -232,6 +238,8 @@ struct BluetoothScannerView: View {
                 .background(Color.white)
                 .cornerRadius(16, corners: .allCorners)
                 .padding(20)
+            } else {
+                NativeContentView()
             }
         }
     }

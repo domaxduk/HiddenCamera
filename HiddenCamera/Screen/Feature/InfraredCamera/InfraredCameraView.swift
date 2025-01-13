@@ -148,7 +148,7 @@ struct InfraredCameraView: View {
                     }
                 }.padding(.bottom, 10)
                 
-                if !viewModel.isPremium {
+                if !viewModel.isPremium && !viewModel.isTheFirst {
                     let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
                     
                     BannerView(isCollapse: false, isShowingBanner: $isShowingBanner)

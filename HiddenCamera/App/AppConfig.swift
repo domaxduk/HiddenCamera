@@ -18,4 +18,6 @@ class AppConfig {
     static let navigationBarHeight: CGFloat = 56
     static let wifiDuration: Double = 10.0
     static let bluetoothDuration: Double = 6.0
+    
+    static let limitFeatureNumber: Int = 2
 }

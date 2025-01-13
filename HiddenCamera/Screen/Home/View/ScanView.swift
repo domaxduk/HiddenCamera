@@ -45,23 +45,27 @@ struct ScanView: View {
                 }
             
             ScrollView {
-                HStack {
-                    ScanItemView(color: .init(rgb: 0x9747FF), icon: "ic_tool_quickscan", name: "Quick Scan")
-                        .onTapGesture {
-                            viewModel.input.didTapQuickScan.onNext(())
-                        }
+                VStack {
+                    HStack {
+                        ScanItemView(color: .init(rgb: 0x9747FF), icon: "ic_tool_quickscan", name: "Quick Scan")
+                            .onTapGesture {
+                                viewModel.input.didTapQuickScan.onNext(())
+                            }
+                        
+                        Spacer()
+                        
+                        ScanItemView(color: .init(rgb: 0xFFA63D), icon: "ic_tool_scanoption", name: "Scan Options")
+                            .onTapGesture {
+                                viewModel.input.didTapScanOption.onNext(())
+                            }
+                    }
                     
-                    Spacer()
-                    
-                    ScanItemView(color: .init(rgb: 0xFFA63D), icon: "ic_tool_scanoption", name: "Scan Options")
-                        .onTapGesture {
-                            viewModel.input.didTapScanOption.onNext(())
-                        }
+                    NativeContentView()
                 }
                 .padding(.horizontal, Const.padding)
-                .padding(.bottom, 100)
+                .padding(.bottom, 50)
             }
-        }
+        }.frame(width: UIScreen.main.bounds.width)
     }
 }
 

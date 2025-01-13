@@ -131,6 +131,12 @@
 		85EDFA582D30FAD9002BF8F3 /* UserSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA572D30FAD9002BF8F3 /* UserSetting.swift */; };
 		85EDFA5A2D310027002BF8F3 /* AdsInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA592D310027002BF8F3 /* AdsInterstitial.swift */; };
 		85EDFA5D2D31096A002BF8F3 /* BannerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA5C2D31096A002BF8F3 /* BannerContentView.swift */; };
+		85EDFA5F2D311830002BF8F3 /* AdsNativeLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA5E2D311830002BF8F3 /* AdsNativeLoader.swift */; };
+		85EDFA622D311837002BF8F3 /* SmallNativeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85EDFA602D311837002BF8F3 /* SmallNativeView.xib */; };
+		85EDFA642D3122A3002BF8F3 /* NativeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA632D3122A3002BF8F3 /* NativeContentView.swift */; };
+		85EDFA682D3122AC002BF8F3 /* NativeAdView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85EDFA672D3122AC002BF8F3 /* NativeAdView.xib */; };
+		85EDFA6B2D312E9E002BF8F3 /* RemoveAdDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA6A2D312E9E002BF8F3 /* RemoveAdDialogView.swift */; };
+		85EDFA6D2D313370002BF8F3 /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA6C2D313370002BF8F3 /* SubscriptionViewController.swift */; };
 		BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */; };
 /* End PBXBuildFile section */
 
@@ -257,6 +263,12 @@
 		85EDFA572D30FAD9002BF8F3 /* UserSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSetting.swift; sourceTree = "<group>"; };
 		85EDFA592D310027002BF8F3 /* AdsInterstitial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsInterstitial.swift; sourceTree = "<group>"; };
 		85EDFA5C2D31096A002BF8F3 /* BannerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerContentView.swift; sourceTree = "<group>"; };
+		85EDFA5E2D311830002BF8F3 /* AdsNativeLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdsNativeLoader.swift; sourceTree = "<group>"; };
+		85EDFA602D311837002BF8F3 /* SmallNativeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SmallNativeView.xib; sourceTree = "<group>"; };
+		85EDFA632D3122A3002BF8F3 /* NativeContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeContentView.swift; sourceTree = "<group>"; };
+		85EDFA672D3122AC002BF8F3 /* NativeAdView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NativeAdView.xib; sourceTree = "<group>"; };
+		85EDFA6A2D312E9E002BF8F3 /* RemoveAdDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAdDialogView.swift; sourceTree = "<group>"; };
+		85EDFA6C2D313370002BF8F3 /* SubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
 		9538BCC95076E37CF40E04C0 /* Pods-HiddenCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.debug.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.debug.xcconfig"; sourceTree = "<group>"; };
 		B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HiddenCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D38A84736AD64ED2E350337F /* Pods-HiddenCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.release.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.release.xcconfig"; sourceTree = "<group>"; };
@@ -465,6 +477,7 @@
 		857AF91B2D2F68C2004C8016 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				85E3C5F12D2B8E7100BBAFBE /* Dialog */,
 				857AF91C2D2F68CF004C8016 /* LoadingView.swift */,
 			);
 			path = Custom;
@@ -482,6 +495,7 @@
 			isa = PBXGroup;
 			children = (
 				857AF9222D2F6E44004C8016 /* SubscriptionView.swift */,
+				85EDFA6C2D313370002BF8F3 /* SubscriptionViewController.swift */,
 			);
 			path = Subscription;
 			sourceTree = "<group>";
@@ -550,7 +564,6 @@
 				857AF9212D2F6E37004C8016 /* Subscription */,
 				853D48382D2D333200644A55 /* HistoryDetail */,
 				24EC7E172D2A383900875752 /* ScannerResult */,
-				85E3C5F12D2B8E7100BBAFBE /* Dialog */,
 				85699C592D26942E0000E5A6 /* CameraResultGallery */,
 				85699C422D26492D0000E5A6 /* PreviewCameraResult */,
 				85DA723F2D1E9335008F5589 /* Splash */,
@@ -710,6 +723,7 @@
 		85E3C5F12D2B8E7100BBAFBE /* Dialog */ = {
 			isa = PBXGroup;
 			children = (
+				85EDFA6A2D312E9E002BF8F3 /* RemoveAdDialogView.swift */,
 				85E3C5F22D2B8E8100BBAFBE /* PermissionDialogView.swift */,
 			);
 			path = Dialog;
@@ -729,10 +743,11 @@
 		85EDFA522D30F852002BF8F3 /* GoogleAds */ = {
 			isa = PBXGroup;
 			children = (
-				85EDFA5B2D31095D002BF8F3 /* SwiftUI */,
-				85EDFA532D30F86A002BF8F3 /* GoogleAdsKey.swift */,
+				85EDFA692D3122B6002BF8F3 /* Native */,
 				85EDFA552D30F8E9002BF8F3 /* AdsAppOpen.swift */,
 				85EDFA592D310027002BF8F3 /* AdsInterstitial.swift */,
+				85EDFA532D30F86A002BF8F3 /* GoogleAdsKey.swift */,
+				85EDFA5B2D31095D002BF8F3 /* SwiftUI */,
 			);
 			path = GoogleAds;
 			sourceTree = "<group>";
@@ -743,6 +758,17 @@
 				85EDFA5C2D31096A002BF8F3 /* BannerContentView.swift */,
 			);
 			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		85EDFA692D3122B6002BF8F3 /* Native */ = {
+			isa = PBXGroup;
+			children = (
+				85EDFA602D311837002BF8F3 /* SmallNativeView.xib */,
+				85EDFA672D3122AC002BF8F3 /* NativeAdView.xib */,
+				85EDFA5E2D311830002BF8F3 /* AdsNativeLoader.swift */,
+				85EDFA632D3122A3002BF8F3 /* NativeContentView.swift */,
+			);
+			path = Native;
 			sourceTree = "<group>";
 		};
 		DD07395B187A8A3FDE185436 /* Pods */ = {
@@ -847,9 +873,11 @@
 				852E29272D27E90600293218 /* iphoneModels.json in Resources */,
 				852E28FC2D2799EA00293218 /* best.onnx in Resources */,
 				85EDFA512D30F6E1002BF8F3 /* GoogleService-Info.plist in Resources */,
+				85EDFA682D3122AC002BF8F3 /* NativeAdView.xib in Resources */,
 				85DA724E2D1E9392008F5589 /* Poppins-Medium.ttf in Resources */,
 				852E29282D27E90600293218 /* macModels.plist in Resources */,
 				85240FD72D30B712000EEAC6 /* scanning.json in Resources */,
+				85EDFA622D311837002BF8F3 /* SmallNativeView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -942,6 +970,7 @@
 				852E29002D2799EA00293218 /* ExtensionImage.swift in Sources */,
 				85DA728C2D1EAA1C008F5589 /* InfraredCameraView.swift in Sources */,
 				85DA72892D1EA93C008F5589 /* InfraredCameraViewModel.swift in Sources */,
+				85EDFA6B2D312E9E002BF8F3 /* RemoveAdDialogView.swift in Sources */,
 				85699C562D2691C20000E5A6 /* RlmCameraResult.swift in Sources */,
 				853D481E2D2CD7A100644A55 /* MagnetometerCoordinator.swift in Sources */,
 				853D481F2D2CD7A100644A55 /* MagnetometerViewController.swift in Sources */,
@@ -972,12 +1001,14 @@
 				85240FD92D30CDCD000EEAC6 /* SettingView.swift in Sources */,
 				85699C512D268A9B0000E5A6 /* CameraResultItem.swift in Sources */,
 				852E29022D2799EA00293218 /* ShapeData.swift in Sources */,
+				85EDFA6D2D313370002BF8F3 /* SubscriptionViewController.swift in Sources */,
 				85DA727A2D1EA53B008F5589 /* HomeViewController.swift in Sources */,
 				853D48422D2D337600644A55 /* HistoryDetailView.swift in Sources */,
 				24EC7E1D2D2A385100875752 /* ScannerResultCoordinator.swift in Sources */,
 				24EC7E1E2D2A385100875752 /* ScannerResultViewController.swift in Sources */,
 				24EC7E1F2D2A385100875752 /* ScannerResultViewModel.swift in Sources */,
 				85DA727B2D1EA53B008F5589 /* HomeViewModel.swift in Sources */,
+				85EDFA5F2D311830002BF8F3 /* AdsNativeLoader.swift in Sources */,
 				85A5EAEF2D23D479008B58EB /* PreviewCameraView.swift in Sources */,
 				85DA72622D1E9EFD008F5589 /* ToolItem.swift in Sources */,
 				85DA725A2D1E9561008F5589 /* AppConfig.swift in Sources */,
@@ -987,6 +1018,7 @@
 				85E3C5FB2D2B9B4F00BBAFBE /* BluetoothScannerViewModel.swift in Sources */,
 				857AF92A2D2F6EF1004C8016 /* IntroCoordinator.swift in Sources */,
 				857AF92B2D2F6EF1004C8016 /* IntroViewController.swift in Sources */,
+				85EDFA642D3122A3002BF8F3 /* NativeContentView.swift in Sources */,
 				857AF92C2D2F6EF1004C8016 /* IntroViewModel.swift in Sources */,
 				852E292B2D27E90600293218 /* Device.swift in Sources */,
 				85E3C6052D2BB60900BBAFBE /* BluetoothDevice.swift in Sources */,
