@@ -19,6 +19,24 @@ enum AppFeature: String {
 }
 
 class UserSetting {
+    static var didOpenApp: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "didOpenApp")
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "didOpenApp")
+        }
+    }
+    
+    static var didShowHome: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "didShowHome")
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "didShowHome")
+        }
+    }
+    
     static var isPremiumUser: Bool {
         get {
             return UserDefaults.standard.bool(forKey: "isPremiumUser")
@@ -34,6 +52,15 @@ class UserSetting {
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: "didShowIntro")
+        }
+    }
+    
+    static var safeDeviceKeys: [String] {
+        get {
+            return (UserDefaults.standard.array(forKey: "safeDeviceKeys") as? [String]) ?? []
+        }
+        set {
+            return UserDefaults.standard.setValue(newValue, forKey: "safeDeviceKeys")
         }
     }
     

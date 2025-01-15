@@ -8,23 +8,28 @@
 import Foundation
 import AVFoundation
 
-public final class AssetWriter {
+protocol AssetWriterDelegate: AnyObject {
+    func assetWrite(_ writer: AssetWriter, didFinishRecording url: URL, error: Error?)
+}
+
+public final class AssetWriter: NSObject {
     public private(set) var outputURL: URL
     public private(set) var fileType: AVFileType
     public private(set) var outputSize: CGSize
-    public private(set) var isRecording: Bool
+    weak var delegate: AssetWriterDelegate?
 
     private var assetWriter: AVAssetWriter?
     private var videoWriterInput: AVAssetWriterInput!
     private var videoAdaptor: AVAssetWriterInputPixelBufferAdaptor!
     private var requestMediaDataQueue: DispatchQueue!
+    private var isRecording: Bool = false
 
     public init(outputURL: URL, fileType: AVFileType, outputSize: CGSize) {
         self.outputURL = outputURL
         self.fileType = fileType
         self.outputSize = outputSize
-        self.isRecording = false
         self.requestMediaDataQueue = DispatchQueue(label: "Request media data queue")
+        super.init()
     }
 
     private func initWriter() {
@@ -64,60 +69,67 @@ public final class AssetWriter {
     }
 
     // MARK: - Public action
-    public func prepare() {
+    private func prepare() {
         self.removeOutputFile()
         self.initWriter()
         self.configAudioSession()
     }
-
-    public func startWriting(atSourceTime sourceTime: CMTime) {
-        prepare()
-        assert(self.assetWriter != nil, "Must call prepare before starting writing")
-        self.removeOutputFile()
+    
+    public func startWriting() {
         self.isRecording = true
-        self.assetWriter?.startWriting()
-        self.assetWriter?.startSession(atSourceTime: sourceTime)
-        print("Start writing")
     }
 
-    public func finishWriting(completion: ((Error?) -> Void)? = nil) {
+    public func finishWriting() {
+        print("stop record")
         self.isRecording = false
-        
-        if assetWriter?.status != .unknown {
-            self.assetWriter?.finishWriting {
+       
+        if let assetWriter, assetWriter.status == .writing {
+            assetWriter.finishWriting { [weak self] in
+                guard let self else { return }
                 self.videoWriterInput.markAsFinished()
-                DispatchQueue.main.async {
-                    completion?(self.assetWriter?.error)
-                    self.assetWriter = nil
-                }
+                self.delegate?.assetWrite(self, didFinishRecording: outputURL, error: self.assetWriter?.error)
+                self.assetWriter = nil
             }
         }
     }
 
-    public func cancelWriting() {
-        self.isRecording = false
-        self.assetWriter?.finishWriting {
-            self.videoWriterInput.markAsFinished()
-            self.removeOutputFile()
-            self.assetWriter = nil
-        }
-    }
-
     public func append(pixelBuffer: CVPixelBuffer, withPresentationTime presentationTime: CMTime) {
-        guard let assetWriter, assetWriter.status == .writing && isRecording else { return }
-        self.videoAdaptor.append(pixelBuffer, withPresentationTime: presentationTime)
-    }
-
-    public func makePixelBuffer() -> CVPixelBuffer? {
-        guard let pool = self.videoAdaptor.pixelBufferPool else {
-            return nil
+        guard isRecording else {
+            return
         }
+        
+        if assetWriter == nil {
+            prepare()
+        }
+        
+        if let assetWriter {
+            switch assetWriter.status {
+            case .unknown:
+                if assetWriter.startWriting() {
+                    assetWriter.startSession(atSourceTime: presentationTime)
+                    
+                    if videoWriterInput.isReadyForMoreMediaData  {
+                        self.videoAdaptor.append(pixelBuffer, withPresentationTime: presentationTime)
+                    }
+                }
+            case .writing:
+                if videoWriterInput.isReadyForMoreMediaData  {
+                    self.videoAdaptor.append(pixelBuffer, withPresentationTime: presentationTime)
+                }
+            case .completed:
+                print("[AssetWriter] completed")
+            case .failed:
+                print("[AssetWriter] failed")
 
-        var pixelBuffer: CVPixelBuffer! = nil
-        CVPixelBufferPoolCreatePixelBuffer(nil, pool, &pixelBuffer)
-        return pixelBuffer
+            case .cancelled:
+                print("[AssetWriter] cancelled")
+
+            @unknown default:
+                break
+            }
+        }
     }
-
+    
     public func removeOutputFile() {
         try? FileManager.default.removeItem(at: self.outputURL)
     }

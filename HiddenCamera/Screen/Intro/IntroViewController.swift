@@ -39,6 +39,21 @@ class IntroViewController: ViewController {
         self.viewModel.routing.stop.subscribe(onNext: { [weak self] _ in
             self?.coordinator?.stop()
         }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.showConsent.subscribe(onNext: { [weak self] _ in
+            guard let self else { return }
+            self.requestConsent()
+        }).disposed(by: self.disposeBag)
+    }
+    
+    private func requestConsent() {
+        AdsConsentManager.shared.gatherConsent(from: self) { [weak self] _ in
+            DispatchQueue.main.async {
+                withAnimation {
+                    self?.viewModel.isRequested = true
+                }
+            }
+        }
     }
     
     // MARK: - ConfigUI

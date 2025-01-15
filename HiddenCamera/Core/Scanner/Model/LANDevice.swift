@@ -42,16 +42,22 @@ class LANDevice: Device {
     }
     
     override func deviceName() -> String? {
+        let moreText = isThisDevice() ? " (This device)" : ""
+        
         if let name {
-            return name
+            return name + moreText
         }
         
         if let service = services.first(where: { service in  return ServiceType.allCases.contains(where: { $0.rawValue == service.type })}) {
-            return service.name
+            return service.name + moreText
         }
         
-        if let hostname {
-            return hostname.components(separatedBy: ".").first
+        if let hostname, let name = hostname.components(separatedBy: ".").first {
+            return name + moreText
+        }
+        
+        if isThisDevice() {
+            return UIDevice.current.name + moreText
         }
         
         return nil
@@ -126,6 +132,21 @@ class LANDevice: Device {
         return listDevice.first(where: { $0.target?.lowercased() == model.lowercased() })
     }
     
+    override func isSafe() -> Bool {
+        if let ipAddress, let last = ipAddress.components(separatedBy: ".").last ,last.elementsEqual("1") {
+            return true
+        }
+        
+        if isThisDevice() {
+            return true
+        }
+        
+        return super.isSafe()
+    }
     
+    func isThisDevice() -> Bool {
+        let ip = ipAddress ?? ""
+        return ip.elementsEqual(NetworkUtils.currentIPAddress())
+    }
 }
 

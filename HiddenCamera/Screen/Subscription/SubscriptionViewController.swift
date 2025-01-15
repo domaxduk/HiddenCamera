@@ -12,10 +12,10 @@ import RxSwift
 class SubscriptionViewModel: ObservableObject {
     @Published var items: [SubscriptionItem] = [
         SubscriptionItem(type: .week, title: "Weekly",
-                         id: "week", priceString: "$9.99", pricePerWeek: "", color: .black, noteString: ""),
+                         id: "week", priceString: "$9.99", pricePerWeek: "", color: Color(rgb: 0x00BA00), noteString: ""),
         SubscriptionItem(type: .year, title: "Yearly",
                          id: "year", priceString: "$19.99",
-                         pricePerWeek: "Only $.. per week", color: .black, noteString: "Save 50%")
+                         pricePerWeek: "Only $.. per week", color: Color(rgb: 0xFFC53D), noteString: "Save 50%")
     ]
     
     @Published var currentItem: SubscriptionItem?
@@ -53,6 +53,11 @@ class SubscriptionViewController: ViewController {
     }
     
     static func open(actionAfterDismiss: @escaping (() -> Void)) {
+        if UserSetting.isPremiumUser {
+            actionAfterDismiss()
+            return
+        }
+        
         let vc = SubscriptionViewController(viewModel: SubscriptionViewModel(actionAfterDismiss: actionAfterDismiss))
         vc.modalPresentationStyle = .overFullScreen
         let topVC = UIApplication.shared.navigationController?.topVC

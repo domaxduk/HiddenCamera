@@ -19,6 +19,7 @@ target 'HiddenCamera' do
   pod 'Firebase/Crashlytics'
   pod 'SwiftyStoreKit'
   pod 'Google-Mobile-Ads-SDK'
+  pod 'MarqueeLabel/Swift'
 end
 
 post_install do |installer| 

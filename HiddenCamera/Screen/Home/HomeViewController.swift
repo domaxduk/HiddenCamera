@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import SakuraExtension
 import SwiftUI
+import FirebaseAnalytics
 
 class HomeViewController: ViewController {
     var viewModel: HomeViewModel
@@ -39,12 +40,22 @@ class HomeViewController: ViewController {
     override func viewDidFirstAppear() {
         super.viewDidFirstAppear()
         
-        if UserSetting.isPremiumUser {
-            self.viewModel.didAppear = true
+        if UserSetting.didShowHome {
+            Analytics.logEvent("open_home", parameters: nil)
         } else {
+            Analytics.logEvent("first_home", parameters: nil)
+            UserSetting.didShowHome = true
+        }
+        
+        if UserSetting.didShowIntro {
             SubscriptionViewController.open { [weak self] in
                 self?.viewModel.didAppear = true
             }
+        } else {
+            let item = ScanOptionItem(tools: ToolItem.allCases, type: .full)
+            item.isThreadAfterIntro = true
+            self.coordinator?.startScanOption(item: item)
+            self.viewModel.didAppear = true
         }
     }
     
@@ -85,6 +96,7 @@ class HomeViewController: ViewController {
         }).disposed(by: self.disposeBag)
         
         viewModel.routing.routeToHistoryDetail.subscribe(onNext: { [weak self] item in
+            Analytics.logEvent("feature_history_item", parameters: nil)
             self?.coordinator?.routeToHistoryDetail(item: item)
         }).disposed(by: self.disposeBag)
         

@@ -8,7 +8,7 @@
 import Foundation
 
 class AppConfig {
-    static let appName = "Hidden Camera"
+    static let appName = "SpyFind Pro"
     static let appID = ""
     
     static let term = "https://sites.google.com/view/tralestore/terms-conditions"

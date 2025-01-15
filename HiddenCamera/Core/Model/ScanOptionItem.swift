@@ -23,6 +23,7 @@ class ScanOptionItem {
     var isSave: Bool = false
     var isEnd: Bool = false
     var type: ScanOptionType = .quick
+    var isThreadAfterIntro: Bool = false
     
     init() {
         self.id = UUID().uuidString
@@ -72,11 +73,18 @@ class ScanOptionItem {
     func decrease() {
         if isEnd { return }
         
-        if step < tools.count {
+        if step < tools.count && step >= 0 {
             let tool = tools[step]
             self.suspiciousResult.removeValue(forKey: tool)
+            self.step = max(0, step - 1)
+        }
+    }
+    
+    func isCurrentTool(tool: ToolItem) -> Bool {
+        if step < tools.count {
+            return tool == tools[step] && !isEnd
         }
         
-        self.step -= 1
+        return false
     }
 }

@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import SwiftUI
+import FirebaseAnalytics
 
 struct MetalDetectorViewModelInput: InputOutputViewModel {
     var didTapBack = PublishSubject<()>()
@@ -38,6 +39,18 @@ final class MagnetometerViewModel: BaseViewModel<MetalDetectorViewModelInput, Me
         self.scanOption = scanOption
         super.init()
         Magnetometer.shared.locationDelegate = self
+        
+        if let scanOption {
+            switch scanOption.type {
+            case .option:
+                Analytics.logEvent("feature_option_magnetic", parameters: nil)
+            case .full:
+                if scanOption.isThreadAfterIntro {
+                    Analytics.logEvent("first_magnetic", parameters: nil)
+                }
+            default: break
+            }
+        }
     }
     
     override func configInput() {
@@ -90,6 +103,14 @@ final class MagnetometerViewModel: BaseViewModel<MetalDetectorViewModelInput, Me
             Magnetometer.shared.stop()
             self?.routing.stop.onNext(())
         }).disposed(by: self.disposeBag)
+    }
+    
+    func showBackButton() -> Bool {
+        if let scanOption, scanOption.isThreadAfterIntro {
+            return scanOption.isEnd && !isDetecting
+        }
+        
+        return !isDetecting
     }
 }
 

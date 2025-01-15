@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import SwiftUI
+import SakuraExtension
 
 class CameraDetectorViewController: ViewController {
     var viewModel: CameraDetectorViewModel
@@ -29,9 +30,14 @@ class CameraDetectorViewController: ViewController {
         self.config()
     }
     
-    override func viewDidFirstAppear() {
-        super.viewDidFirstAppear()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         viewModel.startCamera()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.objectWillChange.send()
     }
     
     // MARK: - Config
@@ -61,6 +67,10 @@ class CameraDetectorViewController: ViewController {
         
         viewModel.routing.previewResult.subscribe(onNext: { [weak self] item in
             self?.coordinator?.routeToResult(item: item)
+        }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.showError.subscribe(onNext: { [weak self] message in
+            self?.presentAlert(title: "Oops!", message: message)
         }).disposed(by: self.disposeBag)
         
         viewModel.routing.gallery.subscribe(onNext: { [weak self] url in

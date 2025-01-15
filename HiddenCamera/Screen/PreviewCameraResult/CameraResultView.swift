@@ -87,17 +87,6 @@ struct CameraResultView: View {
                             }
                         }
                     }
-                    .overlay(
-                        ZStack(alignment: .topTrailing) {
-                            Image("ic_close")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24)
-                                .padding(16)
-                            
-                            Color.clear
-                        }
-                    )
                     .background(Color.white)
                     .cornerRadius(20, corners: .allCorners)
                     .padding(.horizontal, 20)
@@ -197,7 +186,7 @@ struct CameraResultView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32)
                 .onTapGesture {
-                    viewModel.player.rewindVideo(by: 10)
+                    viewModel.input.changeOffsetTime.onNext(-10.0)
                 }
             
             Circle()
@@ -218,7 +207,7 @@ struct CameraResultView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32)
                 .onTapGesture {
-                    viewModel.player.forwardVideo(by: 10)
+                    viewModel.input.changeOffsetTime.onNext(10.0)
                 }
         }
     }

@@ -11,7 +11,7 @@ import RxSwift
 final class WifiScannerCoordinator: NavigationBasedCoordinator {
     
     var resultCoordinator: ScannerResultCoordinator?
-    private let scanOption: ScanOptionItem?
+    let scanOption: ScanOptionItem?
     
     init(scanOption: ScanOptionItem?, navigationController: UINavigationController) {
         self.scanOption = scanOption
@@ -53,8 +53,11 @@ final class WifiScannerCoordinator: NavigationBasedCoordinator {
             navigationController.viewControllers.removeAll(where: { $0 == controller })
         }
         
-        scanOption?.decrease()
-        super.stop(completion: completion)
+        if canRemove() {
+            super.stop(completion: completion)
+        } else {
+            self.stopAllChild()
+        }
     }
     
     func routeToResult(device: [Device]) {
@@ -65,5 +68,13 @@ final class WifiScannerCoordinator: NavigationBasedCoordinator {
     
     func nextTool() {
         self.send(event: RouteToNextTool())
+    }
+    
+    func canRemove() -> Bool {
+        if let scanOption {
+            return scanOption.isSave || scanOption.isCurrentTool(tool: .wifiScanner)
+        }
+        
+        return true
     }
 }

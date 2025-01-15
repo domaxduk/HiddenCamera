@@ -117,6 +117,7 @@ PODS:
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
   - lottie-ios (4.5.0)
+  - MarqueeLabel/Swift (3.2.1)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -150,6 +151,7 @@ DEPENDENCIES:
   - FirebaseMessaging
   - Google-Mobile-Ads-SDK
   - lottie-ios
+  - MarqueeLabel/Swift
   - onnxruntime-objc (~> 1.16.0)
   - RealmSwift
   - RxCocoa
@@ -175,6 +177,7 @@ SPEC REPOS:
     - GoogleUserMessagingPlatform
     - GoogleUtilities
     - lottie-ios
+    - MarqueeLabel
     - nanopb
     - onnxruntime-c
     - onnxruntime-objc
@@ -205,6 +208,7 @@ SPEC CHECKSUMS:
   GoogleUserMessagingPlatform: a8b56893477f67212fbc8411c139e61d463349f5
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   lottie-ios: a881093fab623c467d3bce374367755c272bdd59
+  MarqueeLabel: 2daf039bf916937c8a4c9adfc13577cc5e51b4ce
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   onnxruntime-c: 74e86835396f767f56835ea44cfe7630d8e58a4b
   onnxruntime-objc: 67a7633965d57f9648a0c7cc858d32c5c6b414f4
@@ -218,6 +222,6 @@ SPEC CHECKSUMS:
   SwiftyStoreKit: 6b9c08810269f030586dac1fae8e75871a82e84a
   WebBrowser: 0248873c77f54e2ac504ece7c2bc8eeb710b5a4f
 
-PODFILE CHECKSUM: 93ced144d748c355f54734cd023e5b5644b0feb0
+PODFILE CHECKSUM: bd49cfb1e6bbf3fbb0ab2205443994f1d4df8e3a
 
 COCOAPODS: 1.16.2

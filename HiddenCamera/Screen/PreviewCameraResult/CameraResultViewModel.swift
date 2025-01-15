@@ -16,6 +16,7 @@ struct CameraResultViewModelInput: InputOutputViewModel {
     var mask =  PublishSubject<CameraResultTag>()
     var didTapBack = PublishSubject<()>()
     var didTapNext = PublishSubject<()>()
+    var changeOffsetTime = PublishSubject<Double>()
 }
 
 struct CameraResultViewModelOutput: InputOutputViewModel {
@@ -50,10 +51,7 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
             self.tag = nil
         }
         
-        let url = FileManager.documentURL().appendingPathComponent(item.fileName)
-        self.asset = AVAsset(url: url)
-        let playerItem = AVPlayerItem(asset: asset)
-        self.player = SakuraVideoPlayer(playerItem: playerItem)
+        self.player = SakuraVideoPlayer()
         super.init()
         configPlayer()
     }
@@ -82,12 +80,13 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
             self.tag = tag
             self.item.tag = tag
             self.dao.addObject(item: item)
-            if item.type == .aiDetector {
-                self.scanOption?.suspiciousResult[.cameraDetector] = item.tag == .risk ? 1 : 0
-            } else {
-                self.scanOption?.suspiciousResult[.infraredCamera] = item.tag == .risk ? 1 : 0
-            }
             
+            if item.type == .aiDetector {
+                self.scanOption?.suspiciousResult[.cameraDetector] = tag == .risk ? 1 : 0
+            } else {
+                self.scanOption?.suspiciousResult[.infraredCamera] = tag == .risk ? 1 : 0
+            }
+                        
             withAnimation {
                 self.objectWillChange.send()
             }
@@ -98,9 +97,19 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
             self.player.removePlayerObserver()
             self.routing.back.onNext(())
         }).disposed(by: self.disposeBag)
+        
+        input.changeOffsetTime.subscribe(onNext: { [weak self] value in
+            guard let self else { return }
+            let currentTime = self.player.currentTime() + value.convertToTime()
+            self.seek(time: currentTime)
+        }).disposed(by: self.disposeBag)
     }
     
     private func configPlayer() {
+         let url = FileManager.documentURL().appendingPathComponent(item.fileName)
+         self.asset = AVAsset(url: url)
+         let playerItem = AVPlayerItem(asset: asset)
+        player.replacePlayerItem(playerItem)
         player.config()
         player.delegate = self
         player.addPlayerObserver()
@@ -108,10 +117,6 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
     
     // MARK: - PlayVideo
     func playVideo() {
-        if player.currentTime() == duration() {
-            seek(.zero)
-        }
-        
         player.play()
     }
     
@@ -119,15 +124,23 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
         player.pause()
     }
     
-    func seek(_ time: CMTime) {
-        player.seek(to: time)
+    func seek(time: CMTime) {
+        player.seekTo(time)
     }
     
     func seek(process: CGFloat) {
-        let second = CGFloat(process * asset.duration.seconds)
-        let time = CMTime(seconds: second, preferredTimescale: 3600)
-        self.player.seek(to: time)
+        let timeScale = CMTimeScale(NSEC_PER_SEC)
+        let second = CGFloat(process) * asset.duration.seconds
+        let time = CMTime(seconds: second, preferredTimescale: timeScale)
+        self.seek(time: time)
         self.percent = process
+    }
+}
+
+extension Double {
+    func convertToTime() -> CMTime {
+        let timeScale = CMTimeScale(NSEC_PER_SEC)
+        return CMTime(seconds: self, preferredTimescale: timeScale)
     }
 }
 
@@ -140,7 +153,14 @@ extension CameraResultViewModel: SakuraVideoPlayerDelegate {
     }
     
     func videoPlayerUpdatePlayingState(_ player: SakuraVideoPlayer, isPlaying: Bool) {
-        self.isPlaying = isPlaying
+        if !isSeeking {
+            self.isPlaying = isPlaying
+        }
+    }
+    
+    func videoPlayerPlayToEnd(_ player: SakuraVideoPlayer) {
+        print("videoPlayerPlayToEnd")
+        player.seekTo(.zero)
     }
 }
 
@@ -181,9 +201,5 @@ extension CameraResultViewModel {
         
         return timeDescription
     }
-}
-
-#Preview {
-    CameraResultView(viewModel: CameraResultViewModel(item: .init(id: "", fileName: "test", type: .infrared), scanOption: .init()))
 }
 

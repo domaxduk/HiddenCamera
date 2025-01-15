@@ -35,7 +35,7 @@ class Device: NSObject, ObservableObject {
     }
     
     internal func getImageName(from key: String) -> String? {
-        let compareText = key.lowercased()
+        let compareText = key.lowercased().replacingOccurrences(of: " ", with: "")
         
         if compareText.contains("airpod") {
             return "ic_device_airpod"
@@ -58,6 +58,12 @@ class Device: NSObject, ObservableObject {
         }
         
         return nil
+    }
+    
+    func isSafe() -> Bool {
+        return UserSetting.safeDeviceKeys.contains(where: { key in
+            return keystore.contains(where: { $0 == key })
+        })
     }
 }
 

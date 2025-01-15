@@ -56,6 +56,7 @@ final class ScannerResultCoordinator: NavigationBasedCoordinator {
                 BluetoothScanner.shared.stopScanning()
             }
         }
+        
         super.stop(completion: completion)
     }
     

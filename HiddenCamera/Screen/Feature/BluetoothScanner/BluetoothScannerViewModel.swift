@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import CoreBluetooth
 import SwiftUI
+import FirebaseAnalytics
 
 struct BluetoothScannerViewModelInput: InputOutputViewModel {
     var didTapScan = PublishSubject<()>()
@@ -32,7 +33,6 @@ struct BluetoothScannerViewModelRouting: RoutingOutput {
 }
 
 final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelInput, BluetoothScannerViewModelOutput, BluetoothScannerViewModelRouting> {
-    
     @Published var state: ScannerState = .ready
     @Published var percent: Double = 0
     @Published var seconds: Double = 0
@@ -49,14 +49,19 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
     init(scanOption: ScanOptionItem?) {
         self.scanOption = scanOption
         super.init()
-    }
-
-    override func config() {
-        super.config()
-        configBluetoothScanner()
-    }
-    
-    private func configBluetoothScanner() {
+        
+        if let scanOption {
+            switch scanOption.type {
+            case .option:
+                Analytics.logEvent("feature_option_bluetooth", parameters: nil)
+            case .full:
+                if scanOption.isThreadAfterIntro {
+                    Analytics.logEvent("first_bluetooth", parameters: nil)
+                }
+            default: break
+            }
+        }
+        
         BluetoothScanner.shared.delegate = self
     }
     
@@ -138,6 +143,7 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
             
             resetData()
             BluetoothScanner.shared.startScanning()
+            BluetoothScanner.shared.delegate = self
             startTimer()
         default:
             self.routing.showErrorMessage.onNext("Please scan again after a few seconds!")
@@ -174,7 +180,7 @@ final class BluetoothScannerViewModel: BaseViewModel<BluetoothScannerViewModelIn
                         
             if seconds >= AppConfig.bluetoothDuration {
                 timer?.invalidate()
-                self.scanOption?.suspiciousResult[.bluetoothScanner] = devices.count
+                self.scanOption?.suspiciousResult[.bluetoothScanner] = devices.filter({ !$0.isSafe() }).count
                 
                 withAnimation {
                     self.state = .done
@@ -213,7 +219,7 @@ extension BluetoothScannerViewModel: BluetoothScannerDelegate {
 // MARK: - Get
 extension BluetoothScannerViewModel {
     func suspiciousDevices() -> [Device] {
-        return devices
+        return devices.filter({ !$0.isSafe() })
     }
     
     func scanningText() -> String {
@@ -225,5 +231,13 @@ extension BluetoothScannerViewModel {
         }
         
         return text
+    }
+    
+    func showBackButton() -> Bool {
+        if let scanOption, scanOption.isThreadAfterIntro {
+            return scanOption.isEnd && state != .isScanning
+        }
+        
+        return state != .isScanning
     }
 }

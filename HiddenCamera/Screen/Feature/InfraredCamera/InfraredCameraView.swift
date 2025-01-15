@@ -48,18 +48,14 @@ struct InfraredCameraView: View {
                     .animation(.bouncy)
                 
                 ZStack {
-                    recordButton.zIndex(1)
+                    recordButton.zIndex(1).overlay(
+                        LottieView(animation: .named("tapfinger"))
+                            .playing(loopMode: .loop)
+                            .frame(width: 200, height: 200)
+                            .allowsHitTesting(false)
+                    )
                 }.padding(.bottom, 10)
             }
-            
-            VStack {
-                Spacer()
-                
-                LottieView(animation: .named("tapfinger"))
-                    .playing(loopMode: .loop)
-                    .frame(height: 100)
-                    .offset(x: 20, y: 30)
-            }.allowsHitTesting(false)
         }
         .onTapGesture {
             viewModel.isTheFirst = false
@@ -129,7 +125,7 @@ struct InfraredCameraView: View {
                 ZStack {
                     recordButton.zIndex(1)
                     
-                    if let image = viewModel.previewGalleryImage, viewModel.scanOption == nil {
+                    if let image = viewModel.previewGalleryImage, viewModel.scanOption == nil && !viewModel.isRecording {
                         HStack {
                             Spacer()
                             RoundedRectangle(cornerRadius: 12)
@@ -220,19 +216,29 @@ struct InfraredCameraView: View {
             .onTapGesture {
                 viewModel.input.didTapRecord.onNext(())
             }
+            .opacity(recordButtonOpacity)
+    }
+    
+    var recordButtonOpacity: Double {
+        if viewModel.isRecording {
+            return viewModel.seconds >= 1 ? 1 : 0
+        }
+        
+        return 1
     }
     
     // MARK: - navigationBar
     var navigationBar: some View {
         HStack {
-            Image("ic_back")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24)
-                .onTapGesture {
-                    viewModel.input.back.onNext(())
-                }
-                .padding(.leading, 20)
+            if viewModel.showBackButton() {
+                Image("ic_back")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24)
+                    .onTapGesture {
+                        viewModel.input.back.onNext(())
+                    }
+            }
             
             Text(ToolItem.infraredCamera.name)
                 .textColor(.app(.light12))
@@ -240,7 +246,7 @@ struct InfraredCameraView: View {
             
             Spacer()
             
-            if viewModel.scanOption != nil {
+            if viewModel.scanOption != nil && !viewModel.isRecording {
                 Button(action: {
                     viewModel.input.didTapNext.onNext(())
                 }, label: {
@@ -251,6 +257,7 @@ struct InfraredCameraView: View {
                 })
             }
         }
+        .padding(.leading, 20)
         .frame(height: AppConfig.navigationBarHeight)
         .padding(.bottom, 12)
         .background(

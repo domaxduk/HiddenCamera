@@ -53,7 +53,7 @@ struct HistoryView: View {
                     ForEach(viewModel.historyItems.indices, id: \.self) { index in
                         let item = viewModel.historyItems[index]
                         
-                        if index % 4 == 0 {
+                        if index % 4 == 0 && !UserSetting.isPremiumUser {
                             NativeContentView()
                         }
                         
@@ -103,9 +103,6 @@ fileprivate struct HistoryItemView: View {
         .padding(20)
         .background(Color.white)
         .cornerRadius(16, corners: .allCorners)
-        .onAppear(perform: {
-            print(item.rlmObject())
-        })
     }
     
     var dateString: String {

@@ -53,14 +53,15 @@ struct BluetoothScannerView: View {
     
     var navigationBar: some View {
         HStack {
-            Image("ic_back")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24)
-                .onTapGesture {
-                    viewModel.input.didTapBack.onNext(())
-                }
-                .padding(.leading, 20)
+            if viewModel.showBackButton() {
+                Image("ic_back")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24)
+                    .onTapGesture {
+                        viewModel.input.didTapBack.onNext(())
+                    }
+            }
             
             Text(ToolItem.bluetoothScanner.name)
                 .textColor(.app(.light12))
@@ -79,6 +80,7 @@ struct BluetoothScannerView: View {
                 })
             }
         }
+        .padding(.leading, 20)
         .frame(height: AppConfig.navigationBarHeight)
         .frame(height: 56)
     }

@@ -2,14 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-3940256099942544~1458002511</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>cho quyen di</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>cho quyen di</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>cho quyen di he</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-5294836995166944~4599797005</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>This application requires local network access to scan for suspicious devices in you network.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_preflight_check._tcp</string>
@@ -23,10 +24,5 @@
 		<string>Poppins-Bold.ttf</string>
 		<string>Poppins-SemiBold.ttf</string>
 	</array>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 </dict>
 </plist>

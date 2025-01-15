@@ -44,15 +44,16 @@ struct MagnetometerView: View {
     // MARK: - navigationBar
     var navigationBar: some View {
         HStack {
-            Image("ic_back")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24)
-                .onTapGesture {
-                    viewModel.input.didTapBack.onNext(())
-                }
-                .padding(.leading, 20)
-
+            if viewModel.showBackButton() {
+                Image("ic_back")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24)
+                    .onTapGesture {
+                        viewModel.input.didTapBack.onNext(())
+                    }
+            }
+           
             Text(ToolItem.magnetic.name)
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
@@ -70,6 +71,7 @@ struct MagnetometerView: View {
                 })
             }
         }
+        .padding(.leading, 20)
         .frame(height: AppConfig.navigationBarHeight)
     }
     

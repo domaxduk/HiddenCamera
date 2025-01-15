@@ -9,8 +9,9 @@ import Foundation
 import CoreBluetooth
 
 class BluetoothDevice: Device {
-    var rssi: NSNumber
-    var peripheral: CBPeripheral?
+    @Published var rssi: NSNumber
+    @Published var peripheral: CBPeripheral?
+    private var lastUpdate: Date?
     
     init(id: String, rssi: NSNumber, peripheral: CBPeripheral?) {
         self.rssi = rssi
@@ -51,5 +52,14 @@ class BluetoothDevice: Device {
         }
         
         return distanceValue
+    }
+    
+    func updateRSSI(RSSI: NSNumber) {
+        if let lastUpdate, abs(lastUpdate.timeIntervalSinceNow) < 0.5 {
+            return
+        }
+        
+        self.rssi = RSSI
+        self.lastUpdate = Date()
     }
 }

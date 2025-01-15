@@ -124,17 +124,18 @@ struct IntroView: View {
                         VStack {
                             Spacer()
                             
-                            Text("Continue")
-                                .font(Poppins.medium.font(size: Const.titleSize))
-                                .textColor(.white)
-                                .padding(.vertical, 16)
-                                .frame(width: Const.screenWidth - 58 * 2)
-                                .background(Color.app(.main))
-                                .cornerRadius(Const.screenWidth, corners: .allCorners)
-                                .onTapGesture {
-                                    viewModel.input.didTapContinue.onNext(())
-                                    proxy.scrollTo("\(viewModel.currentIndex)", anchor: .center)
-                                }
+                            Button(action: {
+                                viewModel.input.didTapContinue.onNext(())
+                                proxy.scrollTo("\(viewModel.currentIndex)", anchor: .center)
+                            }, label: {
+                                Text(viewModel.currentIndex == viewModel.intros.count ? "Let's started" : "Continue")
+                                    .font(Poppins.medium.font(size: Const.titleSize))
+                                    .textColor(.white)
+                                    .padding(.vertical, 16)
+                                    .frame(width: Const.screenWidth - 58 * 2)
+                                    .background(Color.app(.main))
+                                    .cornerRadius(Const.screenWidth, corners: .allCorners)
+                            })
                         }
                     }
                 })
@@ -143,7 +144,7 @@ struct IntroView: View {
     }
     
     func permissionView() -> some View {
-        VStack {
+        VStack(spacing: 0) {
             Text("Grant permission for this app to keep enhancing your ad experience")
                 .font(Poppins.medium.font(size: Const.titleSize))
                 .textColor(.app(.light12))
@@ -183,7 +184,27 @@ struct IntroView: View {
                     .textColor(.app(.light10))
                     .padding(.leading, 16)
                 Spacer(minLength: 0)
-            }.padding(.top, 16)
+            }.padding(.top, 12)
+            
+            HStack {
+               Circle()
+                    .fill(Color.app(.main).opacity(0.1))
+                    .frame(height: Const.circleSize)
+                    .overlay(
+                        Image(systemName: "heart.fill")
+                            .resizable()
+                            .renderingMode(.template)
+                            .foreColor(.app(.main))
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: Const.circleSize / 44 * 24)
+                    )
+                
+                Text("Help keep this app free of charge")
+                    .font(Poppins.regular.font(size: Const.normalSize))
+                    .textColor(.app(.light10))
+                    .padding(.leading, 16)
+                Spacer(minLength: 0)
+            }.padding(.top, 12)
             
             Group {
                 Text("Tap")

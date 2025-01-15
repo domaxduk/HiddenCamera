@@ -10,6 +10,7 @@ import RxSwift
 import SwiftUI
 import AVFoundation
 import SakuraExtension
+import FirebaseAnalytics
 
 struct InfraredCameraViewModelInput: InputOutputViewModel {
     var back = PublishSubject<()>()
@@ -28,6 +29,7 @@ struct InfraredCameraViewModelRouting: RoutingOutput {
     var previewResult = PublishSubject<CameraResultItem>()
     var gallery = PublishSubject<()>()
     var nextTool = PublishSubject<()>()
+    var showError = PublishSubject<String>()
 }
 
 final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput, InfraredCameraViewModelOutput, InfraredCameraViewModelRouting> {
@@ -41,14 +43,15 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
     @Published var isShowingCameraDialog: Bool = false
     @Published var previewGalleryImage: UIImage?
 
-    private var writer: AssetWriter?
+    private var writer: AssetWriter
     private var timer: Timer?
     
     private var cameraOutput: AVCaptureVideoDataOutput!
     private var audioOutput: AVCaptureAudioDataOutput!
     
     private var needToStart: Bool = false
-    private var startRecordingTimeOnSampleBuffer: CMTime!
+    private var needToStop: Bool = false
+    
     let scanOption: ScanOptionItem?
     var lastItem: CameraResultItem?
     private let dao = CameraResultDAO()
@@ -56,16 +59,34 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
     init(scanOption: ScanOptionItem?) {
         self.scanOption = scanOption
         self.captureSession = AVCaptureSession()
+        
+        let outputFileURL = FileManager.documentURL().appendingPathComponent("record.mp4")
+        let outputSize = UIScreen.main.bounds.size.scale(3.0)
+        self.writer = AssetWriter(outputURL: outputFileURL, fileType: .mp4, outputSize: outputSize)
+        
         super.init()
         configCaptureSession()
-        initAssetWriter()
-        
+
         if !Permission.grantedCamera {
             self.isShowingCameraDialog = true
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(getPreviewGalleryImage), name: .updateCameraHistory, object: nil)
         getPreviewGalleryImage()
+        
+        if let scanOption {
+            switch scanOption.type {
+            case .option:
+                Analytics.logEvent("feature_option_ir", parameters: nil)
+            case .full:
+                if scanOption.isThreadAfterIntro {
+                    Analytics.logEvent("first_ir", parameters: nil)
+                }
+            default: break
+            }
+        }
+        
+        self.writer.delegate = self
     }
     
     @objc private func getPreviewGalleryImage() {
@@ -117,22 +138,13 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
         
         DispatchQueue.main.async {
             self.isTheFirst = false
-            self.isRecording.toggle()
-            self.invalidateTimer()
             
-            if self.isRecording {
-                self.startRecord()
-                UserSetting.increaseUsedFeature(.ifCamera)
-            } else {
-                self.stopRecord()
+            if self.isRecording { // If user is recording
+                self.needToStop = true
+            } else { // If user isn't recording
+                self.needToStart = true
             }
         }
-    }
-    
-    private func initAssetWriter() {
-        let outputFileURL = FileManager.documentURL().appendingPathComponent("record.mp4")
-        let outputSize = UIScreen.main.bounds.size.scale(3.0)
-        self.writer = AssetWriter(outputURL: outputFileURL, fileType: .mp4, outputSize: outputSize)
     }
     
     private func configCaptureSession() {
@@ -172,6 +184,7 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
     }
     
     private func startTimer() {
+        timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
             guard let self else { return }
             DispatchQueue.main.async {
@@ -192,43 +205,36 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
         self.startTimer()
         self.needToStart = true
     }
-    
-    private func stopRecord() {
-        self.seconds = 0
-        self.writer?.finishWriting(completion: { [weak self] error in
-            guard let self else { return }
-            if error == nil {
-                if let outputFileURL = self.writer?.outputURL {
-                    let resultURL = FileManager.documentURL().appendingPathComponent("\(UUID().uuidString).mp4")
-                    try? FileManager.default.copyItem(at: outputFileURL, to: resultURL)
-                    
-                    let item = CameraResultItem(id: UUID().uuidString, fileName: resultURL.lastPathComponent, type: .infrared)
-                    self.routing.previewResult.onNext(item)
-                    self.lastItem = item
-                }
-            } else {
-                print("error: \(error!)")
-            }
-        })
-    }
 }
 
-// MARK: - GET
-extension InfraredCameraViewModel {
-    func durationDescription() -> String {
-        let hour = seconds / 3600
-        let minute = (seconds - hour * 3600) / 60
-        let second = seconds - hour * 3600 - minute * 60
-        return String(format: "%02d:%02d:%02d", hour, minute, second)
-    }
-    
-    func uiFilterColor() -> UIColor {
-        switch self.filterColor {
-        case .red: return UIColor(red: 238, green: 64, blue: 76, alpha: 1)
-        case .blue: return .blue
-        case .green: return .green
-        case .yellow: return .yellow
-        default: return .clear
+// MARK: - AssetWriterDelegate
+extension InfraredCameraViewModel: AssetWriterDelegate {
+    func assetWrite(_ writer: AssetWriter, didFinishRecording url: URL, error: (any Error)?) {
+        if let error {
+            DispatchQueue.main.async {
+                self.routing.showError.onNext(error.localizedDescription)
+                self.invalidateTimer()
+            }
+            
+            return
+        }
+        
+        if self.seconds >= 1 {
+            let resultURL = FileManager.documentURL().appendingPathComponent("\(UUID().uuidString).mp4")
+            try? FileManager.default.copyItem(at: url, to: resultURL)
+            
+            let item = CameraResultItem(id: UUID().uuidString, fileName: resultURL.lastPathComponent, type: .infrared)
+            self.lastItem = item
+            
+            DispatchQueue.main.async {
+                CameraManager.configFlash(isOn: false)
+                self.isTurnFlash = false
+                self.routing.previewResult.onNext(item)
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.invalidateTimer()
         }
     }
 }
@@ -259,15 +265,60 @@ extension InfraredCameraViewModel: AVCaptureVideoDataOutputSampleBufferDelegate,
         let image = ciImage.image
         
         if needToStart {
-            self.startRecordingTimeOnSampleBuffer = time
-            self.writer?.startWriting(atSourceTime: self.startRecordingTimeOnSampleBuffer ?? .zero)
-            self.needToStart = false
-        } else if isRecording {
-            self.writer?.append(pixelBuffer: ciImage.buffer ?? videoPixelBuffer, withPresentationTime: time)
+            print("need to start")
+            DispatchQueue.main.async {
+                self.startTimer()
+                self.writer.startWriting()
+                self.isRecording = true
+                self.needToStart = false
+                UserSetting.increaseUsedFeature(.ifCamera)
+            }
+        }
+        
+        if isRecording {
+            if needToStop {
+                DispatchQueue.main.async {
+                    self.needToStop = false
+                    self.timer?.invalidate()
+                    self.writer.finishWriting()
+                    self.isRecording = false
+                }
+                return
+            }
+            
+            self.writer.append(pixelBuffer: ciImage.buffer ?? videoPixelBuffer, withPresentationTime: time)
         }
                 
         DispatchQueue.main.async {
             self.output.updatePreview.onNext(image)
+        }
+    }
+}
+
+// MARK: - GET
+extension InfraredCameraViewModel {
+    func showBackButton() -> Bool {
+        if let scanOption, scanOption.isThreadAfterIntro {
+            return scanOption.isEnd && !isRecording
+        }
+        
+        return !isRecording
+    }
+    
+    func durationDescription() -> String {
+        let hour = seconds / 3600
+        let minute = (seconds - hour * 3600) / 60
+        let second = seconds - hour * 3600 - minute * 60
+        return String(format: "%02d:%02d:%02d", hour, minute, second)
+    }
+    
+    func uiFilterColor() -> UIColor {
+        switch self.filterColor {
+        case .red: return UIColor(red: 238, green: 64, blue: 76, alpha: 1)
+        case .blue: return UIColor(red: 51, green: 157, blue: 255, alpha: 1)
+        case .green: return UIColor(red: 0, green: 186, blue: 0, alpha: 1)
+        case .yellow: return UIColor(red: 255, green: 186, blue: 23, alpha: 1)
+        default: return .clear
         }
     }
 }

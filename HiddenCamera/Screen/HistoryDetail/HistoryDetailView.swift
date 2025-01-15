@@ -70,8 +70,9 @@ struct HistoryDetailView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24)
                 .onTapGesture {
-                    viewModel.routing.stop.onNext(())
+                    viewModel.input.didTapBack.onNext(())
                 }
+            
             Text(title)
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))

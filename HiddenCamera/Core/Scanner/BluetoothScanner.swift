@@ -22,11 +22,9 @@ class BluetoothScanner: NSObject, ObservableObject {
     static var shared = BluetoothScanner()
     private var manager: CBCentralManager?
     
-    
-    private var devices = [BluetoothDevice]()
-    
     weak var delegate: BluetoothScannerDelegate?
     private var isScanning: Bool = false
+    private var devices = [BluetoothDevice]()
     
     var authorization: CBManagerAuthorization {
         return CBManager.authorization
@@ -92,16 +90,18 @@ extension BluetoothScanner: CBCentralManagerDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        if let index = devices.firstIndex(where: { $0.id == peripheral.identifier.uuidString }) {
+        let id = peripheral.identifier.uuidString
+        if let index = devices.firstIndex(where: { $0.id == id }) {
             let device = devices[index]
             
             if peripheral.name != nil && device.deviceName() == nil {
-                devices.remove(at: index)
+                devices.removeAll(where: { $0.id == device.id })
                 devices.insert(device, at: 0)
+                self.delegate?.bluetoothScanner(self, updateListDevice: devices)
             }
             
             device.peripheral = peripheral
-            device.rssi = RSSI
+            device.updateRSSI(RSSI: RSSI)
         } else {
             let device = BluetoothDevice(id: peripheral.identifier.uuidString, rssi: RSSI, peripheral: peripheral)
             
@@ -114,11 +114,9 @@ extension BluetoothScanner: CBCentralManagerDelegate {
             if let deviceName = advertisementData[CBAdvertisementDataLocalNameKey] as? String {
                 print("Tên thiết bị: \(deviceName)")
             }
+            
+            self.delegate?.bluetoothScanner(self, updateListDevice: devices)
         }
-        
-        print("is scanning")
-        
-        self.delegate?.bluetoothScanner(self, updateListDevice: devices)
     }
     
     func extractSerialNumber(advertisementData: [String : Any]) -> String? {
@@ -134,5 +132,3 @@ extension BluetoothScanner: CBCentralManagerDelegate {
         return stringValue
     }
 }
-
-

@@ -65,14 +65,15 @@ struct WifiScannerView: View {
     
     var navigationBar: some View {
         HStack {
-            Image("ic_back")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24)
-                .onTapGesture {
-                    viewModel.input.didTapBack.onNext(())
-                }
-                .padding(.leading, 20)
+            if viewModel.showBackButton() {
+                Image("ic_back")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24)
+                    .onTapGesture {
+                        viewModel.input.didTapBack.onNext(())
+                    }
+            }
             
             Text(ToolItem.wifiScanner.name)
                 .textColor(.app(.light12))
@@ -91,6 +92,7 @@ struct WifiScannerView: View {
                 })
             }
         }
+        .padding(.leading, 20)
         .frame(height: AppConfig.navigationBarHeight)
         .frame(height: 56)
     }
@@ -203,19 +205,17 @@ struct WifiScannerView: View {
             }
             
             if viewModel.state != .done {
-                Text("Network name : \(viewModel.networkName ?? "Unknown")")
+                Text("Network name: \(viewModel.networkName ?? "Unknown")")
                     .font(Poppins.regular.font(size: 14))
                     .textColor(.app(.light09))
                 
-                HStack {
-                    Text("IP:")
+                HStack(spacing: 0) {
+                    Text("IP: ")
                         .font(Poppins.regular.font(size: 14))
-                        .textColor(.app(.light09))
                     
-                    Text(viewModel.ip)
+                    + Text(viewModel.ip)
                         .font(Poppins.semibold.font(size: 14))
-                        .textColor(.app(.light09))
-                }
+                }.foreColor(.app(.light09))
                 
                 scanView
             }

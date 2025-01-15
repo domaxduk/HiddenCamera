@@ -10,6 +10,7 @@ import SwiftUI
 import SakuraExtension
 import RxSwift
 import AVFoundation
+import Lottie
 
 struct CameraDetectorView: View {
     @ObservedObject var viewModel: CameraDetectorViewModel
@@ -53,7 +54,12 @@ struct CameraDetectorView: View {
                     .animation(.bouncy)
                 
                 ZStack {
-                    recordButton.zIndex(1)
+                    recordButton.zIndex(1).overlay(
+                        LottieView(animation: .named("tapfinger"))
+                            .playing(loopMode: .loop)
+                            .frame(width: 200, height: 200)
+                            .allowsHitTesting(false)
+                    )
                 }.padding(.bottom, 10)
             }
         }
@@ -125,7 +131,7 @@ struct CameraDetectorView: View {
                 ZStack {
                     recordButton.zIndex(1)
                     
-                    if let image = viewModel.previewGalleryImage, viewModel.scanOption == nil {
+                    if let image = viewModel.previewGalleryImage, viewModel.scanOption == nil && !viewModel.isRecording {
                         HStack {
                             Spacer()
                             RoundedRectangle(cornerRadius: 12)
@@ -222,18 +228,29 @@ struct CameraDetectorView: View {
             .onTapGesture {
                 viewModel.input.didTapRecord.onNext(())
             }
+            .opacity(recordButtonOpacity)
+    }
+    
+    var recordButtonOpacity: Double {
+        if viewModel.isRecording {
+            return viewModel.seconds >= 1 ? 1 : 0
+        }
+        
+        return 1
     }
     
     // MARK: - navigationBar
     var navigationBar: some View {
         HStack {
-            Image("ic_back")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24)
-                .onTapGesture {
-                    viewModel.input.back.onNext(())
-                }.padding(.leading, 20)
+            if viewModel.showBackButton() {
+                Image("ic_back")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24)
+                    .onTapGesture {
+                        viewModel.input.back.onNext(())
+                    }
+            }
             
             Text(ToolItem.cameraDetector.name)
                 .textColor(.app(.light12))
@@ -244,7 +261,7 @@ struct CameraDetectorView: View {
             
             Spacer()
             
-            if viewModel.scanOption != nil {
+            if viewModel.scanOption != nil && !viewModel.isRecording {
                 Button(action: {
                     viewModel.input.didTapNext.onNext(())
                 }, label: {
@@ -255,6 +272,7 @@ struct CameraDetectorView: View {
                 })
             }
         }
+        .padding(.leading, 20)
         .frame(height: AppConfig.navigationBarHeight)
         .padding(.bottom, 12)
         .background(
@@ -301,7 +319,7 @@ fileprivate struct OverlayView: View {
                     
                     Image("ic_frame_camera")
                         .resizable()
-                        .frame(width: w, height: h)
+                        .frame(width: max(w, h), height: max(w, h))
                         .position(x: centerX, y: centerY)
                 }
             }

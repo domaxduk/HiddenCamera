@@ -12,8 +12,8 @@ import CoreBluetooth
 
 struct ScannerResultViewModelInput: InputOutputViewModel {
     var didTapFix = PublishSubject<Device>()
-    var moveToSafe = PublishSubject<Device>()
-    var remove = PublishSubject<Device>()
+    var moveToSafe = PublishSubject<String>()
+    var remove = PublishSubject<String>()
     var didTapBack = PublishSubject<()>()
     var didTapNext = PublishSubject<()>()
 }
@@ -29,19 +29,21 @@ struct ScannerResultViewModelRouting: RoutingOutput {
 }
 
 final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, ScannerResultViewModelOutput, ScannerResultViewModelRouting> {
-    @AppStorage("safe") var safeID = [String]()
-    @Published var devices: [Device]
     @Published var currentTab: ScannerResultTab = .safe
-    @Published var selectedDevice: Device?
-    @Published var removedDevice = [Device]()
+    @Published var selectedDeviceID: String?
+    @Published var removedDeviceID = [String]()
     
+    @Published var safeDevices: [Device]
+    @Published var suspiciousDevices: [Device]
+
     let type: ScannerResultType
     private var lastUpdate: Date?
     let scanOption: ScanOptionItem?
     
     init(scanOption: ScanOptionItem?, type: ScannerResultType, devices: [Device]) {
         self.type = type
-        self.devices = devices
+        self.safeDevices = devices.filter({ $0.isSafe() })
+        self.suspiciousDevices = devices.filter({ !$0.isSafe() })
         self.scanOption = scanOption
         super.init()
         
@@ -54,29 +56,28 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
         
         input.didTapFix.subscribe(onNext: { [weak self] device in
             guard let self else { return }
-            withAnimation {
-                self.selectedDevice = device
+            self.selectedDeviceID = device.id
+        }).disposed(by: self.disposeBag)
+        
+        input.moveToSafe.subscribe(onNext: { [weak self] id in
+            guard let self else { return }
+            if let index = suspiciousDevices.firstIndex(where: { $0.id == id }) {
+                let device = suspiciousDevices[index]
+                
+                self.selectedDeviceID = nil
+                safeDevices.append(device)
+                suspiciousDevices.remove(at: index)
+                UserSetting.safeDeviceKeys.append(contentsOf: device.keystore)
+                self.currentTab = .safe
+                self.scanOption?.suspiciousResult[type == .bluetooth ? .bluetoothScanner : .wifiScanner] = numberOfSuspiciousDevice()
             }
         }).disposed(by: self.disposeBag)
         
-        input.moveToSafe.subscribe(onNext: { [weak self] device in
+        input.remove.subscribe(onNext: { [weak self] id in
             guard let self else { return }
-            withAnimation {
-                self.selectedDevice = nil
-                self.safeID.append(contentsOf: device.keystore)
-                self.changeTabIfNeed()
-            }
-            
-            self.scanOption?.suspiciousResult[type == .bluetooth ? .bluetoothScanner : .wifiScanner] = numberOfSuspiciousDevice()
-        }).disposed(by: self.disposeBag)
-        
-        input.remove.subscribe(onNext: { [weak self] device in
-            guard let self else { return }
-            withAnimation {
-                self.selectedDevice = nil
-                self.removedDevice.append(device)
-            }
-            
+            self.selectedDeviceID = nil
+            self.removedDeviceID.append(id)
+            self.suspiciousDevices.removeAll(where: { $0.id == id })
             self.scanOption?.suspiciousResult[type == .bluetooth ? .bluetoothScanner : .wifiScanner] = numberOfSuspiciousDevice()
         }).disposed(by: self.disposeBag)
         
@@ -116,22 +117,14 @@ extension ScannerResultViewModel: LocalNetworkDetectorDelegate, BluetoothScanner
             return
         }
         
-        
-        let newDevices = devices
-        
         self.lastUpdate = Date()
-        if newDevices.count == self.devices.count {
-            self.devices = newDevices
-        } else {
-            withAnimation {
-                self.devices = newDevices
-            }
-        }
         
-        if let id = selectedDevice?.id, let device = devices.first(where: { $0.id == id }) {
-            self.selectedDevice = device
-        }
+        let newsafeDevice = devices.filter({ $0.isSafe() })
+        let newsuspiciousDevice = devices.filter({ !$0.isSafe() && !removedDeviceID.contains($0.id) })
         
+        self.safeDevices = newsafeDevice
+        self.suspiciousDevices = newsuspiciousDevice
+
         let toolItem: ToolItem = type == .bluetooth ? .bluetoothScanner : .wifiScanner
         self.scanOption?.suspiciousResult[toolItem] = numberOfSuspiciousDevice()
     }
@@ -145,39 +138,26 @@ extension ScannerResultViewModel: LocalNetworkDetectorDelegate, BluetoothScanner
     }
     
     func localNetworkDetector(_ detector: LocalNetworkDetector, updateListDevice devices: [LANDevice]) {
-        withAnimation {
-            self.devices = devices
-        }
+        self.safeDevices = devices.filter({ $0.isSafe() })
+        self.suspiciousDevices = devices.filter({ !$0.isSafe() })
     }
 }
 
 // MARK: - Get
 extension ScannerResultViewModel {
-    func isSafe(device: Device) -> Bool {
-        if let device = device as? LANDevice {
-            return safeID.contains(where: { $0 == device.ipAddress || $0 == device.hostname || $0 ==  device.deviceName() })
-        }
-        
-        return safeID.contains(where: { $0 == device.id })
-    }
-    
     func numberOfSafeDevice() -> Int {
-        return safeDevices().count
+        return safeDevices.count
     }
     
     func numberOfSuspiciousDevice() -> Int {
-        return suspiciousDevices().count
+        return suspiciousDevices.count
     }
     
-    func safeDevices() -> [Device] {
-        return devices.filter({ device in
-            return isSafe(device: device) && !removedDevice.contains(where: { $0.id == device.id })
-        })
-    }
-    
-    func suspiciousDevices() -> [Device] {
-        return devices.filter({ device in
-            return !isSafe(device: device) && !removedDevice.contains(where: { $0.id == device.id })
-        })
+    func device(id: String) -> Device? {
+        if let safeDevice = safeDevices.first(where: { $0.id == id }) {
+            return safeDevice
+        }
+        
+        return suspiciousDevices.first(where: { $0.id == id })
     }
 }

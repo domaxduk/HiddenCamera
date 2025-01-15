@@ -76,21 +76,11 @@ class LocalNetworkDetector: NSObject {
         browser.delegate = self
         browser.includesPeerToPeer = true
         browser.searchForServices(ofType: "_services._dns-sd._udp", inDomain: "")
-        browsers.append(browser)
+        self.browsers.append(browser)
     }
     
     private func startPing() {
-        let currentIPAddress = NetworkUtils.currentIPAddress()
-        let components = currentIPAddress.components(separatedBy: ".")
-        var baseIPAddress = ""
-        
-        for component in components {
-            if component == components.last {
-                break
-            }
-            
-            baseIPAddress += component + "."
-        }
+        let baseIPAddress = baseIPAddress()
         
         for i in 1...254 {
             let config = PingConfiguration(interval: 1, with: 5)
@@ -108,6 +98,22 @@ class LocalNetworkDetector: NSObject {
                 }
             }
         }
+    }
+    
+    private func baseIPAddress() -> String {
+        let currentIPAddress = NetworkUtils.currentIPAddress()
+        let components = currentIPAddress.components(separatedBy: ".")
+        var baseIPAddress = ""
+        
+        for component in components {
+            if component == components.last {
+                break
+            }
+            
+            baseIPAddress += component + "."
+        }
+        
+        return baseIPAddress
     }
     
     private func sorted(listDevice: [LANDevice]) -> [LANDevice] {
@@ -155,6 +161,7 @@ extension LocalNetworkDetector: NetServiceBrowserDelegate {
     }
     
     func netServiceBrowser(_ browser: NetServiceBrowser, didFind service: NetService, moreComing: Bool) {
+        print("didFind \(service.name)")
         let all = service.name + service.type
         let components = all.components(separatedBy: ".")
         
@@ -183,7 +190,6 @@ extension LocalNetworkDetector: NetServiceBrowserDelegate {
             otherService.startMonitoring()
             otherService.resolve(withTimeout: 10)
             services.append(otherService)
-            
             
             service.startMonitoring()
             service.resolve(withTimeout: 10)
@@ -221,12 +227,11 @@ extension LocalNetworkDetector: NetServiceDelegate {
     }
     
     private func addDevice(sender: NetService, data: Data?) {
-        print("sender \(sender.description) \(sender.hostName)")
         var deviceAddresses: [String] = []
         
         if let addresses = sender.addresses {
             for index in 0..<addresses.count {
-                if let address = sender.address(index: index) {
+                if let address = sender.address(index: index)?.trimmingCharacters(in: .whitespacesAndNewlines) {
                     deviceAddresses.append(address)
                 }
             }
@@ -240,7 +245,14 @@ extension LocalNetworkDetector: NetServiceDelegate {
         
         var ipAddress: String?
         
-        if let ipv4 = deviceAddresses.first(where: { $0.contains("192.168.")}) {
+        let currentIPAddress = NetworkUtils.currentIPAddress()
+        let components = currentIPAddress.components(separatedBy: ".")
+        let baseIPAddress = components[0] + "." + components[1]
+        
+        print("sender \(sender.description) \(sender.hostName) \(baseIPAddress)")
+
+        if let ipv4 = deviceAddresses.first(where: { $0.hasPrefix(baseIPAddress) }) {
+            print("sender did find \(ipv4)")
             ipAddress = ipv4
         }
         
@@ -308,15 +320,11 @@ extension LocalNetworkDetector: NetServiceDelegate {
         }
         
         let totalDevice = Array(listDevice.values) + Array(listIPDevice.values)
-        
-//        print("LIST\(self.devices.count)------------------")
-//        
-//        for device in self.devices {
-//            print("device: \(device.ipAddress)  \(device.deviceName()) \(device.model) \(device.hostname) \(device.listService)")
-//        }
 
-        self.delegate?.localNetworkDetector(self, 
-                                            updateListDevice: sorted(listDevice: totalDevice).filter({ $0.ipAddress != nil }))
+        DispatchQueue.main.async {
+            self.delegate?.localNetworkDetector(self,
+                                                updateListDevice: self.sorted(listDevice: totalDevice).filter({ $0.ipAddress != nil }))
+        }
     }
     
     private func deleteDuplicateDevice() {

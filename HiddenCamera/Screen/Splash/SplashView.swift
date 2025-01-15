@@ -43,7 +43,7 @@ struct SplashView: View {
                 }
                 .zIndex(1)
                 
-                Text("Hidden Camera")
+                Text(AppConfig.appName)
                     .font(Poppins.semibold.font(size: 30))
                     .padding(.top, 10)
                     .overlay(

@@ -9,17 +9,19 @@ import UIKit
 import RxSwift
 import SwiftUI
 import AppTrackingTransparency
+import FirebaseAnalytics
 
 struct IntroViewModelInput: InputOutputViewModel {
     var didTapContinue = PublishSubject<()>()
 }
 
 struct IntroViewModelOutput: InputOutputViewModel {
-
+    
 }
 
 struct IntroViewModelRouting: RoutingOutput {
     var stop = PublishSubject<()>()
+    var showConsent = PublishSubject<()>()
 }
 
 final class IntroViewModel: BaseViewModel<IntroViewModelInput, IntroViewModelOutput, IntroViewModelRouting> {
@@ -38,6 +40,10 @@ final class IntroViewModel: BaseViewModel<IntroViewModelInput, IntroViewModelOut
     override func config() {
         super.config()
         self.isRequested = ATTrackingManager.trackingAuthorizationStatus != .notDetermined
+        
+        if !isRequested {
+            Analytics.logEvent("permission_att", parameters: nil)
+        }
     }
     
     override func configInput() {
@@ -46,6 +52,8 @@ final class IntroViewModel: BaseViewModel<IntroViewModelInput, IntroViewModelOut
         input.didTapContinue.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
             if isRequested {
+                Analytics.logEvent("intro_\(self.currentIndex + 1)", parameters: nil)
+                
                 if self.currentIndex == intros.count {
                     self.routing.stop.onNext(())
                 } else {
@@ -60,13 +68,6 @@ final class IntroViewModel: BaseViewModel<IntroViewModelInput, IntroViewModelOut
     }
     
     private func requestTracking() {
-        ATTrackingManager.requestTrackingAuthorization { [weak self] status in
-            print(status.rawValue)
-            DispatchQueue.main.async {
-                withAnimation {
-                    self?.isRequested = true
-                }
-            }
-        }
+        self.routing.showConsent.onNext(())
     }
 }

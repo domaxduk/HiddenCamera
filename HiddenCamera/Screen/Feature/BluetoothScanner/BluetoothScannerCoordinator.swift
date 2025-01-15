@@ -10,7 +10,7 @@ import RxSwift
 
 final class BluetoothScannerCoordinator: NavigationBasedCoordinator {
     
-    private let scanOption: ScanOptionItem?
+    let scanOption: ScanOptionItem?
     var resultCoordinator: ScannerResultCoordinator?
 
     init(scanOption: ScanOptionItem?, navigationController: UINavigationController) {
@@ -45,8 +45,11 @@ final class BluetoothScannerCoordinator: NavigationBasedCoordinator {
             navigationController.viewControllers.removeAll(where: { $0 == controller })
         }
         
-        scanOption?.decrease()
-        super.stop(completion: completion)
+        if canRemove() {
+            super.stop(completion: completion)
+        } else {
+            self.stopAllChild()
+        }
     }
     
     override func childDidStop(_ child: Coordinator) {
@@ -65,5 +68,13 @@ final class BluetoothScannerCoordinator: NavigationBasedCoordinator {
     
     func nextTool() {
         self.send(event: RouteToNextTool())
+    }
+    
+    func canRemove() -> Bool {
+        if let scanOption {
+            return scanOption.isSave || scanOption.isCurrentTool(tool: .bluetoothScanner)
+        }
+        
+        return true
     }
 }

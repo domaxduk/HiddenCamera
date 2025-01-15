@@ -56,7 +56,7 @@ struct SubscriptionView: View {
                 ZStack {
                     Text("Hidden camera PRO")
                         .font(Poppins.semibold.font(size: 18))
-                        .textColor(.app(.light12))
+                        .textColor(.app(.light01))
                     
                     HStack {
                         Image("ic_back")
@@ -127,8 +127,16 @@ struct SubscriptionView: View {
                         ForEach(viewModel.items, id: \.type) { item in
                             VStack(spacing: 0) {
                                 Color.clear.frame(height: 0)
+                                
                                 RoundedRectangle(cornerRadius: 8)
+                                    .fill(item.color.opacity(0.1))
                                     .frame(width: 48,height: 48)
+                                    .overlay(
+                                        Image("ic_sub_\(item.type == .week ? "week" : "year")")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 24)
+                                    )
                                 
                                 Text(item.title)
                                     .font(Poppins.regular.font(size: 16))

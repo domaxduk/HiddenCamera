@@ -13,8 +13,6 @@ class AppCoordinator: WindowBasedCoordinator {
     private var introCoodinator: IntroCoordinator?
     private var splashCoodinator: SplashCoordinator?
     
-    
-
     override func start() {
         super.start()
         
@@ -26,7 +24,6 @@ class AppCoordinator: WindowBasedCoordinator {
         
         if child is IntroCoordinator {
             self.introCoodinator = nil
-            UserSetting.didShowIntro = true
             self.routeToHome()
         }
         

@@ -12,7 +12,6 @@
 		24EC7E1E2D2A385100875752 /* ScannerResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EC7E192D2A385100875752 /* ScannerResultViewController.swift */; };
 		24EC7E1F2D2A385100875752 /* ScannerResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EC7E1A2D2A385100875752 /* ScannerResultViewModel.swift */; };
 		24EC7E212D2A391E00875752 /* ScannerResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EC7E202D2A391E00875752 /* ScannerResultView.swift */; };
-		85240FD72D30B712000EEAC6 /* scanning.json in Resources */ = {isa = PBXBuildFile; fileRef = 85240FD62D30B712000EEAC6 /* scanning.json */; };
 		85240FD92D30CDCD000EEAC6 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85240FD82D30CDCD000EEAC6 /* SettingView.swift */; };
 		85240FDC2D30D32C000EEAC6 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85240FDB2D30D32C000EEAC6 /* WebViewController.swift */; };
 		852E28E82D2794DA00293218 /* CameraDetectorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28E42D2794DA00293218 /* CameraDetectorCoordinator.swift */; };
@@ -65,6 +64,9 @@
 		85699C5F2D26943F0000E5A6 /* CameraResultGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C5B2D26943F0000E5A6 /* CameraResultGalleryViewController.swift */; };
 		85699C602D26943F0000E5A6 /* CameraResultGalleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C5C2D26943F0000E5A6 /* CameraResultGalleryViewModel.swift */; };
 		85699C632D2696360000E5A6 /* CameraResultGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85699C622D2696350000E5A6 /* CameraResultGalleryView.swift */; };
+		856A1CDB2D3606250085C170 /* AdsConsentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856A1CDA2D3606250085C170 /* AdsConsentManager.swift */; };
+		856A1CDD2D3624990085C170 /* scanning.json in Resources */ = {isa = PBXBuildFile; fileRef = 856A1CDC2D3624990085C170 /* scanning.json */; };
+		856A1CE12D364C6F0085C170 /* tapfinger.json in Resources */ = {isa = PBXBuildFile; fileRef = 856A1CE02D364C6F0085C170 /* tapfinger.json */; };
 		857AF91D2D2F68CF004C8016 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857AF91C2D2F68CF004C8016 /* LoadingView.swift */; };
 		857AF9202D2F6D9F004C8016 /* RateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857AF91F2D2F6D9F004C8016 /* RateManager.swift */; };
 		857AF9232D2F6E44004C8016 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857AF9222D2F6E44004C8016 /* SubscriptionView.swift */; };
@@ -80,7 +82,6 @@
 		857F24252D2E57EB00AFDA73 /* ScanHistoryDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24242D2E57EB00AFDA73 /* ScanHistoryDAO.swift */; };
 		857F24272D2E73F800AFDA73 /* ScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24262D2E73F800AFDA73 /* ScanView.swift */; };
 		857F24292D2E746300AFDA73 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F24282D2E746300AFDA73 /* HistoryView.swift */; };
-		857F242B2D2E7B2A00AFDA73 /* tapfinger.json in Resources */ = {isa = PBXBuildFile; fileRef = 857F242A2D2E7B2A00AFDA73 /* tapfinger.json */; };
 		857F242D2D2E805D00AFDA73 /* RequestLocalNetworkAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F242C2D2E805D00AFDA73 /* RequestLocalNetworkAuthorization.swift */; };
 		85A5EAEF2D23D479008B58EB /* PreviewCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A5EAEE2D23D479008B58EB /* PreviewCameraView.swift */; };
 		85A5EAF42D23DEE2008B58EB /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A5EAF32D23DEE2008B58EB /* CameraManager.swift */; };
@@ -146,7 +147,6 @@
 		24EC7E192D2A385100875752 /* ScannerResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerResultViewController.swift; sourceTree = "<group>"; };
 		24EC7E1A2D2A385100875752 /* ScannerResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerResultViewModel.swift; sourceTree = "<group>"; };
 		24EC7E202D2A391E00875752 /* ScannerResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerResultView.swift; sourceTree = "<group>"; };
-		85240FD62D30B712000EEAC6 /* scanning.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = scanning.json; sourceTree = "<group>"; };
 		85240FD82D30CDCD000EEAC6 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		85240FDB2D30D32C000EEAC6 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		852E28E42D2794DA00293218 /* CameraDetectorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDetectorCoordinator.swift; sourceTree = "<group>"; };
@@ -196,6 +196,9 @@
 		85699C5B2D26943F0000E5A6 /* CameraResultGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultGalleryViewController.swift; sourceTree = "<group>"; };
 		85699C5C2D26943F0000E5A6 /* CameraResultGalleryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultGalleryViewModel.swift; sourceTree = "<group>"; };
 		85699C622D2696350000E5A6 /* CameraResultGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultGalleryView.swift; sourceTree = "<group>"; };
+		856A1CDA2D3606250085C170 /* AdsConsentManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdsConsentManager.swift; sourceTree = "<group>"; };
+		856A1CDC2D3624990085C170 /* scanning.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = scanning.json; sourceTree = "<group>"; };
+		856A1CE02D364C6F0085C170 /* tapfinger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tapfinger.json; sourceTree = "<group>"; };
 		857AF91C2D2F68CF004C8016 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		857AF91F2D2F6D9F004C8016 /* RateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateManager.swift; sourceTree = "<group>"; };
 		857AF9222D2F6E44004C8016 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
@@ -211,7 +214,6 @@
 		857F24242D2E57EB00AFDA73 /* ScanHistoryDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanHistoryDAO.swift; sourceTree = "<group>"; };
 		857F24262D2E73F800AFDA73 /* ScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanView.swift; sourceTree = "<group>"; };
 		857F24282D2E746300AFDA73 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
-		857F242A2D2E7B2A00AFDA73 /* tapfinger.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tapfinger.json; sourceTree = "<group>"; };
 		857F242C2D2E805D00AFDA73 /* RequestLocalNetworkAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestLocalNetworkAuthorization.swift; sourceTree = "<group>"; };
 		85A5EAEE2D23D479008B58EB /* PreviewCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCameraView.swift; sourceTree = "<group>"; };
 		85A5EAF32D23DEE2008B58EB /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
@@ -610,8 +612,8 @@
 		85DA72432D1E9376008F5589 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				85240FD62D30B712000EEAC6 /* scanning.json */,
-				857F242A2D2E7B2A00AFDA73 /* tapfinger.json */,
+				856A1CE02D364C6F0085C170 /* tapfinger.json */,
+				856A1CDC2D3624990085C170 /* scanning.json */,
 				85EC31AD2D27F777009F874A /* blueCircle.json */,
 				85DA72442D1E937B008F5589 /* Font */,
 			);
@@ -704,8 +706,8 @@
 		85DA72812D1EA935008F5589 /* InfraredCamera */ = {
 			isa = PBXGroup;
 			children = (
-				85DA728B2D1EAA1C008F5589 /* InfraredCameraView.swift */,
 				85DA72822D1EA93C008F5589 /* InfraredCameraCoordinator.swift */,
+				85DA728B2D1EAA1C008F5589 /* InfraredCameraView.swift */,
 				85DA72832D1EA93C008F5589 /* InfraredCameraViewController.swift */,
 				85DA72842D1EA93C008F5589 /* InfraredCameraViewModel.swift */,
 			);
@@ -743,6 +745,7 @@
 		85EDFA522D30F852002BF8F3 /* GoogleAds */ = {
 			isa = PBXGroup;
 			children = (
+				856A1CDA2D3606250085C170 /* AdsConsentManager.swift */,
 				85EDFA692D3122B6002BF8F3 /* Native */,
 				85EDFA552D30F8E9002BF8F3 /* AdsAppOpen.swift */,
 				85EDFA592D310027002BF8F3 /* AdsInterstitial.swift */,
@@ -866,17 +869,17 @@
 				85DA72332D1E919D008F5589 /* Assets.xcassets in Resources */,
 				85DA724F2D1E9392008F5589 /* Poppins-Bold.ttf in Resources */,
 				85DA72512D1E9392008F5589 /* Poppins-Italic.ttf in Resources */,
-				857F242B2D2E7B2A00AFDA73 /* tapfinger.json in Resources */,
 				85DA72502D1E9392008F5589 /* Poppins-Regular.ttf in Resources */,
 				852E29292D27E90600293218 /* macVendors.plist in Resources */,
 				85DA724D2D1E9392008F5589 /* Poppins-SemiBold.ttf in Resources */,
+				856A1CE12D364C6F0085C170 /* tapfinger.json in Resources */,
 				852E29272D27E90600293218 /* iphoneModels.json in Resources */,
 				852E28FC2D2799EA00293218 /* best.onnx in Resources */,
 				85EDFA512D30F6E1002BF8F3 /* GoogleService-Info.plist in Resources */,
 				85EDFA682D3122AC002BF8F3 /* NativeAdView.xib in Resources */,
 				85DA724E2D1E9392008F5589 /* Poppins-Medium.ttf in Resources */,
+				856A1CDD2D3624990085C170 /* scanning.json in Resources */,
 				852E29282D27E90600293218 /* macModels.plist in Resources */,
-				85240FD72D30B712000EEAC6 /* scanning.json in Resources */,
 				85EDFA622D311837002BF8F3 /* SmallNativeView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -990,6 +993,7 @@
 				857F24292D2E746300AFDA73 /* HistoryView.swift in Sources */,
 				85699C472D2649600000E5A6 /* CameraResultCoordinator.swift in Sources */,
 				857AF9372D2F88AF004C8016 /* SplashView.swift in Sources */,
+				856A1CDB2D3606250085C170 /* AdsConsentManager.swift in Sources */,
 				85EDFA542D30F86A002BF8F3 /* GoogleAdsKey.swift in Sources */,
 				85699C482D2649600000E5A6 /* CameraResultViewController.swift in Sources */,
 				853D483E2D2D333E00644A55 /* HistoryDetailCoordinator.swift in Sources */,
@@ -1193,8 +1197,12 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "cho dung camera di";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "cho dung location di";
+				INFOPLIST_KEY_CFBundleDisplayName = "NeSpyFind Pro";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app requires access to bluetooth to scan for suspicious devices. ";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app requires access to bluetooth to scan for suspicious devices. ";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires camera access to detect hidden cameras.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This application requires location access to scan for suspicious devices around you.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -1231,8 +1239,12 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "cho dung camera di";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "cho dung location di";
+				INFOPLIST_KEY_CFBundleDisplayName = "NeSpyFind Pro";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app requires access to bluetooth to scan for suspicious devices. ";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app requires access to bluetooth to scan for suspicious devices. ";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires camera access to detect hidden cameras.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This application requires location access to scan for suspicious devices around you.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = "";

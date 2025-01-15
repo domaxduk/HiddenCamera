@@ -37,7 +37,7 @@ final class HomeCoordinator: WindowBasedCoordinator {
         
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+        UIView.transition(with: window, duration: 0.1, options: .transitionCrossDissolve, animations: nil, completion: nil)
     }
 
     override func stop(completion: (() -> Void)? = nil) {
@@ -47,38 +47,52 @@ final class HomeCoordinator: WindowBasedCoordinator {
     override func childDidStop(_ child: Coordinator) {
         super.childDidStop(child)
         
-        if scanOptionItem == nil || scanOptionItem != nil && !scanOptionItem!.isEnd {
-            if child is InfraredCameraCoordinator {
-                self.infraredCameraCoordinator = nil
-            }
-            
-            if child is CameraDetectorCoordinator {
-                self.cameraDetectorCoordinator = nil
-            }
-            
-            if child is WifiScannerCoordinator {
-                self.wifiScannerCoordinator = nil
-                LocalNetworkDetector.shared.stopScan()
-            }
-            
-            if child is BluetoothScannerCoordinator {
-                self.bluetoothScannerCoordinator = nil
-                BluetoothScanner.shared.stopScanning()
-            }
-            
-            if child is MagnetometerCoordinator {
-                self.magneticCoordinator = nil
-            }
+        if let child = child as? InfraredCameraCoordinator, child.canRemove() {
+            print("remove screen: infraredCameraCoordinator")
+            self.infraredCameraCoordinator = nil
+            scanOptionItem?.decrease()
+        }
+        
+        if let child = child as? CameraDetectorCoordinator, child.canRemove() {
+            print("remove screen: cameraDetectorCoordinator")
+            self.cameraDetectorCoordinator = nil
+            scanOptionItem?.decrease()
+        }
+        
+        if let child = child as? WifiScannerCoordinator, child.canRemove() {
+            print("remove screen: wifiScannerCoordinator")
+            self.wifiScannerCoordinator = nil
+            LocalNetworkDetector.shared.stopScan()
+            scanOptionItem?.decrease()
+        }
+        
+        if let child = child as? BluetoothScannerCoordinator, child.canRemove() {
+            print("remove screen: bluetoothScannerCoordinator")
+            self.bluetoothScannerCoordinator = nil
+            BluetoothScanner.shared.stopScanning()
+            scanOptionItem?.decrease()
+        }
+        
+        if let child = child as? MagnetometerCoordinator, child.canRemove() {
+            print("remove screen: magneticCoordinator")
+            self.magneticCoordinator = nil
+            scanOptionItem?.decrease()
         }
         
         if child is HistoryDetailCoordinator {
-            self.controller.viewModel.currentTab = .history
             self.controller.viewModel.isShowingScanOption = false
             self.controller.viewModel.scanOptions = []
+            
+            if let scanOptionItem, scanOptionItem.isThreadAfterIntro {
+                self.controller.viewModel.currentTab = .scan
+            } else {
+                self.controller.viewModel.currentTab = .history
+            }
             
             self.historyDetailCoordinator = nil
             self.scanOptionItem = nil
             self.stopAllChild()
+            UserSetting.didShowIntro = true
         }
     }
     

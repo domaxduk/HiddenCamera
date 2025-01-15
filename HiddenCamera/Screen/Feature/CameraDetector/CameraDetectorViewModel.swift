@@ -10,6 +10,7 @@ import RxSwift
 import AVFoundation
 import SwiftUI
 import SakuraExtension
+import FirebaseAnalytics
 
 struct CameraDetectorViewModelInput: InputOutputViewModel {
     var back = PublishSubject<()>()
@@ -27,6 +28,7 @@ struct CameraDetectorViewModelRouting: RoutingOutput {
     var previewResult = PublishSubject<CameraResultItem>()
     var gallery = PublishSubject<()>()
     var nextTool = PublishSubject<()>()
+    var showError = PublishSubject<String>()
 }
 
 struct Model {
@@ -47,7 +49,7 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     private let dataProcess = DataProcesser()
     var lastItem: CameraResultItem?
     
-    private var writer: AssetWriter?
+    private var writer: AssetWriter
     private var timer: Timer?
     
     private var isReady: Bool = false
@@ -62,9 +64,10 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     }
     
     private var cameraOutput: AVCaptureVideoDataOutput!
-    private var needToStart: Bool = false
-    private var startRecordingTimeOnSampleBuffer: CMTime!
     private var currentCIImage: CIImage?
+    
+    private var needToStart: Bool = false
+    private var needToStop: Bool = false
     
     let scanOption: ScanOptionItem?
     
@@ -72,10 +75,13 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
         self.isTheFirst = true
         self.captureSession = AVCaptureSession()
         self.scanOption = scanOption
+        
+        let outputFileURL = FileManager.documentURL().appendingPathComponent("record.mp4")
+        let outputSize = UIScreen.main.bounds.size.scale(3.0)
+        self.writer = AssetWriter(outputURL: outputFileURL, fileType: .mp4, outputSize: outputSize)
+        
         super.init()
         configCaptureSession()
-        initAssetWriter()
-        print("screen size: \(UIScreen.main.bounds.size)")
         configDataProcesser()
          
         if !Permission.grantedCamera {
@@ -84,6 +90,20 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
         
         NotificationCenter.default.addObserver(self, selector: #selector(getPreviewGalleryImage), name: .updateCameraHistory, object: nil)
         getPreviewGalleryImage()
+        
+        if let scanOption {
+            switch scanOption.type {
+            case .option:
+                Analytics.logEvent("feature_option_ai", parameters: nil)
+            case .full:
+                if scanOption.isThreadAfterIntro {
+                    Analytics.logEvent("first_ai", parameters: nil)
+                }
+            default: break
+            }
+        }
+        
+        self.writer.delegate = self
     }
     
     @objc private func getPreviewGalleryImage() {
@@ -134,24 +154,15 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
        
         DispatchQueue.main.async {
             self.isTheFirst = false
-            self.isRecording.toggle()
-            self.cleanData()
-            
-            if self.isRecording {
-                self.startRecord()
-                UserSetting.increaseUsedFeature(.aiDetector)
-            } else {
-                self.stopRecord()
+           
+            if self.isRecording { // If user is recording
+                self.needToStop = true
+            } else { // If user isn't recording
+                self.needToStart = true
             }
         }
     }
-    
-    private func initAssetWriter() {
-        let outputFileURL = FileManager.documentURL().appendingPathComponent("record.mp4")
-        let outputSize = UIScreen.main.bounds.size.scale(3.0)
-        self.writer = AssetWriter(outputURL: outputFileURL, fileType: .mp4, outputSize: outputSize)
-    }
-    
+
     private func configCaptureSession() {
         guard let videoDevice = AVCaptureDevice.default(for: .video), let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice) else {
             return
@@ -181,6 +192,7 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     }
     
     private func startTimer() {
+        timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
             guard let self else { return }
             DispatchQueue.main.async {
@@ -188,35 +200,7 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
             }
         })
     }
-    
-    let context = CIContext()
-    
-    // MARK: - Record
-    private func startRecord() {
-        self.startTimer()
-        self.needToStart = true
-    }
-    
-    private func stopRecord() {        
-        self.writer?.finishWriting(completion: { [weak self] error in
-            guard let self else { return }
-            if error == nil {
-                if let outputFileURL = self.writer?.outputURL {
-                    let resultURL = FileManager.documentURL().appendingPathComponent("\(UUID().uuidString).mp4")
-                    try? FileManager.default.copyItem(at: outputFileURL, to: resultURL)
-                    
-                    let item = CameraResultItem(id: UUID().uuidString, fileName: resultURL.lastPathComponent, type: .aiDetector)
-                    self.routing.previewResult.onNext(item)
-                    self.lastItem = item
-                }
-            } else {
-                print("error: \(error!)")
-            }
-            
-            self.cleanData()
-        })
-    }
-    
+        
     private func cleanData() {
         self.timer?.invalidate()
         self.seconds = 0
@@ -224,13 +208,34 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     }
 }
 
-// MARK: - GET
-extension CameraDetectorViewModel {
-    func durationDescription() -> String {
-        let hour = seconds / 3600
-        let minute = (seconds - hour * 3600) / 60
-        let second = seconds - hour * 3600 - minute * 60
-        return String(format: "%02d:%02d:%02d", hour, minute, second)
+// MARK: - AssetWriterDelegate
+extension CameraDetectorViewModel: AssetWriterDelegate {
+    func assetWrite(_ writer: AssetWriter, didFinishRecording url: URL, error: (any Error)?) {
+        if let error {
+            print("error: \(error)")
+            DispatchQueue.main.async {
+                self.routing.showError.onNext(error.localizedDescription)
+                self.cleanData()
+            }
+            return
+        }
+        
+        if self.seconds >= 1 {
+            let outputFileURL = self.writer.outputURL
+            let resultURL = FileManager.documentURL().appendingPathComponent("\(UUID().uuidString).mp4")
+            try? FileManager.default.copyItem(at: outputFileURL, to: resultURL)
+            
+            let item = CameraResultItem(id: UUID().uuidString, fileName: resultURL.lastPathComponent, type: .aiDetector)
+            self.lastItem = item
+            
+            DispatchQueue.main.async {
+                self.routing.previewResult.onNext(item)
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.cleanData()
+        }
     }
 }
 
@@ -242,16 +247,32 @@ extension CameraDetectorViewModel: AVCaptureVideoDataOutputSampleBufferDelegate 
         }
         
         let time = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-        
         var ciImage = CIImage(cvPixelBuffer: videoPixelBuffer).rotate(radians: -CGFloat.pi / 2)
         ciImage = ciImage.transformed(by: CGAffineTransform(translationX: -ciImage.extent.minX, y: -ciImage.extent.minY))
         
         if needToStart {
-            self.startRecordingTimeOnSampleBuffer = time
-            self.writer?.startWriting(atSourceTime: self.startRecordingTimeOnSampleBuffer ?? .zero)
+            print("need to start")
+            DispatchQueue.main.async {
+                self.writer.startWriting()
+                self.isRecording = true
+                
+                self.startTimer()
+                self.isReady = false
+                UserSetting.increaseUsedFeature(.aiDetector)
+            }
         }
         
         if isRecording {
+            if needToStop {
+                DispatchQueue.main.async {
+                    self.needToStop = false
+                    self.timer?.invalidate()
+                    self.writer.finishWriting()
+                    self.isRecording = false
+                }
+                return
+            }
+            
             let screenSize = UIScreen.main.bounds.size
             let currentSize = ciImage.image.size
             let targetSize = screenSize.scale(currentSize.height / screenSize.height)
@@ -259,23 +280,30 @@ extension CameraDetectorViewModel: AVCaptureVideoDataOutputSampleBufferDelegate 
             ciImage = ciImage.transformed(by: CGAffineTransform(translationX: -ciImage.extent.minX, y: -ciImage.extent.minY))
             self.currentCIImage = ciImage
             
-            if isReady {
+            if isReady { // Có thể xử lý dữ liệu ảnh mới
                 print("detect camera")
                 self.isReady = false
                 self.detectObject = Model(time: time, ciImage: ciImage)
-            } else {
-                print("append camera")
-                let result = drawOnCIImage(backgroundCIImage: ciImage, boxes: boxes)
+            } else { // Chưa thể nhận dữ liệu ảnh khác
+                var result: CIImage?
+                
+                if boxes.isEmpty {
+                    result = ciImage
+                } else {
+                    result = drawOnCIImage(backgroundCIImage: ciImage, boxes: boxes)
+                }
                 
                 if let buffer = result?.buffer {
-                    self.writer?.append(pixelBuffer: buffer, withPresentationTime: time)
+                    self.writer.append(pixelBuffer: buffer, withPresentationTime: time)
                 }
             }
             
             if needToStart {
-                self.needToStart = false
-                self.isReady = true
-            } 
+                DispatchQueue.main.async {
+                    self.needToStart = false
+                    self.isReady = true
+                }
+            }
         }
     }
 }
@@ -325,7 +353,7 @@ extension CameraDetectorViewModel: DataProcessDelegate {
             let centerY = CGFloat(box.cy) * height - h / 2
             
             let flippedCenterY = backgroundCIImage.extent.height - centerY - h  // Correct for flipped Y
-            let rect = CGRect(origin: CGPoint(x: centerX, y: flippedCenterY), size: CGSize(width: w, height: h))
+            let rect = CGRect(origin: CGPoint(x: centerX, y: flippedCenterY), size: CGSize(width: max(w, h), height: max(w, h)))
             overlayImage?.draw(in: rect)
         }
         
@@ -339,5 +367,23 @@ extension CameraDetectorViewModel: DataProcessDelegate {
         UIGraphicsEndImageContext()
         
         return CIImage(image: newImage)
+    }
+}
+
+// MARK: - GET
+extension CameraDetectorViewModel {
+    func durationDescription() -> String {
+        let hour = seconds / 3600
+        let minute = (seconds - hour * 3600) / 60
+        let second = seconds - hour * 3600 - minute * 60
+        return String(format: "%02d:%02d:%02d", hour, minute, second)
+    }
+    
+    func showBackButton() -> Bool {
+        if let scanOption, scanOption.isThreadAfterIntro {
+            return scanOption.isEnd && !isRecording
+        }
+        
+        return !isRecording
     }
 }

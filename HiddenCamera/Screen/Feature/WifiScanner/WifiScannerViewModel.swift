@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import SwiftUI
+import FirebaseAnalytics
 
 enum ScannerState {
     case ready
@@ -37,7 +38,6 @@ struct WifiScannerViewModelRouting: RoutingOutput {
 }
 
 final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiScannerViewModelOutput, WifiScannerViewModelRouting> {
-    @AppStorage("safe") var safeID = [String]()
     @Published var state: ScannerState = .ready
     @Published var percent: Double = 0
     @Published var seconds: Double = 0
@@ -59,11 +59,24 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
     init(scanOption: ScanOptionItem?) {
         self.scanOption = scanOption
         super.init()
+        
+        if let scanOption {
+            switch scanOption.type {
+            case .option:
+                Analytics.logEvent("feature_option_wifi", parameters: nil)
+            case .full:
+                if scanOption.isThreadAfterIntro {
+                    Analytics.logEvent("first_wifi", parameters: nil)
+                }
+            default: break
+            }
+        }
+        
+        LocalNetworkDetector.shared.delegate = self
     }
     
     override func config() {
         super.config()
-        configLocalNetworkDetector()
         configNotificationCenter()
     }
     
@@ -207,14 +220,10 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
         }
         
         self.state = .isScanning
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             LocalNetworkDetector.shared.start()
+            LocalNetworkDetector.shared.delegate = self
         }
-    }
-    
-    private func configLocalNetworkDetector() {
-        LocalNetworkDetector.shared.delegate = self
     }
     
     private func resetData() {
@@ -238,13 +247,15 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
     }
     
     func suspiciousDevices() -> [LANDevice] {
-        return devices.filter({ device in
-            return !isSafe(device: device)
-        })
+        return devices.filter({ !$0.isSafe() })
     }
     
-    func isSafe(device: LANDevice) -> Bool {
-        return safeID.contains(where: { $0 == device.ipAddress || $0 == device.hostname || $0 ==  device.deviceName() })
+    func showBackButton() -> Bool {
+        if let scanOption, scanOption.isThreadAfterIntro {
+            return scanOption.isEnd && state != .isScanning
+        }
+        
+        return state != .isScanning
     }
 }
 

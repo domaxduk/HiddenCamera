@@ -33,11 +33,6 @@ final class HistoryDetailCoordinator: NavigationBasedCoordinator {
         
         scanOption.isEnd = true
         
-        if !scanOption.isSave {
-            let dao = ScanHistoryDAO()
-            dao.addObject(item: scanOption)
-        }
-        
         if navigationController.viewControllers.contains(where: { $0 is HistoryDetailViewController }) {
             navigationController.viewControllers.removeAll(where: { $0 is HistoryDetailViewController })
         }

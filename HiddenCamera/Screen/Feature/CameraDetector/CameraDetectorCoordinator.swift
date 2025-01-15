@@ -10,7 +10,7 @@ import RxSwift
 
 final class CameraDetectorCoordinator: NavigationBasedCoordinator {
     
-    private let scanOption: ScanOptionItem?
+    let scanOption: ScanOptionItem?
     var previewResult: CameraResultCoordinator?
     var galleryCoodinator: CameraResultGalleryCoordinator?
     
@@ -46,8 +46,11 @@ final class CameraDetectorCoordinator: NavigationBasedCoordinator {
             navigationController.viewControllers.removeAll(where: { $0 == controller })
         }
         
-        scanOption?.decrease()
-        super.stop(completion: completion)
+        if canRemove() {
+            super.stop(completion: completion)
+        } else {
+            self.stopAllChild()
+        }
     }
     
     override func childDidStop(_ child: Coordinator) {
@@ -79,5 +82,13 @@ final class CameraDetectorCoordinator: NavigationBasedCoordinator {
     
     func nextTool() {
         self.send(event: RouteToNextTool())
+    }
+    
+    func canRemove() -> Bool {
+        if let scanOption {
+            return scanOption.isSave || scanOption.isCurrentTool(tool: .cameraDetector)
+        }
+        
+        return true
     }
 }

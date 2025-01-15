@@ -35,6 +35,11 @@ class InfraredCameraViewController: ViewController {
         viewModel.startCamera()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.objectWillChange.send()
+    }
+    
     // MARK: - Config
     func config() {
         configUI()
@@ -82,6 +87,10 @@ class InfraredCameraViewController: ViewController {
             } else {
                 self.coordinator?.routeToGallery()
             }
+        }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.showError.subscribe(onNext: { [weak self] message in
+            self?.presentAlert(title: "Oops!", message: message)
         }).disposed(by: self.disposeBag)
     }
     

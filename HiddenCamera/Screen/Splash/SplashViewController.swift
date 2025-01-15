@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import FirebaseAnalytics
 
 class SplashViewController: ViewController {
     var viewModel: SplashViewModel
@@ -30,6 +31,13 @@ class SplashViewController: ViewController {
     
     override func viewDidFirstAppear() {
         super.viewDidFirstAppear()
+        
+        if UserSetting.didOpenApp {
+            Analytics.logEvent("open_splash", parameters: nil)
+        } else {
+            Analytics.logEvent("first_splash", parameters: nil)
+            UserSetting.didOpenApp = true
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             self.coordinator?.stop()

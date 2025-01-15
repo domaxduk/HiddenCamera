@@ -10,6 +10,7 @@ import RxSwift
 import CoreLocation
 import SwiftUI
 import GoogleMobileAds
+import FirebaseAnalytics
 
 struct HomeViewModelInput: InputOutputViewModel {
     // Tool
@@ -79,6 +80,7 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
         input.didSelectTool.subscribe(onNext: { [unowned self] tool in
             switch tool {
             case .infraredCamera:
+                Analytics.logEvent("feature_tool_ir", parameters: nil)
                 if UserSetting.canUsingFeature(.ifCamera) {
                     AdsInterstitial.shared.tryToPresent { [weak self] in
                         self?.routing.routeToInfraredCamera.onNext(())
@@ -87,6 +89,7 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
                     SubscriptionViewController.open { }
                 }
             case .cameraDetector:
+                Analytics.logEvent("feature_tool_ai", parameters: nil)
                 if UserSetting.canUsingFeature(.aiDetector) {
                     AdsInterstitial.shared.tryToPresent { [weak self] in
                         self?.routing.routeToCameraDetector.onNext(())
@@ -95,6 +98,7 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
                     SubscriptionViewController.open { }
                 }
             case .wifiScanner:
+                Analytics.logEvent("feature_tool_wifi", parameters: nil)
                 if UserSetting.canUsingFeature(.wifi) {
                     AdsInterstitial.shared.tryToPresent { [weak self] in
                         self?.routing.routeToWifiScanner.onNext(())
@@ -103,6 +107,7 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
                     SubscriptionViewController.open { }
                 }
             case .bluetoothScanner:
+                Analytics.logEvent("feature_tool_bluetooth", parameters: nil)
                 if UserSetting.canUsingFeature(.bluetooth) {
                     AdsInterstitial.shared.tryToPresent { [weak self] in
                         self?.routing.routeToBluetoothScanner.onNext(())
@@ -111,6 +116,7 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
                     SubscriptionViewController.open { }
                 }
             case .magnetic:
+                Analytics.logEvent("feature_tool_magnetic", parameters: nil)
                 if UserSetting.canUsingFeature(.magnetometer) {
                     AdsInterstitial.shared.tryToPresent { [weak self] in
                         self?.routing.routeToMagnetic.onNext(())
@@ -122,6 +128,7 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
         }).disposed(by: self.disposeBag)
         
         input.didTapQuickScan.subscribe(onNext: { [weak self] _ in 
+            Analytics.logEvent("feature_scan_quick", parameters: nil)
             if UserSetting.canUsingFeature(.quickScan) {
                 self?.startScan(item: ScanOptionItem())
                 UserSetting.increaseUsedFeature(.quickScan)
@@ -131,6 +138,7 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
         }).disposed(by: self.disposeBag)
         
         input.didTapStartScanOption.subscribe(onNext: { [weak self] _ in
+            Analytics.logEvent("feature_scan_option", parameters: nil)
             guard let self else { return }
             if UserSetting.canUsingFeature(.scanOption) {
                 let item = ScanOptionItem(tools: self.scanOptions, type: .option)
@@ -142,6 +150,7 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
         }).disposed(by: self.disposeBag)
         
         input.didTapScanFull.subscribe(onNext: { [weak self] _ in
+            Analytics.logEvent("feature_scan_full", parameters: nil)
             guard let self else { return }
             if UserSetting.canUsingFeature(.scanFull) {
                 let item = ScanOptionItem(tools: ToolItem.allCases, type: .full)
@@ -181,7 +190,7 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
             case .term:
                 WebViewController.open(urlString: AppConfig.term, title: "Terms of Conditions")
             case .contact:
-                WebViewController.open(urlString: AppConfig.term, title: "Contact us")
+                WebViewController.open(urlString: AppConfig.contact, title: "Contact us")
             case .rate:
                 RateManager.rate()
             case .restore:
