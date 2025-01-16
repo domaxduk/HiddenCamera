@@ -43,7 +43,7 @@ class HistoryDetailViewController: ViewController {
     func configRoutingOutput() {
         self.viewModel.routing.stop.subscribe(onNext: { [weak  self] _ in
             guard let self else { return }
-            self.coordinator?.stop()
+            self.coordinator?.wantToBack()
         }).disposed(by: self.disposeBag)
         
         self.viewModel.routing.routeToTool.subscribe(onNext: { [weak  self] tool in

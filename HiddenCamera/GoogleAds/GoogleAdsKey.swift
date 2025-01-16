@@ -26,21 +26,21 @@ import Foundation
  */
 
 class GoogleAdsKey {
-    static let appID = ""
-    static let appOpen = "ca-app-pub-3940256099942544/5575463023"
-    static let inter = "ca-app-pub-3940256099942544/4411468910"
+    static let appID = "ca-app-pub-5294836995166944~4599797005"
+    static let appOpen = "ca-app-pub-5294836995166944/1828463313"
+    static let inter = "ca-app-pub-5294836995166944/2280755426"
     
-    static let allNative = "ca-app-pub-3940256099942544/3986624511"
-    static let mediumNative = "ca-app-pub-3940256099942544/3986624511"
-    static let highNative = "ca-app-pub-3940256099942544/3986624511"
+    static let allNative = "ca-app-pub-5294836995166944/4039693683"
+    static let mediumNative = "ca-app-pub-5294836995166944/4707608214"
+    static let highNative = "ca-app-pub-5294836995166944/5767708329"
 
-    static let allBanner = "ca-app-pub-3940256099942544/2435281174"
-    static let mediumBanner = "ca-app-pub-3940256099942544/2435281174"
-    static let highBanner = "ca-app-pub-3940256099942544/2435281174"
+    static let allBanner = "ca-app-pub-5294836995166944/5210171090"
+    static let mediumBanner = "ca-app-pub-5294836995166944/2211606692"
+    static let highBanner = "ca-app-pub-5294836995166944/9675163741"
 
-    static let allCollapse = "ca-app-pub-3940256099942544/2435281174"
-    static let mediumCollapse = "ca-app-pub-5294836995166944/4231265378"
-    static let highCollapse = "ca-app-pub-5294836995166944/4231265378"
+    static let allCollapse = "ca-app-pub-5294836995166944/4231265378"
+    static let mediumCollapse = "ca-app-pub-5294836995166944/1034256390"
+    static let highCollapse = "ca-app-pub-5294836995166944/4395212058"
     
     static let interCapping: Double = 20.0
 }

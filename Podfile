@@ -20,6 +20,7 @@ target 'HiddenCamera' do
   pod 'SwiftyStoreKit'
   pod 'Google-Mobile-Ads-SDK'
   pod 'MarqueeLabel/Swift'
+  pod 'FBSDKCoreKit'
 end
 
 post_install do |installer| 

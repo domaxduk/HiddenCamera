@@ -43,7 +43,7 @@ final class CameraDetectorCoordinator: NavigationBasedCoordinator {
         if navigationController.topViewController == controller {
             navigationController.popViewController(animated: true)
         } else {
-            navigationController.viewControllers.removeAll(where: { $0 == controller })
+            navigationController.viewControllers.removeAll(where: { $0 is CameraDetectorViewController })
         }
         
         if canRemove() {

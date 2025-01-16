@@ -1,4 +1,10 @@
 PODS:
+  - FBAEMKit (18.0.0):
+    - FBSDKCoreKit_Basics (= 18.0.0)
+  - FBSDKCoreKit (18.0.0):
+    - FBAEMKit (= 18.0.0)
+    - FBSDKCoreKit_Basics (= 18.0.0)
+  - FBSDKCoreKit_Basics (18.0.0)
   - Firebase/CoreOnly (11.6.0):
     - FirebaseCore (~> 11.6.0)
   - Firebase/Crashlytics (11.6.0):
@@ -146,6 +152,7 @@ PODS:
   - WebBrowser (0.1.5)
 
 DEPENDENCIES:
+  - FBSDKCoreKit
   - Firebase/Crashlytics
   - FirebaseAnalytics
   - FirebaseMessaging
@@ -161,6 +168,9 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -192,6 +202,9 @@ SPEC REPOS:
     - WebBrowser
 
 SPEC CHECKSUMS:
+  FBAEMKit: e34530df538b8eb8aeb53c35867715ba6c63ef0c
+  FBSDKCoreKit: d3f479a69127acebb1c6aad91c1a33907bcf6c2f
+  FBSDKCoreKit_Basics: 017b6dc2a1862024815a8229e75661e627ac1e29
   Firebase: 374a441a91ead896215703a674d58cdb3e9d772b
   FirebaseAnalytics: 7114c698cac995602e3b1b96663473e50d54d6e7
   FirebaseCore: 48b0dd707581cf9c1a1220da68223fb0a562afaa
@@ -222,6 +235,6 @@ SPEC CHECKSUMS:
   SwiftyStoreKit: 6b9c08810269f030586dac1fae8e75871a82e84a
   WebBrowser: 0248873c77f54e2ac504ece7c2bc8eeb710b5a4f
 
-PODFILE CHECKSUM: bd49cfb1e6bbf3fbb0ab2205443994f1d4df8e3a
+PODFILE CHECKSUM: 9896c3932a486f29db1b89211792b7ac6b4062db
 
 COCOAPODS: 1.16.2

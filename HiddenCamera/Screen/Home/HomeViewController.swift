@@ -33,7 +33,6 @@ class HomeViewController: ViewController {
     
     override func updatePremiumVersion() {
         super.updatePremiumVersion()
-        
         viewModel.isPremium = UserSetting.isPremiumUser
     }
     
@@ -94,10 +93,14 @@ class HomeViewController: ViewController {
             self?.coordinator?.routeToHistoryDetail(item: item)
         }).disposed(by: self.disposeBag)
         
+        viewModel.routing.presentAlert.subscribe(onNext: { [weak self] message in
+            self?.presentAlert(title: "Alert", message: message)
+        }).disposed(by: self.disposeBag)
+        
         viewModel.routing.shareApp
             .subscribe(onNext: { [weak self] _ in
                 guard let self else { return }
-                self.showLoading()
+                self.viewModel.isShowingLoading = true
                 let items = ["https://apps.apple.com/app/apple-store/id\(AppConfig.appID)"]
                 let shareActVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
                 shareActVC.view.tintColor = UIColor.orange
@@ -110,8 +113,8 @@ class HomeViewController: ViewController {
                     popoverController.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
                 }
                 
-                self.present(shareActVC, animated: true, completion: {
-                    self.hideLoading()
+                self.present(shareActVC, animated: true, completion: { [weak self] in
+                    self?.viewModel.isShowingLoading = true
                 })
             }).disposed(by: self.disposeBag)
     }

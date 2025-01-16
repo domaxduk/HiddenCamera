@@ -24,7 +24,7 @@ fileprivate struct Const {
 
 struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
-    @State var isShowingBanner: Bool = false
+    
     var body: some View {
         ZStack {
             Color.app(.light03).ignoresSafeArea()
@@ -37,6 +37,12 @@ struct HomeView: View {
             
             ScanOptionView(viewModel: viewModel)
                 .offset(x: viewModel.isShowingScanOption ? 0 : UIScreen.main.bounds.width)
+            
+            ZStack {
+                BlurSwiftUIView(effect: .init(style: .dark)).ignoresSafeArea()
+                ProgressView().circleprogressColor(.white)
+            }
+            .opacity(viewModel.isShowingLoading ? 1 : 0)
         }.environmentObject(viewModel)
     }
     

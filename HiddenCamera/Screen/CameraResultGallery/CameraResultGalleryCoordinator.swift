@@ -33,7 +33,7 @@ final class CameraResultGalleryCoordinator: NavigationBasedCoordinator {
         if navigationController.topViewController == controller {
             navigationController.popViewController(animated: true)
         } else {
-            navigationController.viewControllers.removeAll(where: { $0 == controller })
+            navigationController.viewControllers.removeAll(where: { $0 is CameraResultGalleryViewController })
         }
         
         super.stop(completion: completion)

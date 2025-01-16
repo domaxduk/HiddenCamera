@@ -9,24 +9,6 @@ import UIKit
 import SwiftUI
 import RxSwift
 
-class SubscriptionViewModel: ObservableObject {
-    @Published var items: [SubscriptionItem] = [
-        SubscriptionItem(type: .week, title: "Weekly",
-                         id: "week", priceString: "$9.99", pricePerWeek: "", color: Color(rgb: 0x00BA00), noteString: ""),
-        SubscriptionItem(type: .year, title: "Yearly",
-                         id: "year", priceString: "$19.99",
-                         pricePerWeek: "Only $.. per week", color: Color(rgb: 0xFFC53D), noteString: "Save 50%")
-    ]
-    
-    @Published var currentItem: SubscriptionItem?
-    var actionAfterDismiss: (() -> Void)
-    var didTapBack = PublishSubject<()>()
-    
-    init(actionAfterDismiss: @escaping (() -> Void)) {
-        self.actionAfterDismiss = actionAfterDismiss
-    }
-}
-
 class SubscriptionViewController: ViewController {
      
     var viewModel: SubscriptionViewModel
@@ -50,17 +32,28 @@ class SubscriptionViewController: ViewController {
         viewModel.didTapBack.subscribe(onNext: { [weak self] in
             self?.dismiss(animated: true, completion: self?.viewModel.actionAfterDismiss)
         }).disposed(by: self.disposeBag)
+        
+        viewModel.presentAlert.subscribe(onNext: { [weak self] message in
+            self?.presentAlert(title: "Alert", message: message)
+        }).disposed(by: self.disposeBag)
     }
     
-    static func open(actionAfterDismiss: @escaping (() -> Void)) {
+    override func viewWillFirstAppear() {
+        super.viewWillFirstAppear()
+        viewModel.loadInfo()
+    }
+    
+    static func open(controller: UIViewController? = nil, actionAfterDismiss: @escaping (() -> Void)) {
         if UserSetting.isPremiumUser {
             actionAfterDismiss()
             return
         }
         
+        print("show subscription")
+        
         let vc = SubscriptionViewController(viewModel: SubscriptionViewModel(actionAfterDismiss: actionAfterDismiss))
         vc.modalPresentationStyle = .overFullScreen
-        let topVC = UIApplication.shared.navigationController?.topVC
+        let topVC = controller ?? UIApplication.shared.navigationController?.topVC 
         topVC?.present(vc, animated: true)
     }
 }

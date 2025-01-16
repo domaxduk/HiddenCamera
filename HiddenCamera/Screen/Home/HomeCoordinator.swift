@@ -80,24 +80,7 @@ final class HomeCoordinator: WindowBasedCoordinator {
         }
         
         if child is HistoryDetailCoordinator {
-            self.controller.viewModel.isShowingScanOption = false
-            self.controller.viewModel.scanOptions = []
-            
-            if let scanOptionItem, scanOptionItem.isThreadAfterIntro {
-                self.controller.viewModel.currentTab = .scan
-                SubscriptionViewController.open { [weak self] in
-                    guard let self else { return }
-                    self.controller.viewModel.didAppear = true
-                }
-                
-            } else {
-                self.controller.viewModel.currentTab = .history
-            }
-            
             self.historyDetailCoordinator = nil
-            self.scanOptionItem = nil
-            self.stopAllChild()
-            UserSetting.didShowIntro = true
         }
     }
     
@@ -129,6 +112,31 @@ final class HomeCoordinator: WindowBasedCoordinator {
             case .infraredCamera:
                 self.routeToInfraredCamera(scanOption: event.scanOption)
             }
+            return true
+        }
+        
+        if event is HistoryDetailWantToBack {
+            self.navigationController.popToRootViewController(animated: true)
+            print("navigationController: \(navigationController.viewControllers.count)")
+            self.stopAllChild()
+            UserSetting.didShowIntro = true
+            self.controller.viewModel.isShowingScanOption = false
+            self.controller.viewModel.scanOptions = []
+            
+            if let scanOptionItem {
+                if scanOptionItem.isThreadAfterIntro {
+                    DispatchQueue.main.async {
+                        SubscriptionViewController.open { [weak self] in
+                            self?.controller.viewModel.didAppear = true
+                        }
+                    }
+                } else {
+                    self.controller.viewModel.currentTab = .history
+                }
+            }
+            
+            self.scanOptionItem = nil
+
             return true
         }
         

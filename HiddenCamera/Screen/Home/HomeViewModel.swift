@@ -11,6 +11,7 @@ import CoreLocation
 import SwiftUI
 import GoogleMobileAds
 import FirebaseAnalytics
+import SwiftyStoreKit
 
 struct HomeViewModelInput: InputOutputViewModel {
     var didTapPremiumButton = PublishSubject<()>()
@@ -46,6 +47,7 @@ struct HomeViewModelRouting: RoutingOutput {
     var routeToHistoryDetail = PublishSubject<ScanOptionItem>()
     
     var shareApp = PublishSubject<()>()
+    var presentAlert = PublishSubject<String>()
 }
 
 final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput, HomeViewModelRouting> {
@@ -62,6 +64,8 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
     @Published var historyItems = [ScanOptionItem]()
     @Published var scanOptions = [ToolItem]()
     @Published var isShowingScanOption: Bool = false
+    @Published var isShowingLoading: Bool = false
+    var needToShowSub: Bool = false
     
     override init() {
         self.currentTab = .scan
@@ -195,7 +199,19 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
             case .rate:
                 RateManager.rate()
             case .restore:
-                break
+                self.isShowingLoading = true
+                
+                SwiftyStoreKit.restorePurchases { [weak self] result in
+                    guard let self else { return }
+                    self.isShowingLoading = false
+                    UserSetting.isPremiumUser = result.restoredPurchases.count > 0
+                    
+                    if result.restoredPurchases.count > 0 {
+                        self.routing.presentAlert.onNext("Restore successed!")
+                    } else {
+                        self.routing.presentAlert.onNext("Nothing to restore!")
+                    }
+                }
             }
         }).disposed(by: self.disposeBag)
         

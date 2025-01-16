@@ -43,6 +43,7 @@ class UserSetting {
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: "isPremiumUser")
+            NotificationCenter.default.post(name: .updatePremiumVersion, object: nil)
         }
     }
     

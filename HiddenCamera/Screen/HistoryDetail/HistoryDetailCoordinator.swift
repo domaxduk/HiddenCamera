@@ -13,6 +13,8 @@ struct HistoryDetailRouteToToolEvent: CoordinatorEvent {
     var scanOption: ScanOptionItem
 }
 
+struct HistoryDetailWantToBack: CoordinatorEvent { }
+
 final class HistoryDetailCoordinator: NavigationBasedCoordinator {
     
     private var scanOption: ScanOptionItem
@@ -46,11 +48,15 @@ final class HistoryDetailCoordinator: NavigationBasedCoordinator {
         if navigationController.topViewController == controller {
             navigationController.popViewController(animated: true)
         } else {
-            navigationController.viewControllers.removeAll(where: { $0 == controller })
+            navigationController.viewControllers.removeAll(where: { $0 is HistoryDetailViewController })
         }
     }
     
     func routeToTool(tool: ToolItem) {
         self.send(event: HistoryDetailRouteToToolEvent(tool: tool, scanOption: scanOption))
+    }
+    
+    func wantToBack() {
+        self.send(event: HistoryDetailWantToBack())
     }
 }

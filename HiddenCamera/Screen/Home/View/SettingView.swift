@@ -113,10 +113,9 @@ struct SettingView: View {
                 .background(Color.white)
                 .cornerRadius(24, corners: .allCorners)
                 .padding(.top, 12)
-                
-                
-                
-            }.padding(.horizontal, 20)
+            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 100)
         }
     }
     
