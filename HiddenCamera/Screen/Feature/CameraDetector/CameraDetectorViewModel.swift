@@ -17,6 +17,9 @@ struct CameraDetectorViewModelInput: InputOutputViewModel {
     var didTapRecord = PublishSubject<()>()
     var didTapGallery = PublishSubject<()>()
     var didTapNext = PublishSubject<()>()
+    
+    var didTapRemoveAd = PublishSubject<()>()
+    var didTapContinueAds = PublishSubject<()>()
 }
 
 struct CameraDetectorViewModelOutput: InputOutputViewModel {
@@ -43,8 +46,10 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     @Published var showIntro: Bool = true
     @Published var captureSession: AVCaptureSession
     @Published var boxes = [BoundingBox]()
-    @Published var isShowingCameraDialog: Bool = false
     @Published var previewGalleryImage: UIImage?
+    
+    @Published var isShowingCameraDialog: Bool = false
+    @Published var isShowingTimeLimitDialog: Bool = false
 
     private let dataProcess = DataProcesser()
     var lastItem: CameraResultItem?
@@ -68,6 +73,8 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     
     private var needToStart: Bool = false
     private var needToStop: Bool = false
+    private var isLimitTime: Bool = false
+    private var needToPreviewResult: Bool = false
     
     let scanOption: ScanOptionItem?
     
@@ -127,7 +134,30 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
         
         input.didTapRecord.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            if scanOption != nil || isRecording || UserSetting.canUsingFeature(.aiDetector) {
+            if isRecording {
+                self.needToStop = true
+                return
+            }
+            
+            // Chua record
+            if isLimitTime && !UserSetting.isPremiumUser {
+                self.needToPreviewResult = false
+                self.isShowingTimeLimitDialog = true
+                return
+            }
+            
+            if let scanOption { // Nếu scan option
+                if scanOption.suspiciousResult.contains(where: { $0.key == .cameraDetector }) && !UserSetting.isPremiumUser {
+                    SubscriptionViewController.open { }
+                } else {
+                    prepareToRecord()
+                }
+                
+                return
+            }
+            
+            // Nếu là tool thường
+            if UserSetting.canUsingFeature(.aiDetector) {
                 prepareToRecord()
             } else {
                 SubscriptionViewController.open { }
@@ -140,6 +170,19 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
         
         input.didTapNext.subscribe(onNext: { [weak self] _ in
             self?.routing.nextTool.onNext(())
+        }).disposed(by: self.disposeBag)
+        
+        input.didTapRemoveAd.subscribe(onNext: { [unowned self] in
+            SubscriptionViewController.open { [weak self] in
+                if UserSetting.isPremiumUser {
+                    self?.isShowingTimeLimitDialog = false
+                    self?.routeToResultAfterRecord()
+                }
+            }
+        }).disposed(by: self.disposeBag)
+        
+        input.didTapContinueAds.subscribe(onNext: { [unowned self] in
+            self.routeToResultAfterRecord()
         }).disposed(by: self.disposeBag)
     }
     
@@ -154,12 +197,7 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
        
         DispatchQueue.main.async {
             self.isTheFirst = false
-           
-            if self.isRecording { // If user is recording
-                self.needToStop = true
-            } else { // If user isn't recording
-                self.needToStart = true
-            }
+            self.needToStart = true
         }
     }
 
@@ -197,6 +235,11 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
             guard let self else { return }
             DispatchQueue.main.async {
                 self.seconds += 1
+                
+                if !UserSetting.isPremiumUser && self.seconds >= 30 {
+                    self.needToStop = true
+                    self.isLimitTime = true
+                }
             }
         })
     }
@@ -220,21 +263,31 @@ extension CameraDetectorViewModel: AssetWriterDelegate {
             return
         }
         
-        if self.seconds >= 1 {
-            let outputFileURL = self.writer.outputURL
-            let resultURL = FileManager.documentURL().appendingPathComponent("\(UUID().uuidString).mp4")
-            try? FileManager.default.copyItem(at: outputFileURL, to: resultURL)
-            
-            let item = CameraResultItem(id: UUID().uuidString, fileName: resultURL.lastPathComponent, type: .aiDetector)
-            self.lastItem = item
-            
-            DispatchQueue.main.async {
-                self.routing.previewResult.onNext(item)
-            }
-        }
+        let outputFileURL = self.writer.outputURL
+        let resultURL = FileManager.documentURL().appendingPathComponent("\(UUID().uuidString).mp4")
+        try? FileManager.default.copyItem(at: outputFileURL, to: resultURL)
+        
+        let item = CameraResultItem(id: UUID().uuidString, fileName: resultURL.lastPathComponent, type: .aiDetector)
+        self.lastItem = item
         
         DispatchQueue.main.async {
+            self.needToPreviewResult = true
+            
+            if self.isLimitTime {
+                self.isShowingTimeLimitDialog = true
+            } else {
+                self.routeToResultAfterRecord()
+            }
+            
             self.cleanData()
+        }
+    }
+    
+    private func routeToResultAfterRecord() {
+        if let lastItem, needToPreviewResult {
+            DispatchQueue.main.async {
+                self.routing.previewResult.onNext(lastItem)
+            }
         }
     }
 }
@@ -257,8 +310,13 @@ extension CameraDetectorViewModel: AVCaptureVideoDataOutputSampleBufferDelegate 
                 self.isRecording = true
                 
                 self.startTimer()
-                self.isReady = false
-                UserSetting.increaseUsedFeature(.aiDetector)
+                self.isReady = true
+                
+                if self.scanOption == nil {
+                    UserSetting.increaseUsedFeature(.aiDetector)
+                }
+                
+                self.needToStart = false
             }
         }
         
@@ -284,25 +342,18 @@ extension CameraDetectorViewModel: AVCaptureVideoDataOutputSampleBufferDelegate 
                 print("detect camera")
                 self.isReady = false
                 self.detectObject = Model(time: time, ciImage: ciImage)
-            } else { // Chưa thể nhận dữ liệu ảnh khác
-                var result: CIImage?
-                
-                if boxes.isEmpty {
-                    result = ciImage
-                } else {
-                    result = drawOnCIImage(backgroundCIImage: ciImage, boxes: boxes)
-                }
-                
-                if let buffer = result?.buffer {
-                    self.writer.append(pixelBuffer: buffer, withPresentationTime: time)
-                }
             }
             
-            if needToStart {
-                DispatchQueue.main.async {
-                    self.needToStart = false
-                    self.isReady = true
-                }
+            var result: CIImage?
+            
+            if boxes.isEmpty {
+                result = ciImage
+            } else {
+                result = drawOnCIImage(backgroundCIImage: ciImage, boxes: boxes)
+            }
+            
+            if let buffer = result?.buffer {
+                self.writer.append(pixelBuffer: buffer, withPresentationTime: time)
             }
         }
     }
@@ -385,5 +436,13 @@ extension CameraDetectorViewModel {
         }
         
         return !isRecording
+    }
+    
+    private func canHandleRecord() -> Bool {
+        if UserSetting.isPremiumUser || scanOption != nil {
+            return true
+        }
+        
+        return UserSetting.canUsingFeature(.aiDetector)
     }
 }

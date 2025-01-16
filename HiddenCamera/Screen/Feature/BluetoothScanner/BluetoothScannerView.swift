@@ -14,7 +14,6 @@ import GoogleMobileAds
 struct BluetoothScannerView: View {
     @ObservedObject var viewModel: BluetoothScannerViewModel
     @State var currentTab: Int = 0
-    @State var isShowingBanner: Bool = false
     
     @ViewBuilder
     var body: some View {
@@ -42,10 +41,7 @@ struct BluetoothScannerView: View {
                 VStack {
                     Spacer()
                     
-                    let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
-                    
-                    BannerView(isCollapse: false, isShowingBanner: $isShowingBanner)
-                        .frame(height: isShowingBanner ? adSize.size.height : 0)
+                    BannerContentView(isCollapse: false, needToReload: nil)
                 }
             }
         }

@@ -13,6 +13,7 @@ import GoogleMobileAds
 import FirebaseAnalytics
 
 struct HomeViewModelInput: InputOutputViewModel {
+    var didTapPremiumButton = PublishSubject<()>()
     // Tool
     var didSelectTool = PublishSubject<ToolItem>()
    
@@ -210,6 +211,10 @@ final class HomeViewModel: BaseViewModel<HomeViewModelInput, HomeViewModelOutput
             } else {
                 self.currentTab = tab
             }
+        }).disposed(by: self.disposeBag)
+        
+        input.didTapPremiumButton.subscribe(onNext: { _ in 
+            SubscriptionViewController.open { }
         }).disposed(by: self.disposeBag)
     }
     

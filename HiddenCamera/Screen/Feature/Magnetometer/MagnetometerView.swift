@@ -32,10 +32,7 @@ struct MagnetometerView: View {
                 Spacer()
                 
                 if !viewModel.isPremium {
-                    let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
-                    
-                    BannerView(isCollapse: false, isShowingBanner: $isShowingBanner)
-                        .frame(height: isShowingBanner ? adSize.size.height : 0)
+                    BannerContentView(isCollapse: false, needToReload: nil)
                 }
             }
         }.frame(width: UIScreen.main.bounds.width)
@@ -79,25 +76,16 @@ struct MagnetometerView: View {
     @ViewBuilder
     var content: some View {
         VStack {
-            circleView
-            
-            startButton.padding(.bottom, 16)
-            
             ScrollView {
-                VStack {
+                VStack(spacing: 0) {
+                    SeverityCircleView(value: $viewModel.strength)
+                    startButton.padding(.vertical, 16)
                     attributeView
                     noteView
                 }
                 .padding(.bottom, 100)
                 .frame(width: UIScreen.main.bounds.width)
             }
-        }
-    }
-    
-    var circleView: some View {
-        ZStack {
-            Color.clear
-            SeverityCircleView(value: $viewModel.strength)
         }
     }
     
@@ -296,10 +284,9 @@ struct SeverityCircleView: View {
                     .background(
                         Color.white.cornerRadius(Const.circleRadius / 11, corners: .allCorners)
                     )
-                    
             }
             .animation(.default)
-            .frame(height: Const.circleRadius)
+            .frame(height: Const.circleRadius + Const.lineWidth)
             .overlay(
                 VStack {
                     Spacer()
@@ -311,7 +298,7 @@ struct SeverityCircleView: View {
                         Text("μT")
                             .font(Poppins.italic.font(size: Const.circleRadius / 308 * 30))
                     }
-                }.offset(y: Const.lineWidth / 2)
+                }
             )
         }
     }

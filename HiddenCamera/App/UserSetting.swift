@@ -71,6 +71,7 @@ class UserSetting {
     static func increaseUsedFeature(_ feature: AppFeature) {
         let number = numberUsedFeature(feature)
         UserDefaults.standard.setValue(number + 1, forKey: "used_\(feature.rawValue)_number")
+        print("[USER SETTING] \(feature.rawValue) \(numberUsedFeature(feature))")
     }
     
     static func canUsingFeature(_ feature: AppFeature) -> Bool {

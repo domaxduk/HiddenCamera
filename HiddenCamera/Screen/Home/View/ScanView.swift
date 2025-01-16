@@ -25,46 +25,44 @@ struct ScanView: View {
     @EnvironmentObject var viewModel: HomeViewModel
 
     var body: some View {
-        VStack(spacing: 0) {
-            Text("Press the button bellow to Scan Full")
-                .font(Poppins.regular.font(size: 14))
-                .textColor(.app(.light09))
-                .padding(.top, 20)
-            
-            LottieView(animation: .named("blueCircle"))
-                .playing(loopMode: .loop)
-                .overlay(
-                    Image("ic_home_eye")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 72)
-                )
-                .frame(height: UIScreen.main.bounds.width - 40 * 2)
-                .onTapGesture {
-                    viewModel.input.didTapScanFull.onNext(())
-                }
-            
-            ScrollView {
-                VStack {
-                    HStack {
-                        ScanItemView(color: .init(rgb: 0x9747FF), icon: "ic_tool_quickscan", name: "Quick Scan")
-                            .onTapGesture {
-                                viewModel.input.didTapQuickScan.onNext(())
-                            }
-                        
-                        Spacer()
-                        
-                        ScanItemView(color: .init(rgb: 0xFFA63D), icon: "ic_tool_scanoption", name: "Scan Options")
-                            .onTapGesture {
-                                viewModel.input.didTapScanOption.onNext(())
-                            }
+        ScrollView {
+            VStack {
+                Text("Press the button bellow to Scan Full")
+                    .font(Poppins.regular.font(size: 14))
+                    .textColor(.app(.light09))
+                    .padding(.top, 20)
+                
+                LottieView(animation: .named("blueCircle"))
+                    .playing(loopMode: .loop)
+                    .overlay(
+                        Image("ic_home_eye")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 72)
+                    )
+                    .frame(height: UIScreen.main.bounds.width - 40 * 2)
+                    .onTapGesture {
+                        viewModel.input.didTapScanFull.onNext(())
                     }
+                
+                HStack {
+                    ScanItemView(color: .init(rgb: 0x9747FF), icon: "ic_tool_quickscan", name: "Quick Scan")
+                        .onTapGesture {
+                            viewModel.input.didTapQuickScan.onNext(())
+                        }
                     
-                    NativeContentView()
+                    Spacer()
+                    
+                    ScanItemView(color: .init(rgb: 0xFFA63D), icon: "ic_tool_scanoption", name: "Scan Options")
+                        .onTapGesture {
+                            viewModel.input.didTapScanOption.onNext(())
+                        }
                 }
-                .padding(.horizontal, Const.padding)
-                .padding(.bottom, 50)
+                            
+                Spacer(minLength: 0)
             }
+            .padding(.horizontal, Const.padding)
+            .padding(.bottom, 50)
         }.frame(width: UIScreen.main.bounds.width)
     }
 }

@@ -17,6 +17,7 @@ class AdsInterstitial: NSObject {
     private var status: AdsState = .none
     private var didDismiss = PublishSubject<()>()
     private let disposeBag = DisposeBag()
+    private var lastShowingDate: Date?
     
     func start() {
         Task {
@@ -37,6 +38,11 @@ class AdsInterstitial: NSObject {
     }
     
     func tryToPresent(completionHandler: @escaping (() -> Void)) {
+        if let lastShowingDate, abs(lastShowingDate.timeIntervalSinceNow) < GoogleAdsKey.interCapping {
+            completionHandler()
+            return
+        }
+        
         if let interstitial, !UserSetting.isPremiumUser {
             didDismiss.take(1).subscribe(onNext: completionHandler).disposed(by: disposeBag)
             interstitial.present(fromRootViewController: rootViewController)
@@ -81,6 +87,7 @@ extension AdsInterstitial: GADFullScreenContentDelegate {
     
     func adWillPresentFullScreenContent(_ ad: any GADFullScreenPresentingAd) {
         print("[Interstitial] adWillPresentFullScreenContent")
+        self.lastShowingDate = Date()
     }
     
     func adWillDismissFullScreenContent(_ ad: any GADFullScreenPresentingAd) {

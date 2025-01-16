@@ -23,7 +23,7 @@ struct CameraResultView: View {
         ZStack {
             Color.app(.light03).ignoresSafeArea()
             
-            VStack {
+            VStack(spacing: 0) {
                 navigationBar
                 videoView.padding(.top, 20)
                 seekBar.padding(.top, 16)
@@ -31,10 +31,15 @@ struct CameraResultView: View {
                 Spacer()
                 
                 if viewModel.tag == nil {
-                    decideTypeView
+                    decideTypeView.padding(.top, 20)
                 }
                 
                 Spacer(minLength: 0)
+                
+                if !viewModel.isPremium {
+                    BannerContentView(isCollapse: false, needToReload: nil)
+                        .padding(.top, 5)
+                }
             }
             
             if isShowingConfirmDialog {
@@ -103,7 +108,6 @@ struct CameraResultView: View {
                     .font(Poppins.semibold.font(size: 14))
                     .textColor(AppColor.warningColor)
             }
-            .frame(height: 48)
             .cornerRadius(24, corners: .allCorners)
             .onTapGesture {
                 viewModel.input.mask.onNext(.risk)
@@ -115,12 +119,13 @@ struct CameraResultView: View {
                     .font(Poppins.semibold.font(size: 14))
                     .textColor(AppColor.safeColor)
             }
-            .frame(height: 48)
             .cornerRadius(24, corners: .allCorners)
             .onTapGesture {
                 viewModel.input.mask.onNext(.trusted)
             }
-        }.padding(.horizontal, 20)
+        }
+        .frame(height: 48)
+        .padding(.horizontal, 20)
     }
     
     var seekBar: some View {
@@ -209,7 +214,7 @@ struct CameraResultView: View {
                 .onTapGesture {
                     viewModel.input.changeOffsetTime.onNext(10.0)
                 }
-        }
+        }.frame(height: 60)
     }
     
     var navigationBar: some View {
@@ -263,8 +268,10 @@ struct CameraResultView: View {
             
             
             tag()
+            
+            Color.clear
         }
-        .frame(width: Const.widthVideo, height: Const.heightVideo)
+        .frame(width: Const.widthVideo)
         .cornerRadius(20, corners: .allCorners)
     }
     

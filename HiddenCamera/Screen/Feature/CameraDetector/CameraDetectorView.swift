@@ -37,6 +37,12 @@ struct CameraDetectorView: View {
             } else if viewModel.isTheFirst {
                 guideView()
             }
+            
+            if viewModel.isShowingTimeLimitDialog {
+                TimeLimitDialogView(isShowing: $viewModel.isShowingTimeLimitDialog,
+                                   didTapRemoveAd: viewModel.input.didTapRemoveAd,
+                                   didTapContinueAds: viewModel.input.didTapContinueAds)
+            }
         }
     }
     
@@ -151,10 +157,7 @@ struct CameraDetectorView: View {
                 }.padding(.bottom, 10)
                 
                 if !viewModel.isPremium && !viewModel.isTheFirst {
-                    let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
-                    
-                    BannerView(isCollapse: false, isShowingBanner: $isShowingBanner)
-                        .frame(height: isShowingBanner ? adSize.size.height : 0)
+                    BannerContentView(isCollapse: false, needToReload: nil)
                 }
             }
         }

@@ -117,6 +117,10 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
     
     // MARK: - PlayVideo
     func playVideo() {
+        if player.currentTime() == asset.duration {
+            self.seek(time: .zero)
+        }
+        
         player.play()
     }
     

@@ -14,7 +14,6 @@ import GoogleMobileAds
 struct WifiScannerView: View {
     @ObservedObject var viewModel: WifiScannerViewModel
     @State var currentTab: Int = 0
-    @State var isShowingBanner: Bool = false
     
     @ViewBuilder
     var body: some View {
@@ -53,11 +52,7 @@ struct WifiScannerView: View {
             if !viewModel.isPremium {
                 VStack {
                     Spacer()
-                    
-                    let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
-                    
-                    BannerView(isCollapse: false, isShowingBanner: $isShowingBanner)
-                        .frame(height: isShowingBanner ? adSize.size.height : 0)
+                    BannerContentView(isCollapse: false, needToReload: nil)
                 }
             }
         }

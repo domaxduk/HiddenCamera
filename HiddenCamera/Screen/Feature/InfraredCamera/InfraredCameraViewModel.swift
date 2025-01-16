@@ -18,6 +18,9 @@ struct InfraredCameraViewModelInput: InputOutputViewModel {
     var didTapRecord = PublishSubject<()>()
     var didTapGallery = PublishSubject<()>()
     var didTapNext = PublishSubject<()>()
+    
+    var didTapRemoveAd = PublishSubject<()>()
+    var didTapContinueAds = PublishSubject<()>()
 }
 
 struct InfraredCameraViewModelOutput: InputOutputViewModel {
@@ -40,8 +43,10 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
     @Published var showIntro: Bool = true
     @Published var captureSession: AVCaptureSession
     @Published var isTurnFlash: Bool = false
-    @Published var isShowingCameraDialog: Bool = false
     @Published var previewGalleryImage: UIImage?
+    
+    @Published var isShowingCameraDialog: Bool = false
+    @Published var isShowingTimeLimitDialog: Bool = false
 
     private var writer: AssetWriter
     private var timer: Timer?
@@ -51,7 +56,9 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
     
     private var needToStart: Bool = false
     private var needToStop: Bool = false
-    
+    private var isLimitTime: Bool = false
+    private var needToPreviewResult: Bool = false
+
     let scanOption: ScanOptionItem?
     var lastItem: CameraResultItem?
     private let dao = CameraResultDAO()
@@ -111,7 +118,31 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
         
         input.didTapRecord.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            if scanOption != nil || isRecording || UserSetting.canUsingFeature(.aiDetector) {
+            if isRecording {
+                self.needToStop = true
+                return
+            }
+            
+            // Nếu đạt đến giới hạn 30s và không phải user premium
+            if isLimitTime && !UserSetting.isPremiumUser {
+                self.needToPreviewResult = false
+                self.isShowingTimeLimitDialog = true
+                return
+            }
+            
+            // Nếu scan option
+            if let scanOption {
+                if scanOption.suspiciousResult.contains(where: { $0.key == .infraredCamera }) && !UserSetting.isPremiumUser {
+                    SubscriptionViewController.open { }
+                } else {
+                    prepareToRecord()
+                }
+                
+                return
+            }
+            
+            // Nếu là tool thường
+            if UserSetting.canUsingFeature(.ifCamera) {
                 prepareToRecord()
             } else {
                 SubscriptionViewController.open { }
@@ -124,6 +155,19 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
         
         input.didTapNext.subscribe(onNext: { [weak self] _ in
             self?.routing.nextTool.onNext(())
+        }).disposed(by: self.disposeBag)
+        
+        input.didTapRemoveAd.subscribe(onNext: { [unowned self] in
+            SubscriptionViewController.open { [weak self] in
+                if UserSetting.isPremiumUser {
+                    self?.isShowingTimeLimitDialog = false
+                    self?.routeToResultAfterRecord()
+                }
+            }
+        }).disposed(by: self.disposeBag)
+        
+        input.didTapContinueAds.subscribe(onNext: { [unowned self] in
+            self.routeToResultAfterRecord()
         }).disposed(by: self.disposeBag)
     }
     
@@ -138,12 +182,7 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
         
         DispatchQueue.main.async {
             self.isTheFirst = false
-            
-            if self.isRecording { // If user is recording
-                self.needToStop = true
-            } else { // If user isn't recording
-                self.needToStart = true
-            }
+            self.needToStart = true
         }
     }
     
@@ -189,6 +228,11 @@ final class InfraredCameraViewModel: BaseViewModel<InfraredCameraViewModelInput,
             guard let self else { return }
             DispatchQueue.main.async {
                 self.seconds += 1
+                
+                if !UserSetting.isPremiumUser && self.seconds >= 30 {
+                    self.needToStop = true
+                    self.isLimitTime = true
+                }
             }
         })
     }
@@ -219,22 +263,32 @@ extension InfraredCameraViewModel: AssetWriterDelegate {
             return
         }
         
-        if self.seconds >= 1 {
-            let resultURL = FileManager.documentURL().appendingPathComponent("\(UUID().uuidString).mp4")
-            try? FileManager.default.copyItem(at: url, to: resultURL)
-            
-            let item = CameraResultItem(id: UUID().uuidString, fileName: resultURL.lastPathComponent, type: .infrared)
-            self.lastItem = item
-            
-            DispatchQueue.main.async {
-                CameraManager.configFlash(isOn: false)
-                self.isTurnFlash = false
-                self.routing.previewResult.onNext(item)
-            }
-        }
+        let resultURL = FileManager.documentURL().appendingPathComponent("\(UUID().uuidString).mp4")
+        try? FileManager.default.copyItem(at: url, to: resultURL)
+        
+        let item = CameraResultItem(id: UUID().uuidString, fileName: resultURL.lastPathComponent, type: .infrared)
+        self.lastItem = item
         
         DispatchQueue.main.async {
+            self.needToPreviewResult = true
+            CameraManager.configFlash(isOn: false)
+            self.isTurnFlash = false
+            
+            if self.isLimitTime {
+                self.isShowingTimeLimitDialog = true
+            } else {
+                self.routeToResultAfterRecord()
+            }
+            
             self.invalidateTimer()
+        }
+    }
+    
+    private func routeToResultAfterRecord() {
+        if let lastItem, needToPreviewResult {
+            DispatchQueue.main.async {
+                self.routing.previewResult.onNext(lastItem)
+            }
         }
     }
 }
@@ -271,7 +325,10 @@ extension InfraredCameraViewModel: AVCaptureVideoDataOutputSampleBufferDelegate,
                 self.writer.startWriting()
                 self.isRecording = true
                 self.needToStart = false
-                UserSetting.increaseUsedFeature(.ifCamera)
+                
+                if self.scanOption == nil {
+                    UserSetting.increaseUsedFeature(.ifCamera)
+                }
             }
         }
         
@@ -320,5 +377,13 @@ extension InfraredCameraViewModel {
         case .yellow: return UIColor(red: 255, green: 186, blue: 23, alpha: 1)
         default: return .clear
         }
+    }
+    
+    private func canHandleRecord() -> Bool {
+        if UserSetting.isPremiumUser || scanOption != nil {
+            return true
+        }
+        
+        return UserSetting.canUsingFeature(.ifCamera)
     }
 }

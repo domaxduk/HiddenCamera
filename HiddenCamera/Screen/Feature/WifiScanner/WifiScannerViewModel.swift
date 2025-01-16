@@ -94,17 +94,24 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
         
         input.didTapScan.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
-            
+            // Chặn scan again đối với free user
             if state == .done && !UserSetting.isPremiumUser {
                 SubscriptionViewController.open { }
                 return
             }
             
-            if scanOption != nil {
-                prepareToScan()
+            // Nếu là scan option
+            if let scanOption {
+                if scanOption.suspiciousResult.contains(where: { $0.key == .wifiScanner }) && !UserSetting.isPremiumUser {
+                    SubscriptionViewController.open { }
+                } else {
+                    prepareToScan()
+                }
+                
                 return
             }
             
+            // Nếu là scan thường
             if UserSetting.canUsingFeature(.wifi) {
                 prepareToScan()
                 UserSetting.increaseUsedFeature(.wifi)
@@ -137,19 +144,18 @@ final class WifiScannerViewModel: BaseViewModel<WifiScannerViewModelInput, WifiS
         
         input.didTapRemoveAd.subscribe(onNext: { [unowned self] in
             SubscriptionViewController.open { [weak self] in
-                self?.backWithAd()
+                guard let self else { return }
+                if UserSetting.isPremiumUser {
+                    DispatchQueue.main.async {
+                        self.isShowingRemoveAdDialog = false
+                    }
+                }
             }
         }).disposed(by: self.disposeBag)
         
         input.didTapContinueAds.subscribe(onNext: { [unowned self] in
-            self.backWithAd()
+            self.routing.stop.onNext(())
         }).disposed(by: self.disposeBag)
-    }
-    
-    private func backWithAd() {
-        AdsInterstitial.shared.tryToPresent { [weak self] in
-            self?.routing.stop.onNext(())
-        }
     }
     
     private func prepareToScan() {

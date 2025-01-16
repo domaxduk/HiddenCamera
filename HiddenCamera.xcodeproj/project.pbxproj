@@ -138,6 +138,8 @@
 		85EDFA682D3122AC002BF8F3 /* NativeAdView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85EDFA672D3122AC002BF8F3 /* NativeAdView.xib */; };
 		85EDFA6B2D312E9E002BF8F3 /* RemoveAdDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA6A2D312E9E002BF8F3 /* RemoveAdDialogView.swift */; };
 		85EDFA6D2D313370002BF8F3 /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EDFA6C2D313370002BF8F3 /* SubscriptionViewController.swift */; };
+		85FC31D92D37A774000A4ECC /* TimeLimitDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FC31D82D37A774000A4ECC /* TimeLimitDialogView.swift */; };
+		85FC31DB2D37C90A000A4ECC /* premium.json in Resources */ = {isa = PBXBuildFile; fileRef = 85FC31DA2D37C90A000A4ECC /* premium.json */; };
 		BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */; };
 /* End PBXBuildFile section */
 
@@ -271,6 +273,8 @@
 		85EDFA672D3122AC002BF8F3 /* NativeAdView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NativeAdView.xib; sourceTree = "<group>"; };
 		85EDFA6A2D312E9E002BF8F3 /* RemoveAdDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAdDialogView.swift; sourceTree = "<group>"; };
 		85EDFA6C2D313370002BF8F3 /* SubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
+		85FC31D82D37A774000A4ECC /* TimeLimitDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLimitDialogView.swift; sourceTree = "<group>"; };
+		85FC31DA2D37C90A000A4ECC /* premium.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = premium.json; sourceTree = "<group>"; };
 		9538BCC95076E37CF40E04C0 /* Pods-HiddenCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.debug.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.debug.xcconfig"; sourceTree = "<group>"; };
 		B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HiddenCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D38A84736AD64ED2E350337F /* Pods-HiddenCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.release.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.release.xcconfig"; sourceTree = "<group>"; };
@@ -612,6 +616,7 @@
 		85DA72432D1E9376008F5589 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				85FC31DA2D37C90A000A4ECC /* premium.json */,
 				856A1CE02D364C6F0085C170 /* tapfinger.json */,
 				856A1CDC2D3624990085C170 /* scanning.json */,
 				85EC31AD2D27F777009F874A /* blueCircle.json */,
@@ -727,6 +732,7 @@
 			children = (
 				85EDFA6A2D312E9E002BF8F3 /* RemoveAdDialogView.swift */,
 				85E3C5F22D2B8E8100BBAFBE /* PermissionDialogView.swift */,
+				85FC31D82D37A774000A4ECC /* TimeLimitDialogView.swift */,
 			);
 			path = Dialog;
 			sourceTree = "<group>";
@@ -865,6 +871,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85DA72522D1E9392008F5589 /* Poppins-BoldItalic.ttf in Resources */,
+				85FC31DB2D37C90A000A4ECC /* premium.json in Resources */,
 				85EC31AE2D27F777009F874A /* blueCircle.json in Resources */,
 				85DA72332D1E919D008F5589 /* Assets.xcassets in Resources */,
 				85DA724F2D1E9392008F5589 /* Poppins-Bold.ttf in Resources */,
@@ -1033,6 +1040,7 @@
 				852E29302D27E90600293218 /* NetworkUtils.swift in Sources */,
 				85699C5F2D26943F0000E5A6 /* CameraResultGalleryViewController.swift in Sources */,
 				85699C602D26943F0000E5A6 /* CameraResultGalleryViewModel.swift in Sources */,
+				85FC31D92D37A774000A4ECC /* TimeLimitDialogView.swift in Sources */,
 				85DA724C2D1E9392008F5589 /* Poppins.swift in Sources */,
 				85DA722A2D1E919B008F5589 /* AppDelegate.swift in Sources */,
 				853D48172D2CD32500644A55 /* NetworkManager.swift in Sources */,

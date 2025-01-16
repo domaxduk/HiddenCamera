@@ -1,15 +1,15 @@
 //
-//  RemoveAdDialogView.swift
+//  TimeLimitDialogView.swift
 //  HiddenCamera
 //
-//  Created by Duc apple  on 10/1/25.
+//  Created by Duc apple  on 15/1/25.
 //
 
 import SwiftUI
 import SakuraExtension
 import RxSwift
 
-struct RemoveAdDialogView: View {
+struct TimeLimitDialogView: View {
     @Binding var isShowing: Bool
     var didTapRemoveAd: PublishSubject<()>
     var didTapContinueAds: PublishSubject<()>
@@ -25,17 +25,17 @@ struct RemoveAdDialogView: View {
                 }
             
             VStack(spacing: 0) {
-                Image("ic_dialog_removeAd")
+                Image("ic_dialog_timelimit")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 96)
                 
-                Text("Ad - Free Expperience")
+                Text("Limited time")
                     .textColor(.app(.light12))
                     .font(Poppins.semibold.font(size: 18))
                     .padding(.top, 12)
                 
-                Text("Tired of watching ADS? Get rid all of the ADS and support developers of the app for better experience!")
+                Text("You have reached the limit of 1 scan. Enjoy unlimited experience with Premium version.")
                     .textColor(.app(.light11))
                     .font(Poppins.regular.font(size: 14))
                     .multilineTextAlignment(.center)
@@ -44,7 +44,7 @@ struct RemoveAdDialogView: View {
                 Color.app(.main).frame(height: 56)
                     .cornerRadius(28, corners: .allCorners)
                     .overlay(
-                        Text("Remove ads")
+                        Text("Get Premium")
                             .font(Poppins.semibold.font(size: 16))
                             .textColor(.white)
                     )
@@ -60,7 +60,7 @@ struct RemoveAdDialogView: View {
                     .stroke(Color.app(.main), lineWidth: 1)
                     .frame(height: 56)
                     .overlay(
-                        Text("Continue with Ads Version")
+                        Text("Continue with Free Version")
                             .font(Poppins.semibold.font(size: 16))
                             .textColor(Color.app(.main))
                             .autoResize(numberLines: 1)
@@ -101,5 +101,5 @@ struct RemoveAdDialogView: View {
 }
 
 #Preview {
-    RemoveAdDialogView(isShowing: .constant(true), didTapRemoveAd: .init(), didTapContinueAds: .init())
+    TimeLimitDialogView(isShowing: .constant(true), didTapRemoveAd: .init(), didTapContinueAds: .init())
 }

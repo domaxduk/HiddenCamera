@@ -60,6 +60,15 @@ struct HomeView: View {
             
             
             Spacer()
+            
+            if !viewModel.isPremium {
+                LottieView(animation: .named("premium"))
+                    .playing(loopMode: .loop)
+                    .onTapGesture {
+                        viewModel.input.didTapPremiumButton.onNext(())
+                    }
+                    .frame(width: 30)
+            }
         }.frame(height: AppConfig.navigationBarHeight)
     }
     
@@ -94,10 +103,7 @@ struct HomeView: View {
             }
             
             if !viewModel.isPremium && viewModel.didAppear {
-                let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
-                
-                BannerView(isCollapse: true, isShowingBanner: $isShowingBanner)
-                    .frame(height: isShowingBanner ? adSize.size.height : 0)
+                BannerContentView(isCollapse: true, needToReload: nil)
             }
         }
         .background(Color.white.cornerRadius(28, corners: [.topLeft, .topRight]).ignoresSafeArea())

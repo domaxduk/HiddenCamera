@@ -28,6 +28,11 @@ class IntroViewController: ViewController {
         super.viewDidLoad()
         self.config()
     }
+    
+    override func updatePremiumVersion() {
+        super.updatePremiumVersion()
+        viewModel.isPremium = UserSetting.isPremiumUser
+    }
 
     // MARK: - Config
     func config() {

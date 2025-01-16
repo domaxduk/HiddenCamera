@@ -15,7 +15,6 @@ import GoogleMobileAds
 struct InfraredCameraView: View {
     @ObservedObject var viewModel: InfraredCameraViewModel
     @State var isShowingNoteView: Bool = false
-    @State var isShowingBanner: Bool = false
     
     var body: some View {
         ZStack {
@@ -30,6 +29,12 @@ struct InfraredCameraView: View {
                 PermissionDialogView(type: .camera, isShowing: $viewModel.isShowingCameraDialog)
             } else if viewModel.isTheFirst {
                 guideView()
+            }
+            
+            if viewModel.isShowingTimeLimitDialog {
+                TimeLimitDialogView(isShowing: $viewModel.isShowingTimeLimitDialog,
+                                   didTapRemoveAd: viewModel.input.didTapRemoveAd,
+                                   didTapContinueAds: viewModel.input.didTapContinueAds)
             }
         }
     }
@@ -145,10 +150,7 @@ struct InfraredCameraView: View {
                 }.padding(.bottom, 10)
                 
                 if !viewModel.isPremium && !viewModel.isTheFirst {
-                    let adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
-                    
-                    BannerView(isCollapse: false, isShowingBanner: $isShowingBanner)
-                        .frame(height: isShowingBanner ? adSize.size.height : 0)
+                    BannerContentView(isCollapse: false, needToReload: nil)
                 }
             }
         }

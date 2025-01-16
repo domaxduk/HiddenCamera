@@ -136,6 +136,10 @@ struct IntroView: View {
                                     .background(Color.app(.main))
                                     .cornerRadius(Const.screenWidth, corners: .allCorners)
                             })
+                            
+                            if !viewModel.isPremium {
+                                BannerContentView(isCollapse: false, hasOneKeyAd: true, needToReload: viewModel.input.didTapContinue)
+                            }
                         }
                     }
                 })

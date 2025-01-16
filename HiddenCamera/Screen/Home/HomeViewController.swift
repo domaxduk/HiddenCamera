@@ -58,11 +58,6 @@ class HomeViewController: ViewController {
             self.viewModel.didAppear = true
         }
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        viewModel.didAppear = false
-    }
 
     // MARK: - Config
     func config() {

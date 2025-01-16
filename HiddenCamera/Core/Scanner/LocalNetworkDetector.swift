@@ -46,7 +46,7 @@ class LocalNetworkDetector: NSObject {
     func start() {
         if isScanning { return }
         self.isScanning = true
-        startSearchService()
+       // startSearchService()
         startPing()
     }
     

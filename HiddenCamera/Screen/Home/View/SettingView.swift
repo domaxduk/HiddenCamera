@@ -25,6 +25,42 @@ struct SettingView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
+                if !viewModel.isPremium {
+                    Image("setting_banner")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(20, corners: .allCorners)
+                        .overlay(
+                            GeometryReader(content: { geometry in
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 0) {
+                                        Text("Get PREMIUM to\nUnlimited Access")
+                                            .textColor(.white)
+                                            .font(Poppins.bold.font(size: 18))
+                                            .autoResize(numberLines: 2)
+                                        
+                                        Spacer(minLength: 0)
+                                        
+                                        Button(action: {
+                                            viewModel.input.didTapPremiumButton.onNext(())
+                                        }, label: {
+                                            ZStack {
+                                                Color.app(.main)
+                                                Text("Go Premium")
+                                                    .textColor(.white)
+                                                    .font(Poppins.medium.font(size: 13))
+                                            }
+                                            .frame(height: 30)
+                                            .cornerRadius(30, corners: .allCorners)
+                                        })
+                                    }
+                                    
+                                    Spacer(minLength: geometry.size.width / 2.5)
+                                }.padding(20)
+                            })
+                        )
+                }
+                
                 Text("App interaction")
                     .font(Poppins.semibold.font(size: 14))
                     .padding(.top, 20)
