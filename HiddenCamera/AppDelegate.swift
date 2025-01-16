@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var appCoordinator: AppCoordinator!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        UserSetting.isPremiumUser = true
         configFirebase()
         configGoogleAds()
         configAppCoordinator()

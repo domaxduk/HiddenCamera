@@ -37,7 +37,7 @@ struct BluetoothScannerView: View {
                                    didTapContinueAds: viewModel.input.didTapContinueAds)
             }
             
-            if !viewModel.isPremium {
+            if !viewModel.isPremium && viewModel.state == .ready {
                 VStack {
                     Spacer()
                     
@@ -48,12 +48,14 @@ struct BluetoothScannerView: View {
     }
     
     var navigationBar: some View {
-        HStack {
+        HStack(spacing: 0) {
             if viewModel.showBackButton() {
                 Image("ic_back")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 24)
+                    .frame(width: 24, height: 24)
+                    .padding(20)
+                    .background(Color.clearInteractive)
                     .onTapGesture {
                         viewModel.input.didTapBack.onNext(())
                     }
@@ -76,9 +78,8 @@ struct BluetoothScannerView: View {
                 })
             }
         }
-        .padding(.leading, 20)
+        .padding(.leading, viewModel.showBackButton() ? 0 : 20)
         .frame(height: AppConfig.navigationBarHeight)
-        .frame(height: 56)
     }
     
     // MARK: - Done View
@@ -238,6 +239,7 @@ struct BluetoothScannerView: View {
                 .padding(20)
             } else {
                 NativeContentView()
+                    .padding(.horizontal, 20)
             }
         }
     }

@@ -12,8 +12,8 @@ enum ToolItem: String, CaseIterable {
     case bluetoothScanner
     case wifiScanner
     case cameraDetector
-    case magnetic
     case infraredCamera
+    case magnetic
     
     var icon: String {
         switch self {

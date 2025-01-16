@@ -85,6 +85,11 @@ final class HomeCoordinator: WindowBasedCoordinator {
             
             if let scanOptionItem, scanOptionItem.isThreadAfterIntro {
                 self.controller.viewModel.currentTab = .scan
+                SubscriptionViewController.open { [weak self] in
+                    guard let self else { return }
+                    self.controller.viewModel.didAppear = true
+                }
+                
             } else {
                 self.controller.viewModel.currentTab = .history
             }

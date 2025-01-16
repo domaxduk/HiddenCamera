@@ -218,11 +218,13 @@ struct CameraResultView: View {
     }
     
     var navigationBar: some View {
-        HStack {
+        HStack(spacing: 0) {
             Image("ic_back")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 24)
+                .frame(width: 24, height: 24)
+                .padding(20)
+                .background(Color.clearInteractive)
                 .onTapGesture {
                     if viewModel.item.tag != nil {
                         viewModel.input.didTapBack.onNext(())
@@ -232,7 +234,6 @@ struct CameraResultView: View {
                         }
                     }
                 }
-                .padding(.leading, 20)
             
             Text(viewModel.title)
                 .textColor(.app(.light12))

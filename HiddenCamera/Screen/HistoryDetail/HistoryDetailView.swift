@@ -58,17 +58,28 @@ struct HistoryDetailView: View {
                         }
                     }
                     .padding(.horizontal, 20)
+                    .padding(.bottom, 100)
+                }
+            }
+            
+            VStack {
+                Spacer()
+                
+                if !viewModel.isPremium {
+                    BannerContentView(isCollapse: true, needToReload: nil)
                 }
             }
         }
     }
     
     var navigationBar: some View {
-        HStack {
+        HStack(spacing: 0) {
             Image("ic_back")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 24)
+                .frame(width: 24, height: 24)
+                .padding(20)
+                .background(Color.clearInteractive)
                 .onTapGesture {
                     viewModel.input.didTapBack.onNext(())
                 }
@@ -83,9 +94,9 @@ struct HistoryDetailView: View {
                 Text(dateString)
                     .font(Poppins.regular.font(size: 12))
                     .textColor(.app(.light09))
+                    .padding(.trailing, 20)
             }
         }
-        .padding(.horizontal, 20)
         .frame(height: AppConfig.navigationBarHeight)
         .frame(height: 56)
     }

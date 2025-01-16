@@ -54,8 +54,9 @@ fileprivate struct MainView: View {
                     Image("ic_back")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 24)
-                        .padding()
+                        .frame(width: 24, height: 24)
+                        .padding(20)
+                        .background(Color.clearInteractive)
                         .onTapGesture {
                             dismiss()
                         }

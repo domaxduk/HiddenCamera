@@ -4,8 +4,6 @@
 <dict>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-5294836995166944~4599797005</string>
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>This application requires local network access to scan for suspicious devices in you network.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

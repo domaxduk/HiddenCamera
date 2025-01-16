@@ -244,12 +244,14 @@ struct CameraDetectorView: View {
     
     // MARK: - navigationBar
     var navigationBar: some View {
-        HStack {
+        HStack(spacing: 0) {
             if viewModel.showBackButton() {
                 Image("ic_back")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 24)
+                    .frame(width: 24, height: 24)
+                    .padding(20)
+                    .background(Color.clearInteractive)
                     .onTapGesture {
                         viewModel.input.back.onNext(())
                     }
@@ -264,7 +266,7 @@ struct CameraDetectorView: View {
             
             Spacer()
             
-            if viewModel.scanOption != nil && !viewModel.isRecording {
+            if viewModel.scanOption != nil {
                 Button(action: {
                     viewModel.input.didTapNext.onNext(())
                 }, label: {
@@ -275,7 +277,7 @@ struct CameraDetectorView: View {
                 })
             }
         }
-        .padding(.leading, 20)
+        .padding(.leading, viewModel.showBackButton() ? 0 : 20)
         .frame(height: AppConfig.navigationBarHeight)
         .padding(.bottom, 12)
         .background(

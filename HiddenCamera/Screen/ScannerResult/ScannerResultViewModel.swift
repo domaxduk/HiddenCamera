@@ -9,6 +9,7 @@ import UIKit
 import SwiftUI
 import RxSwift
 import CoreBluetooth
+import GoogleMobileAds
 
 struct ScannerResultViewModelInput: InputOutputViewModel {
     var didTapFix = PublishSubject<Device>()
@@ -40,15 +41,42 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
     private var lastUpdate: Date?
     let scanOption: ScanOptionItem?
     
+    private var nativeLoader: AdsMultiNativeLoader?
+    @Published var natives = [GADNativeAd]()
+    @Published var susCount: Int
+    @Published var safeCount: Int
+        
     init(scanOption: ScanOptionItem?, type: ScannerResultType, devices: [Device]) {
         self.type = type
         self.safeDevices = devices.filter({ $0.isSafe() })
         self.suspiciousDevices = devices.filter({ !$0.isSafe() })
         self.scanOption = scanOption
+        self.susCount = devices.filter({ !$0.isSafe() }).count
+        self.safeCount = devices.filter({ $0.isSafe() }).count
         super.init()
         
         configDiscovery()
         changeTabIfNeed()
+        configAdLoader()
+    }
+    
+    private func configAdLoader() {
+        if isPremium {
+            return
+        }
+        
+        let count = max(susCount / 4, 1) + max(safeCount / 4, 1)
+        self.nativeLoader = AdsMultiNativeLoader(numberOfAds: count)
+        self.nativeLoader?.load()
+        self.nativeLoader?.loadSuccess.subscribe(onNext: { [weak self] in
+            guard let self, let natives = self.nativeLoader?.nativeAds else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.natives = natives
+            }
+        }).disposed(by: self.disposeBag)
     }
     
     override func configInput() {
@@ -68,6 +96,8 @@ final class ScannerResultViewModel: BaseViewModel<ScannerResultViewModelInput, S
                 safeDevices.append(device)
                 suspiciousDevices.remove(at: index)
                 UserSetting.safeDeviceKeys.append(contentsOf: device.keystore)
+                self.safeCount += 1
+                self.susCount -= 1
                 self.currentTab = .safe
                 self.scanOption?.suspiciousResult[type == .bluetooth ? .bluetoothScanner : .wifiScanner] = numberOfSuspiciousDevice()
             }

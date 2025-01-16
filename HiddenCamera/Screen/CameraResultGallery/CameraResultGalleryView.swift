@@ -152,11 +152,13 @@ struct CameraResultGalleryView: View {
     }
     
     var navigationBar: some View {
-        HStack {
+        HStack(spacing: 0) {
             Image("ic_back")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 24)
+                .frame(width: 24, height: 24)
+                .padding(20)
+                .background(Color.clearInteractive)
                 .onTapGesture {
                     viewModel.input.didTapBack.onNext(())
                 }
@@ -178,9 +180,8 @@ struct CameraResultGalleryView: View {
                 })
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.trailing, 20)
         .frame(height: AppConfig.navigationBarHeight)
-        .frame(height: 56)
     }
 }
 

@@ -55,7 +55,6 @@ class HomeViewController: ViewController {
             let item = ScanOptionItem(tools: ToolItem.allCases, type: .full)
             item.isThreadAfterIntro = true
             self.coordinator?.startScanOption(item: item)
-            self.viewModel.didAppear = true
         }
     }
 

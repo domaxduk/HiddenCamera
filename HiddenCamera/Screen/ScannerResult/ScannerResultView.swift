@@ -106,12 +106,19 @@ struct ScannerResultView: View {
     @ViewBuilder
     var safeDeviceView: some View {
         ScrollView(.vertical) {
-            VStack(spacing: 16.0) {
+            LazyVStack(spacing: 16.0) {
                 ForEach(viewModel.safeDevices.indices, id: \.self) { index in
                     let device = viewModel.safeDevices[index]
                     
-                    if index % 4 == 0 && !UserSetting.isPremiumUser {
-                        NativeContentView().padding(.horizontal, 20)
+                    if index % 4 == 0 && !UserSetting.isPremiumUser && !viewModel.natives.isEmpty {
+                        let maxSafeNative = viewModel.safeCount == 0 ? 0 : viewModel.safeCount / 4 + 1
+                        let nativeIndex = index / 4
+                        
+                        if nativeIndex < viewModel.natives.count && nativeIndex < maxSafeNative {
+                            SmallNativeView(nativeAd: viewModel.natives[nativeIndex])
+                                .frame(height: 160)
+                                .padding(.horizontal, 20)
+                        }
                     }
                     
                     DeviceItemView(viewModel: viewModel, device: device)
@@ -127,12 +134,19 @@ struct ScannerResultView: View {
     @ViewBuilder
     var suspiciousDevicesView: some View {
         ScrollView(.vertical) {
-            VStack(spacing: 16.0) {
+            LazyVStack(spacing: 16.0) {
                 ForEach(viewModel.suspiciousDevices.indices, id: \.self) { index in
                     let device = viewModel.suspiciousDevices[index]
                     
-                    if index % 4 == 0 && !UserSetting.isPremiumUser {
-                        NativeContentView().padding(.horizontal, 20)
+                    if index % 4 == 0 && !UserSetting.isPremiumUser && !viewModel.natives.isEmpty {
+                        let maxSafeNative = viewModel.safeCount == 0 ? 0 : viewModel.safeCount / 4 + 1
+                        let nativeIndex = maxSafeNative + index / 4
+                        
+                        if nativeIndex < viewModel.natives.count {
+                            SmallNativeView(nativeAd: viewModel.natives[nativeIndex])
+                                .frame(height: 160)
+                                .padding(.horizontal, 20)
+                        }
                     }
                     
                     DeviceItemView(viewModel: viewModel, device: device)
@@ -275,11 +289,13 @@ struct ScannerResultView: View {
     
     // MARK: - Navigation
     var navigationBar: some View {
-        HStack {
+        HStack(spacing: 0) {
             Image("ic_back")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 24)
+                .frame(width: 24, height: 24)
+                .padding(20)
+                .background(Color.clearInteractive)
                 .onTapGesture {
                     viewModel.input.didTapBack.onNext(())
                 }
@@ -303,7 +319,6 @@ struct ScannerResultView: View {
             }
         }
         .frame(height: AppConfig.navigationBarHeight)
-        .frame(height: 56)
     }
 }
 
@@ -316,11 +331,13 @@ fileprivate struct FindView: View {
     
     var body: some View {
         VStack {
-            HStack {
+            HStack(spacing: 0) {
                 Image("ic_back")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 24)
+                    .frame(width: 24, height: 24)
+                    .padding(20)
+                    .background(Color.clearInteractive)
                     .onTapGesture {
                         presentationMode.wrappedValue.dismiss()
                         viewModel.selectedDeviceID = nil
@@ -332,82 +349,9 @@ fileprivate struct FindView: View {
                 
                 Spacer()
             }
-            .padding(.horizontal, 20)
             .frame(height: AppConfig.navigationBarHeight)
-            .frame(height: 56)
             
-            deviceView
-            
-            Text("Move around to find this device")
-                .textColor(.app(.light11))
-                .font(Poppins.regular.font(size: 14))
-                .padding(.top, 24)
-                .padding(.horizontal, 60)
-            
-            Spacer(minLength: 0)
-            
-            ZStack {
-                
-                Circle()
-                    .stroke(gradientColor, lineWidth: 2)
-                    .frame(height: isAnimation ? Const.width : 0)
-                    .rotationEffect(.degrees(90))
-                    .animation(
-                        .easeInOut(duration: 2)
-                        .repeatForever(autoreverses: false)
-                        , value: isAnimation
-                    )
-                
-                Circle()
-                    .stroke(gradientColor, lineWidth: 2)
-                    .frame(height: isAnimation ? Const.width : 0)
-                    .rotationEffect(.degrees(90))
-                    .animation(
-                        .easeInOut(duration: 2)
-                        .repeatForever(autoreverses: false)
-                        .delay(0.25)
-                        , value: isAnimation
-                    )
-                
-                Circle()
-                    .stroke(gradientColor, lineWidth: 2)
-                    .frame(height: isAnimation ? Const.width : 0)
-                    .rotationEffect(.degrees(90))
-                    .animation(
-                        .easeInOut(duration: 2)
-                        .repeatForever(autoreverses: false)
-                        .delay(0.5)
-                        , value: isAnimation
-                    )
-                
-                Circle()
-                    .fill(circleColor)
-                    .frame(height: Const.width / 388 * 175)
-                    .overlay(
-                        Text(meterDescription)
-                            .textColor(.white)
-                            .font(Poppins.semibold.font(size: Const.width / 388 * 36))
-                            .scaledToFit()
-                            .minimumScaleFactor(0.5)
-                            .lineLimit(1)
-                    )
-            }
-            
-            Spacer()
-            
-            Color.app(.main).frame(height: 56)
-                .cornerRadius(28, corners: .allCorners)
-                .overlay(
-                    Text("Found it!")
-                        .textColor(.white)
-                        .font(Poppins.semibold.font(size: 16))
-                )
-                .onTapGesture {
-                    presentationMode.wrappedValue.dismiss()
-                    viewModel.selectedDeviceID = nil
-                }
-                .padding(.horizontal, 56)
-                .padding(.bottom, 100)
+            contentView
         }
         .background(Color.app(.light03).ignoresSafeArea())
         .onAppear(perform: {
@@ -417,6 +361,88 @@ fileprivate struct FindView: View {
             self.isAnimation = false
         })
         .navigationBarBackButtonHidden()
+    }
+    
+    var contentView: some View {
+        ScrollView(.vertical) {
+            VStack(spacing: 0) {
+                deviceView
+                
+                Text("Move around to find this device")
+                    .textColor(.app(.light11))
+                    .font(Poppins.regular.font(size: 14))
+                    .padding(.top, 24)
+                    .padding(.horizontal, 60)
+                
+                Spacer(minLength: 0)
+                
+                ZStack {
+                    Circle()
+                        .stroke(gradientColor, lineWidth: 2)
+                        .frame(height: isAnimation ? Const.width : 0)
+                        .rotationEffect(.degrees(90))
+                        .animation(
+                            .easeInOut(duration: 2)
+                            .repeatForever(autoreverses: false)
+                            , value: isAnimation
+                        )
+                    
+                    Circle()
+                        .stroke(gradientColor, lineWidth: 2)
+                        .frame(height: isAnimation ? Const.width : 0)
+                        .rotationEffect(.degrees(90))
+                        .animation(
+                            .easeInOut(duration: 2)
+                            .repeatForever(autoreverses: false)
+                            .delay(0.25)
+                            , value: isAnimation
+                        )
+                    
+                    Circle()
+                        .stroke(gradientColor, lineWidth: 2)
+                        .frame(height: isAnimation ? Const.width : 0)
+                        .rotationEffect(.degrees(90))
+                        .animation(
+                            .easeInOut(duration: 2)
+                            .repeatForever(autoreverses: false)
+                            .delay(0.5)
+                            , value: isAnimation
+                        )
+                    
+                    Circle()
+                        .fill(circleColor)
+                        .frame(height: Const.width / 388 * 175)
+                        .overlay(
+                            Text(meterDescription)
+                                .textColor(.white)
+                                .font(Poppins.semibold.font(size: Const.width / 388 * 36))
+                                .scaledToFit()
+                                .minimumScaleFactor(0.5)
+                                .lineLimit(1)
+                        )
+                }.frame(height: Const.width)
+                                
+                Color.app(.main).frame(height: 56)
+                    .cornerRadius(28, corners: .allCorners)
+                    .overlay(
+                        Text("Found it!")
+                            .textColor(.white)
+                            .font(Poppins.semibold.font(size: 16))
+                    )
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                        viewModel.selectedDeviceID = nil
+                    }
+                    .padding(.horizontal, 56)
+                
+                if !viewModel.isPremium {
+                    NativeContentView()
+                        .cornerRadius(5, corners: .allCorners)
+                        .padding(.top, 20)
+                        .padding(.horizontal, 20)
+                }
+            }
+        }
     }
     
     var deviceView: some View {
@@ -477,11 +503,13 @@ fileprivate struct AddressView: View {
     var body: some View {
         NavigationView {
             VStack {
-                HStack {
+                HStack(spacing: 0) {
                     Image("ic_back")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 24)
+                        .frame(width: 24, height: 24)
+                        .padding(20)
+                        .background(Color.clearInteractive)
                         .onTapGesture {
                             presentationMode.wrappedValue.dismiss()
                         }
@@ -492,9 +520,7 @@ fileprivate struct AddressView: View {
                     
                     Spacer()
                 }
-                .padding(.horizontal, 20)
                 .frame(height: AppConfig.navigationBarHeight)
-                .frame(height: 56)
                 
                 if let url = URL(string: "http://" + (device.ipAddress ?? "")) {
                     ZStack {
@@ -690,6 +716,23 @@ fileprivate struct TeleprompterText: UIViewRepresentable {
 #Preview {
     ScannerResultView(viewModel: ScannerResultViewModel(scanOption: ScanOptionItem(), type: .bluetooth, devices: [
         LANDevice(ipAddress: UUID().uuidString, name: "Fdsfsfs", model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
+        LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone"),
         LANDevice(ipAddress: UUID().uuidString, name: UUID().uuidString, model: "phone")
     ]))
+    
+//    FindView(viewModel: ScannerResultViewModel(scanOption: nil, type: .bluetooth, devices: []), device: BluetoothDevice(id: "1", rssi: 1, peripheral: nil))
 }

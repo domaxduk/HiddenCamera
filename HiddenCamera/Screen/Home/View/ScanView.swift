@@ -76,17 +76,18 @@ struct ScanOptionView: View {
             Color.app(.light03).ignoresSafeArea()
             
             VStack(spacing: 0) {
-                HStack {
+                HStack(spacing: 0) {
                     Image("ic_back")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 24)
+                        .frame(width: 24, height: 24)
+                        .padding(20)
+                        .background(Color.clearInteractive)
                         .onTapGesture {
                             withAnimation {
                                 viewModel.isShowingScanOption = false
                             }
                         }
-                        .padding(.leading, 20)
                     
                     Text("Scan Options")
                         .textColor(.app(.light12))
@@ -138,21 +139,23 @@ struct ScanOptionView: View {
                 }
             }
             
-            if !viewModel.scanOptions.isEmpty {
-                VStack {
-                    Spacer()
-                    
-                    Button(action: {
-                        viewModel.input.didTapStartScanOption.onNext(())
-                    }, label: {
-                        Text("Scan now")
-                            .font(Poppins.semibold.font(size: 16))
-                            .textColor(.white)
-                            .padding(.horizontal, 71)
-                            .padding(.vertical, 16)
-                            .background(Color.app(.main))
-                            .cornerRadius(36, corners: .allCorners)
-                    })
+            VStack {
+                Spacer()
+                
+                Button(action: {
+                    viewModel.input.didTapStartScanOption.onNext(())
+                }, label: {
+                    Text("Scan now")
+                        .font(Poppins.semibold.font(size: 16))
+                        .textColor(.white)
+                        .padding(.horizontal, 71)
+                        .padding(.vertical, 16)
+                        .background(Color.app(.main))
+                        .cornerRadius(36, corners: .allCorners)
+                }).opacity(viewModel.scanOptions.isEmpty ? 0 : 1)
+                
+                if !viewModel.isPremium && viewModel.isShowingScanOption {
+                    BannerContentView(isCollapse: true, needToReload: nil)
                 }
             }
         }

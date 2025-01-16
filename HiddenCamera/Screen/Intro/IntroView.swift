@@ -137,7 +137,7 @@ struct IntroView: View {
                                     .cornerRadius(Const.screenWidth, corners: .allCorners)
                             })
                             
-                            if !viewModel.isPremium {
+                            if !viewModel.isPremium && viewModel.isRequested {
                                 BannerContentView(isCollapse: false, hasOneKeyAd: true, needToReload: viewModel.input.didTapContinue)
                             }
                         }

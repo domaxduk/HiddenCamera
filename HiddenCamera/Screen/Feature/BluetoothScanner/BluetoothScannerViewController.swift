@@ -58,7 +58,7 @@ class BluetoothScannerViewController: ViewController {
             }
         }).disposed(by: self.disposeBag)
         
-        viewModel.routing.nextTool.subscribe(onNext: { [weak self] _ in
+        viewModel.routing.nextTool.throttle(.seconds(1), scheduler: MainScheduler.instance).subscribe(onNext: { [weak self] _ in
             self?.coordinator?.nextTool()
         }).disposed(by: self.disposeBag)
     }

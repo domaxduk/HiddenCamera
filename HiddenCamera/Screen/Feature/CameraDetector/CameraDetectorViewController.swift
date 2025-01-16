@@ -56,7 +56,7 @@ class CameraDetectorViewController: ViewController {
             }
         }).disposed(by: self.disposeBag)
         
-        viewModel.routing.nextTool.subscribe(onNext: { [weak self] _ in
+        viewModel.routing.nextTool.throttle(.seconds(1), scheduler: MainScheduler.instance).subscribe(onNext: { [weak self] _ in
             guard let self else { return }
             if viewModel.isRecording {
                 self.presentAlert(title: "Oops!", message: "You must stop this feature to next")

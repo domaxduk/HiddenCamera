@@ -42,5 +42,5 @@ class GoogleAdsKey {
     static let mediumCollapse = "ca-app-pub-5294836995166944/4231265378"
     static let highCollapse = "ca-app-pub-5294836995166944/4231265378"
     
-    static let interCapping: Double = 30.0
+    static let interCapping: Double = 20.0
 }

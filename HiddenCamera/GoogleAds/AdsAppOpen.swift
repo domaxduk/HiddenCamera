@@ -66,10 +66,11 @@ class AdsAppOpen: NSObject {
         } catch {
             print("[APP OPEN] load with error: \(error.localizedDescription)")
             status = .none
-            
-            Task {
-                try await Task.sleep(nanoseconds: 3_000_000_000)
-                await request()
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                Task {
+                    await self.request()
+                }
             }
         }
     }

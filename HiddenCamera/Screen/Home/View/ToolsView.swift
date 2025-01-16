@@ -35,8 +35,6 @@ struct ToolsView: View {
                         })
                     }
                 })
-                
-                NativeContentView()
             }
             .padding(.horizontal, Const.padding)
             .padding(.bottom, Const.padding)
