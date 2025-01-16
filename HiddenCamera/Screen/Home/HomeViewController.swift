@@ -100,7 +100,7 @@ class HomeViewController: ViewController {
         viewModel.routing.shareApp
             .subscribe(onNext: { [weak self] _ in
                 guard let self else { return }
-                self.viewModel.isShowingLoading = true
+                self.showLoading()
                 let items = ["https://apps.apple.com/app/apple-store/id\(AppConfig.appID)"]
                 let shareActVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
                 shareActVC.view.tintColor = UIColor.orange
@@ -113,8 +113,8 @@ class HomeViewController: ViewController {
                     popoverController.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
                 }
                 
-                self.present(shareActVC, animated: true, completion: { [weak self] in
-                    self?.viewModel.isShowingLoading = true
+                self.present(shareActVC, animated: true, completion: {
+                    self.hideLoading()
                 })
             }).disposed(by: self.disposeBag)
     }
