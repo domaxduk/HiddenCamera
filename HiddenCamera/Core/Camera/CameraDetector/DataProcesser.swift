@@ -24,7 +24,7 @@ final class DataProcesser {
     static let batchSize: Int = 1
     static let inputSize: Int = 640
     static let pixelSize: Int = 3
-    static let fileName = "best"
+    static let fileName = "aicamera"
     static let confidentThreshold: Float = 0.1
     static let iouThreshould: Float = 0.1
     var isLoading: Bool = false

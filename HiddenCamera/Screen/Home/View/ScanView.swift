@@ -63,7 +63,9 @@ struct ScanView: View {
             }
             .padding(.horizontal, Const.padding)
             .padding(.bottom, 50)
-        }.frame(width: UIScreen.main.bounds.width)
+        }
+        .frame(width: UIScreen.main.bounds.width)
+        .navigationBarHidden(true)
     }
 }
 

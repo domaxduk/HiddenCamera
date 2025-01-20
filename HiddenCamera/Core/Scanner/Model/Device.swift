@@ -57,6 +57,10 @@ class Device: NSObject, ObservableObject {
             return "ic_device_phone"
         }
         
+        if compareText.contains("ipad") || compareText.contains("tablet") {
+            return "ic_device_tablet"
+        }
+        
         return nil
     }
     

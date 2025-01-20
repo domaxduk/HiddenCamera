@@ -117,6 +117,7 @@ struct SettingView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 100)
         }
+        .navigationBarHidden(true)
     }
     
     func itemView(icon: String, title: String) -> some View {

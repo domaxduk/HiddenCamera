@@ -46,11 +46,15 @@ class LocalNetworkDetector: NSObject {
     func start() {
         if isScanning { return }
         self.isScanning = true
-       // startSearchService()
+        startSearchService()
         startPing()
     }
     
     func stopScan() {
+        if !isScanning {
+             return
+        }
+        
         self.isScanning = false
         for pinger in pingers.values {
             pinger.stopPinging()
@@ -397,10 +401,14 @@ extension LocalNetworkDetector: NetServiceDelegate {
         guard let recordData else { return nil }
         let txtDictionary = NetService.dictionary(fromTXTRecord: recordData)
         
-        guard let modelData = txtDictionary["model"], let model = String(data: modelData, encoding: .utf8) else {
-            return nil
+        if let modelData = txtDictionary["model"], let model = String(data: modelData, encoding: .utf8), !model.isEmpty {
+            return model
         }
         
-        return model.isEmpty ? nil : model
+        if let modelData = txtDictionary["am"], let model = String(data: modelData, encoding: .utf8), !model.isEmpty {
+            return model
+        }
+        
+        return nil
     }
 }

@@ -39,6 +39,8 @@ open class Coordinator: NSObject {
         self.children.forEach { child in
             child.stop()
         }
+        
+        self.children.removeAll()
     }
 
     open func handle(event: CoordinatorEvent) -> Bool {

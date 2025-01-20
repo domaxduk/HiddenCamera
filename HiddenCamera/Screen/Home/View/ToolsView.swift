@@ -39,6 +39,7 @@ struct ToolsView: View {
             .padding(.horizontal, Const.padding)
             .padding(.bottom, Const.padding)
         }
+        .navigationBarHidden(true)
     }
 }
 

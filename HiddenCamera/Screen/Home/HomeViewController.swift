@@ -46,14 +46,8 @@ class HomeViewController: ViewController {
             UserSetting.didShowHome = true
         }
         
-        if UserSetting.didShowIntro {
-            SubscriptionViewController.open { [weak self] in
-                self?.viewModel.didAppear = true
-            }
-        } else {
-            let item = ScanOptionItem(tools: ToolItem.allCases, type: .full)
-            item.isThreadAfterIntro = true
-            self.coordinator?.startScanOption(item: item)
+        SubscriptionViewController.open { [weak self] in
+            self?.viewModel.didAppear = true
         }
     }
 

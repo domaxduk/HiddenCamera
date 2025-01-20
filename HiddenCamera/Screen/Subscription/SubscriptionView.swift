@@ -177,6 +177,7 @@ class SubscriptionViewModel: ObservableObject {
 
 // MARK: - SubscriptionView
 struct SubscriptionView: View {
+    @EnvironmentObject var homeViewModel: HomeViewModel
     @ObservedObject var viewModel: SubscriptionViewModel
     @State var isAnimating: Bool = false
     @State var heightContent: Double = 0
@@ -199,11 +200,17 @@ struct SubscriptionView: View {
                         .underline()
                         .font(.system(size: 12))
                         .textColor(Color(rgb: 0x787878))
+                        .onTapGesture {
+                            homeViewModel.input.selectSettingItem.onNext(.policy)
+                        }
                     Spacer()
                     Text("Term of Service")
                         .underline()
                         .font(.system(size: 12))
                         .textColor(Color(rgb: 0x787878))
+                        .onTapGesture {
+                            homeViewModel.input.selectSettingItem.onNext(.term)
+                        }
                     Spacer()
                     Text("Restore")
                         .underline()
@@ -226,6 +233,7 @@ struct SubscriptionView: View {
             self.viewModel.currentItem = self.viewModel.items.last
         })
         .frame(width: UIScreen.main.bounds.width)
+        .navigationBarHidden(true)
     }
     
     var navigationBar: some View {
@@ -384,7 +392,7 @@ struct SubscriptionView: View {
                                     .font(Poppins.semibold.font(size: 16))
                                     .textColor(.white)
                             )
-                            .scaleEffect(isAnimating ? 0.9 : 1.1)
+                            .scaleEffect(isAnimating ? 0.95 : 1.0)
                             .onTapGesture {
                                 viewModel.didTapContinue()
                             }

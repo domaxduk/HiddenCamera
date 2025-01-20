@@ -44,7 +44,7 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     @Published var isRecording: Bool = false
     @Published var seconds: Int = 0
     @Published var showIntro: Bool = true
-    @Published var captureSession: AVCaptureSession
+    @Published var captureSession: AVCaptureSession?
     @Published var boxes = [BoundingBox]()
     @Published var previewGalleryImage: UIImage?
     
@@ -80,7 +80,11 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     
     init(scanOption: ScanOptionItem?) {
         self.isTheFirst = true
+        
+        #if !targetEnvironment(simulator)
         self.captureSession = AVCaptureSession()
+        #endif
+        
         self.scanOption = scanOption
         
         let outputFileURL = FileManager.documentURL().appendingPathComponent("record.mp4")
@@ -202,7 +206,7 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     }
 
     private func configCaptureSession() {
-        guard let videoDevice = AVCaptureDevice.default(for: .video), let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice) else {
+        guard let captureSession, let videoDevice = AVCaptureDevice.default(for: .video), let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice) else {
             return
         }
                 
@@ -225,7 +229,7 @@ final class CameraDetectorViewModel: BaseViewModel<CameraDetectorViewModelInput,
     
     func startCamera() {
         DispatchQueue.global().async {
-            self.captureSession.startRunning()
+            self.captureSession?.startRunning()
         }
     }
     

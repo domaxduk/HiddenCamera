@@ -15,12 +15,11 @@ final class HomeCoordinator: WindowBasedCoordinator {
 
     private var infraredCameraCoordinator: InfraredCameraCoordinator?
     private var cameraDetectorCoordinator: CameraDetectorCoordinator?
-    
     private var wifiScannerCoordinator: WifiScannerCoordinator?
     private var bluetoothScannerCoordinator: BluetoothScannerCoordinator?
     private var magneticCoordinator: MagnetometerCoordinator?
-    
     private var historyDetailCoordinator: HistoryDetailCoordinator?
+    
     private var scanOptionItem: ScanOptionItem?
 
     lazy var controller: HomeViewController = {
@@ -80,6 +79,7 @@ final class HomeCoordinator: WindowBasedCoordinator {
         }
         
         if child is HistoryDetailCoordinator {
+            print("remove screen: historyDetailCoordinator")
             self.historyDetailCoordinator = nil
         }
     }
@@ -116,27 +116,16 @@ final class HomeCoordinator: WindowBasedCoordinator {
         }
         
         if event is HistoryDetailWantToBack {
-            self.navigationController.popToRootViewController(animated: true)
-            print("navigationController: \(navigationController.viewControllers.count)")
-            self.stopAllChild()
-            UserSetting.didShowIntro = true
-            self.controller.viewModel.isShowingScanOption = false
-            self.controller.viewModel.scanOptions = []
-            
-            if let scanOptionItem {
-                if scanOptionItem.isThreadAfterIntro {
-                    DispatchQueue.main.async {
-                        SubscriptionViewController.open { [weak self] in
-                            self?.controller.viewModel.didAppear = true
-                        }
-                    }
-                } else {
-                    self.controller.viewModel.currentTab = .history
-                }
+            if scanOptionItem != nil {
+                self.controller.viewModel.isShowingScanOption = false
+                self.controller.viewModel.scanOptions = []
+                self.controller.viewModel.input.selectTab.onNext(.history)
+                
+                self.scanOptionItem = nil
             }
             
-            self.scanOptionItem = nil
-
+            self.navigationController.popToRootViewController(animated: true)
+            self.stopAllChild()
             return true
         }
         

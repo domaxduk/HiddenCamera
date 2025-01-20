@@ -54,9 +54,7 @@ class IntroViewController: ViewController {
     private func requestConsent() {
         AdsConsentManager.shared.gatherConsent(from: self) { [weak self] _ in
             DispatchQueue.main.async {
-                withAnimation {
-                    self?.viewModel.isRequested = true
-                }
+                self?.coordinator?.stop()
             }
         }
     }

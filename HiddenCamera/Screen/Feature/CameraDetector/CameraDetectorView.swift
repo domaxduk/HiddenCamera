@@ -20,8 +20,11 @@ struct CameraDetectorView: View {
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-            CameraSwiftUIView(captureSession: viewModel.captureSession)
-                .ignoresSafeArea()
+            
+            if let captureSession = viewModel.captureSession {
+                CameraSwiftUIView(captureSession: captureSession)
+                    .ignoresSafeArea()
+            }
             
             OverlayView(boxes: viewModel.boxes)
                 .ignoresSafeArea()

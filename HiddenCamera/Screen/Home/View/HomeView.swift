@@ -10,6 +10,7 @@ import SakuraExtension
 import Lottie
 import RxSwift
 import GoogleMobileAds
+import FirebaseAnalytics
 
 fileprivate struct Const {
     static let screenWidth = UIScreen.main.bounds.width
@@ -43,7 +44,9 @@ struct HomeView: View {
                 ProgressView().circleprogressColor(.white)
             }
             .opacity(viewModel.isShowingLoading ? 1 : 0)
-        }.environmentObject(viewModel)
+        }
+        .environmentObject(viewModel)
+        .navigationBarHidden(true)
     }
     
     // MARK: - NavigationBar
@@ -71,6 +74,7 @@ struct HomeView: View {
                 LottieView(animation: .named("premium"))
                     .playing(loopMode: .loop)
                     .onTapGesture {
+                        Analytics.logEvent("tap_premium_home", parameters: nil)
                         viewModel.input.didTapPremiumButton.onNext(())
                     }
                     .frame(width: 30)
@@ -97,7 +101,6 @@ struct HomeView: View {
                             .foreColor(.app(tab == viewModel.currentTab ? .main : .light06))
                             .frame(height: 20)
                     }
-                    .animation(.bouncy, value: viewModel.currentTab)
                     .padding()
                     .background(Color.clearInteractive)
                     .onTapGesture {

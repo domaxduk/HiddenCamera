@@ -46,7 +46,7 @@ struct HistoryView: View {
                 NativeContentView().padding(.top, 20)
                 
                 Spacer()
-            }
+            }.navigationBarHidden(true)
         } else {
             ScrollView(.vertical) {
                 VStack {
@@ -63,7 +63,7 @@ struct HistoryView: View {
                             }
                     }
                 }.padding(.horizontal, 20)
-            }
+            }.navigationBarHidden(true)
         }
     }
 }

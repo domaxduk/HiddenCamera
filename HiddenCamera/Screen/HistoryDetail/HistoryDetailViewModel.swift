@@ -39,7 +39,8 @@ final class HistoryDetailViewModel: BaseViewModel<HistoryDetailViewModelInput, H
         super.configInput()
         
         input.reopenTool.subscribe(onNext: { [weak self] tool in
-            self?.routing.routeToTool.onNext(tool)
+            guard let self else { return }
+            self.routing.routeToTool.onNext(tool)
         }).disposed(by: self.disposeBag)
         
         input.didTapBack.subscribe(onNext: { [weak self] _ in

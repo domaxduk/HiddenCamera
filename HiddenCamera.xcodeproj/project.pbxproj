@@ -19,7 +19,7 @@
 		852E28EA2D2794DA00293218 /* CameraDetectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28E62D2794DA00293218 /* CameraDetectorViewModel.swift */; };
 		852E28ED2D2794E200293218 /* CameraDetectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28EC2D2794E200293218 /* CameraDetectorView.swift */; };
 		852E28FB2D2799EA00293218 /* AVCaptureDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28EE2D2799EA00293218 /* AVCaptureDeviceExtension.swift */; };
-		852E28FC2D2799EA00293218 /* best.onnx in Resources */ = {isa = PBXBuildFile; fileRef = 852E28EF2D2799EA00293218 /* best.onnx */; };
+		852E28FC2D2799EA00293218 /* aicamera.onnx in Resources */ = {isa = PBXBuildFile; fileRef = 852E28EF2D2799EA00293218 /* aicamera.onnx */; };
 		852E28FD2D2799EA00293218 /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28F02D2799EA00293218 /* BoundingBox.swift */; };
 		852E28FF2D2799EA00293218 /* DataProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28F22D2799EA00293218 /* DataProcesser.swift */; };
 		852E29002D2799EA00293218 /* ExtensionImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28F32D2799EA00293218 /* ExtensionImage.swift */; };
@@ -142,6 +142,7 @@
 		85FC31D92D37A774000A4ECC /* TimeLimitDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FC31D82D37A774000A4ECC /* TimeLimitDialogView.swift */; };
 		85FC31DB2D37C90A000A4ECC /* premium.json in Resources */ = {isa = PBXBuildFile; fileRef = 85FC31DA2D37C90A000A4ECC /* premium.json */; };
 		BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */; };
+		F4D6583D2D3E0F93007043D9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4D6583C2D3E0F93007043D9 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -157,7 +158,7 @@
 		852E28E62D2794DA00293218 /* CameraDetectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDetectorViewModel.swift; sourceTree = "<group>"; };
 		852E28EC2D2794E200293218 /* CameraDetectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDetectorView.swift; sourceTree = "<group>"; };
 		852E28EE2D2799EA00293218 /* AVCaptureDeviceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVCaptureDeviceExtension.swift; sourceTree = "<group>"; };
-		852E28EF2D2799EA00293218 /* best.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = best.onnx; sourceTree = "<group>"; };
+		852E28EF2D2799EA00293218 /* aicamera.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = aicamera.onnx; sourceTree = "<group>"; };
 		852E28F02D2799EA00293218 /* BoundingBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
 		852E28F22D2799EA00293218 /* DataProcesser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProcesser.swift; sourceTree = "<group>"; };
 		852E28F32D2799EA00293218 /* ExtensionImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionImage.swift; sourceTree = "<group>"; };
@@ -280,6 +281,7 @@
 		9538BCC95076E37CF40E04C0 /* Pods-HiddenCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.debug.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.debug.xcconfig"; sourceTree = "<group>"; };
 		B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HiddenCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D38A84736AD64ED2E350337F /* Pods-HiddenCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.release.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.release.xcconfig"; sourceTree = "<group>"; };
+		F4D6583C2D3E0F93007043D9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -288,6 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				853D482D2D2CF3C000644A55 /* ComplexModule in Frameworks */,
+				F4D6583D2D3E0F93007043D9 /* StoreKit.framework in Frameworks */,
 				85DA725D2D1E99F4008F5589 /* SakuraExtension in Frameworks */,
 				853D48312D2CF3C000644A55 /* RealModule in Frameworks */,
 				BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */,
@@ -332,7 +335,7 @@
 		852E28FA2D2799EA00293218 /* CameraDetector */ = {
 			isa = PBXGroup;
 			children = (
-				852E28EF2D2799EA00293218 /* best.onnx */,
+				852E28EF2D2799EA00293218 /* aicamera.onnx */,
 				852E28EE2D2799EA00293218 /* AVCaptureDeviceExtension.swift */,
 				852E28F02D2799EA00293218 /* BoundingBox.swift */,
 				852E28F22D2799EA00293218 /* DataProcesser.swift */,
@@ -795,6 +798,7 @@
 		E5221B56DF607C04496333B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F4D6583C2D3E0F93007043D9 /* StoreKit.framework */,
 				B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */,
 			);
 			name = Frameworks;
@@ -885,7 +889,7 @@
 				85DA724D2D1E9392008F5589 /* Poppins-SemiBold.ttf in Resources */,
 				856A1CE12D364C6F0085C170 /* tapfinger.json in Resources */,
 				852E29272D27E90600293218 /* iphoneModels.json in Resources */,
-				852E28FC2D2799EA00293218 /* best.onnx in Resources */,
+				852E28FC2D2799EA00293218 /* aicamera.onnx in Resources */,
 				85EDFA512D30F6E1002BF8F3 /* GoogleService-Info.plist in Resources */,
 				85EDFA682D3122AC002BF8F3 /* NativeAdView.xib in Resources */,
 				85DA724E2D1E9392008F5589 /* Poppins-Medium.ttf in Resources */,
@@ -1227,14 +1231,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HiddenCamera/HiddenCamera.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = TMFTUKGKLZ;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SpyFind Pro";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app requires access to bluetooth to scan for suspicious devices. ";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app requires access to bluetooth to scan for suspicious devices. ";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires camera access to detect hidden cameras.";
@@ -1244,6 +1249,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1254,6 +1260,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.trale.hidden.camera.detector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1272,14 +1279,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HiddenCamera/HiddenCamera.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = TMFTUKGKLZ;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HiddenCamera/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SpyFind Pro";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app requires access to bluetooth to scan for suspicious devices. ";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app requires access to bluetooth to scan for suspicious devices. ";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires camera access to detect hidden cameras.";
@@ -1289,6 +1297,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1299,6 +1308,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.trale.hidden.camera.detector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

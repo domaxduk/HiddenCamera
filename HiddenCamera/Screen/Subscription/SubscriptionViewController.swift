@@ -26,7 +26,7 @@ class SubscriptionViewController: ViewController {
         super.viewDidLoad()
 
         
-        let view = SubscriptionView(viewModel: viewModel)
+        let view = SubscriptionView(viewModel: viewModel).environmentObject(HomeViewModel())
         insertSwiftUIView(rootView: view)
         
         viewModel.didTapBack.subscribe(onNext: { [weak self] in

@@ -43,13 +43,13 @@ final class HistoryDetailCoordinator: NavigationBasedCoordinator {
     }
 
     override func stop(completion: (() -> Void)? = nil) {
-        super.stop(completion: completion)
-       
         if navigationController.topViewController == controller {
             navigationController.popViewController(animated: true)
         } else {
             navigationController.viewControllers.removeAll(where: { $0 is HistoryDetailViewController })
         }
+    
+        super.stop(completion: completion)
     }
     
     func routeToTool(tool: ToolItem) {

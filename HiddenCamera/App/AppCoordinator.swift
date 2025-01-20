@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import AppTrackingTransparency
 
 class AppCoordinator: WindowBasedCoordinator {
     private var homeCoordinator: HomeCoordinator?
@@ -30,7 +31,7 @@ class AppCoordinator: WindowBasedCoordinator {
         if child is SplashCoordinator {
             self.splashCoodinator = nil
             
-            if UserSetting.didShowIntro {
+            if ATTrackingManager.trackingAuthorizationStatus != .notDetermined {
                 self.routeToHome()
             } else {
                 self.routeToIntro()

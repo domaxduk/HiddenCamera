@@ -37,7 +37,7 @@ open class ViewController: UIViewController {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         if !viewWillAppeared {
             viewWillAppeared = true
             self.viewWillFirstAppear()

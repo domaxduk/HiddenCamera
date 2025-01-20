@@ -47,15 +47,6 @@ class UserSetting {
         }
     }
     
-    static var didShowIntro: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: "didShowIntro")
-        }
-        set {
-            UserDefaults.standard.setValue(newValue, forKey: "didShowIntro")
-        }
-    }
-    
     static var safeDeviceKeys: [String] {
         get {
             return (UserDefaults.standard.array(forKey: "safeDeviceKeys") as? [String]) ?? []
