@@ -20,6 +20,10 @@ public final class Magnetometer: NSObject, CLLocationManagerDelegate{
     private var magneticStrengthValue: Double = 0
     private let queue = OperationQueue()
     
+    var isAvailable: Bool {
+        return motionManager.isMagnetometerAvailable
+    }
+    
     func start() {
         if motionManager.isMagnetometerAvailable {
             motionManager.deviceMotionUpdateInterval = 0.1 // Set your desired update interval

@@ -23,6 +23,7 @@ struct MetalDetectorViewModelOutput: InputOutputViewModel {
 struct MetalDetectorViewModelRouting: RoutingOutput {
     var stop = PublishSubject<()>()
     var nextTool = PublishSubject<()>()
+    var showAlert = PublishSubject<String>()
 }
 
 final class MagnetometerViewModel: BaseViewModel<MetalDetectorViewModelInput, MetalDetectorViewModelOutput, MetalDetectorViewModelRouting> {
@@ -69,6 +70,11 @@ final class MagnetometerViewModel: BaseViewModel<MetalDetectorViewModelInput, Me
         
         input.didTapStart.subscribe(onNext: { [weak self] _ in
             guard let self else { return }
+            
+            if !Magnetometer.shared.isAvailable {
+                self.routing.showAlert.onNext("Your device doesn't support this device")
+                return
+            }
             
             if !self.isDetecting {
                 if !UserSetting.canUsingFeature(.magnetometer) && scanOption == nil {

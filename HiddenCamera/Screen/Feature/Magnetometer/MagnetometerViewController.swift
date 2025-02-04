@@ -50,6 +50,11 @@ class MagnetometerViewController: ViewController {
             guard let self else { return }
             self.coordinator?.nextTool()
         }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.showAlert.subscribe(onNext: { [weak self] message in
+            guard let self else { return }
+            self.presentAlert(title: "Alert", message: message)
+        }).disposed(by: self.disposeBag)
     }
     
     private func configUI() {

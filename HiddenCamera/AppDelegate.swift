@@ -52,7 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     if purchase.needsFinishTransaction {
                         SwiftyStoreKit.finishTransaction(purchase.transaction)
                     }
-                    
                 case .failed, .purchasing, .deferred:
                     break
                 default: break
