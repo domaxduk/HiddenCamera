@@ -17,9 +17,16 @@
 import GoogleMobileAds
 import SwiftUI
 
+extension EdgeInsets {
+    init(top: CGFloat = 0, trailing: CGFloat = 0, leading: CGFloat = 0, bottom: CGFloat = 0) {
+        self.init(top: top, leading: leading, bottom: bottom, trailing: trailing)
+    }
+}
+
 // [START add_view_model_to_view]
 struct NativeContentView: View {
     @StateObject private var nativeViewModel = AdsNativeLoader()
+    var padding: EdgeInsets = .init()
     
     @ViewBuilder
     var body: some View {
@@ -28,6 +35,7 @@ struct NativeContentView: View {
                 SmallNativeView(nativeAd: nativeAd)
                     .frame(height: 160)
                     .background(Color.red)
+                    .padding(padding)
             }
         }
         .onAppear(perform: {

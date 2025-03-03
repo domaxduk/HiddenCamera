@@ -8,16 +8,19 @@
 import SwiftUI
 import SakuraExtension
 import Lottie
+import RxSwift
 
 fileprivate struct Const {
     static let screenWidth = UIScreen.main.bounds.width
     static let padding = 20.0
     static let itemSpacing = 16.0
-    static let itemWidth = (screenWidth - padding * 2 - itemSpacing) / 2
-    static let itemHeight = itemWidth / 186 * 172
-    static let fontSize = itemWidth / 186 * 16
-    static let itemPadding = itemWidth / 186 * 18
-    static let circleHeight = itemHeight / 186 * 72
+    
+    static let itemWidth = screenWidth - padding * 2
+    static let itemHeight = itemWidth / 388 * 136
+    static let itemCorner = itemWidth / 388 * 20
+    static let itemStrokeWidth = itemWidth / 388 * 2
+    static let titleFontSize = itemWidth / 388 * 16
+    static let normalFontSize = itemWidth / 388 * 12
 }
 
 // MARK: - Scan View
@@ -26,176 +29,96 @@ struct ScanView: View {
 
     var body: some View {
         ScrollView {
-            VStack {
-                Text("Press the button bellow to Scan Full")
-                    .font(Poppins.regular.font(size: 14))
-                    .textColor(.app(.light09))
-                    .padding(.top, 20)
+            VStack(spacing: 0) {
+                Button(action: {
+                    viewModel.input.didTapQuickScan.onNext(())
+                }, label: {
+                    itemView(isOdd: true,
+                             title: "Quick Scan",
+                             description: "Quickly detect hidden devices by scanning Wi-Fi and Bluetooth to protect your privacy.",
+                             imageName: "ic_home_quickscan")
+                })
                 
-                LottieView(animation: .named("blueCircle"))
-                    .playing(loopMode: .loop)
-                    .overlay(
-                        Image("ic_home_eye")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(height: 72)
-                    )
-                    .frame(height: UIScreen.main.bounds.width - 40 * 2)
-                    .onTapGesture {
-                        viewModel.input.didTapScanFull.onNext(())
-                    }
+                Button(action: {
+                    viewModel.input.didTapScanFull.onNext(())
+                }, label: {
+                    itemView(isOdd: false,
+                             title: "Scan Full",
+                             description: "Perform deep scans by combining sensors and algorithms to detect hidden cameras.",
+                             imageName: "ic_home_scanfull")
+                })
+                .padding(.top, Const.itemSpacing)
                 
-                HStack {
-                    ScanItemView(color: .init(rgb: 0x9747FF), icon: "ic_tool_quickscan", name: "Quick Scan")
-                        .onTapGesture {
-                            viewModel.input.didTapQuickScan.onNext(())
-                        }
-                    
-                    Spacer()
-                    
-                    ScanItemView(color: .init(rgb: 0xFFA63D), icon: "ic_tool_scanoption", name: "Scan Options")
-                        .onTapGesture {
-                            viewModel.input.didTapScanOption.onNext(())
-                        }
+                if !viewModel.isPremium {
+                    NativeContentView(padding: .init(top: Const.itemSpacing))
                 }
-                            
-                Spacer(minLength: 0)
+                
+                Button(action: {
+                    viewModel.input.didTapHistory.onNext(())
+                }, label: {
+                    itemView(isOdd: false,
+                             title: "History",
+                             description: "View past scan results and detected devices for easy tracking and analysis.",
+                             imageName: "ic_home_history")
+                }).padding(.top, Const.itemSpacing)
+                
+                Spacer(minLength: 50)
             }
             .padding(.horizontal, Const.padding)
             .padding(.bottom, 50)
+            .padding(.top, 16)
         }
         .frame(width: UIScreen.main.bounds.width)
         .navigationBarHidden(true)
     }
-}
-
-// MARK: - ScanOptionView
-struct ScanOptionView: View {
-    @ObservedObject var viewModel: HomeViewModel
-
-    var body: some View {
-        ZStack {
-            Color.app(.light03).ignoresSafeArea()
-            
-            VStack(spacing: 0) {
-                HStack(spacing: 0) {
-                    Image("ic_back")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                        .padding(20)
-                        .background(Color.clearInteractive)
-                        .onTapGesture {
-                            withAnimation {
-                                viewModel.isShowingScanOption = false
-                            }
-                        }
-                    
-                    Text("Scan Options")
-                        .textColor(.app(.light12))
-                        .font(Poppins.semibold.font(size: 18))
-                    
-                    Spacer()
-                    
-                    if !viewModel.scanOptions.isEmpty {
-                        Button(action: {
-                            withAnimation {
-                                viewModel.input.removeAllScanOption.onNext(())
-                            }
-                        }, label: {
-                            Text("Cancel")
-                                .textColor(.app(.main))
-                                .font(Poppins.semibold.font(size: 16))
-                                .padding(20)
-                        })
-                    }
-                }
-                .frame(height: AppConfig.navigationBarHeight)
-                
-                Text("Choose options to scan")
-                    .font(Poppins.regular.font(size: 14))
-                    .textColor(.app(.light09))
-                    .padding(.top, 16)
-                
-                ScrollView(.vertical) {
-                    VStack {
-                        LazyVGrid(columns: [.init(), .init()],spacing: 20, content: {
-                            ForEach(ToolItem.allCases, id: \.self) { tool in
-                                ToolItemView(tool: tool)
-                                    .overlay(
-                                        ZStack(alignment: .topTrailing) {
-                                            Color.clear
-                                            Image("ic_ratio_\(viewModel.isSelected(tool: tool) ? "" : "un")select")
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 24)
-                                                .padding(8)
-                                        }
-                                    )
-                                    .onTapGesture {
-                                        viewModel.input.didSelectToolOption.onNext(tool)
-                                    }
-                            }
-                        })
-                    }.padding(Const.padding)
-                }
+    
+    func itemView(isOdd: Bool, title: String, description: String, imageName: String) -> some View {
+        HStack {
+            if isOdd {
+                Spacer(minLength: 0)
             }
             
-            VStack {
-                Spacer()
-                
-                Button(action: {
-                    viewModel.input.didTapStartScanOption.onNext(())
-                }, label: {
-                    Text("Scan now")
-                        .font(Poppins.semibold.font(size: 16))
-                        .textColor(.white)
-                        .padding(.horizontal, 71)
-                        .padding(.vertical, 16)
-                        .background(Color.app(.main))
-                        .cornerRadius(36, corners: .allCorners)
-                }).opacity(viewModel.scanOptions.isEmpty ? 0 : 1)
-                
-                if !viewModel.isPremium && viewModel.isShowingScanOption {
-                    BannerContentView(isCollapse: true, needToReload: nil)
-                }
+            Image(imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            
+            if !isOdd {
+                Spacer(minLength: 0)
             }
         }
-    }
-}
-
-// MARK: - ScanItemView
-fileprivate struct ScanItemView: View {
-    var color: Color
-    var icon: String
-    var name: String
-    var body: some View {
-        VStack(spacing: 0) {
-            Spacer(minLength: 0)
-            
-            Circle()
-                .fill(color.opacity(0.1))
-                .frame(height: Const.circleHeight)
-                .overlay(
-                    Image(icon)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: Const.circleHeight / 72 * 40)
-                )
-            
-            Text(name)
-                .multilineTextAlignment(.center)
-                .font(Poppins.semibold.font(size: Const.fontSize))
-                .padding(.top, Const.circleHeight / 72 * 16)
-                .foreColor(.app(.light12))
-            
-            Spacer(minLength: 0)
-        }
-        .padding(Const.itemPadding)
         .frame(width: Const.itemWidth,
                height: Const.itemHeight)
-        .background(Color.white)
-        .cornerRadius(20, corners: .allCorners)
+        .background(Color(rgb: 0x040210))
+        .cornerRadius(Const.itemCorner, corners: .allCorners)
+        .overlay(
+            LinearGradient(colors: [
+                .init(rgb: 0x2898FF),
+                .init(rgb: 0xFF3DF7)
+            ], startPoint: .bottomTrailing, endPoint: .topLeading)
+            .mask(
+                RoundedRectangle(cornerRadius: Const.itemCorner)
+                    .stroke(lineWidth: Const.itemStrokeWidth)
+            )
+        )
+        .overlay(
+            VStack(alignment: isOdd ? .leading : .trailing, spacing: 0) {
+                Text(title)
+                    .font(Poppins.semibold.font(size: Const.titleFontSize))
+                    .textColor(.white)
+                
+                Text(description)
+                    .font(Poppins.regular.font(size: Const.normalFontSize))
+                    .textColor(.app(.light03))
+                    .multilineTextAlignment(isOdd ? .leading : .trailing)
+                    .padding(.top, 4)
+                
+                Color.clear.frame(height: 1)
+            }
+            .padding(isOdd ? .leading : .trailing, 
+                     Const.itemWidth / 388 * 20)
+            .padding(isOdd ? .trailing : .leading, 
+                     Const.itemWidth / 388 * (isOdd ? 129 : 156))
+        )
     }
 }
 

@@ -91,8 +91,6 @@ final class CameraResultGalleryViewModel: BaseViewModel<CameraResultGalleryViewM
     
     func title() -> String {
         switch type {
-        case .aiDetector:
-            "AI Camera Scanner Gallery"
         case .infrared:
             "IR Vision Camera Gallery"
         }

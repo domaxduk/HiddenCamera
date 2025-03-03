@@ -13,6 +13,8 @@
 	</array>
 	<key>FacebookAdvertiserIDCollectionEnabled</key>
 	<true/>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>FacebookAppID</key>
 	<string>604462475551459</string>
 	<key>FacebookAutoLogAppEventsEnabled</key>

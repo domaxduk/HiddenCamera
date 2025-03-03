@@ -14,16 +14,6 @@
 		24EC7E212D2A391E00875752 /* ScannerResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EC7E202D2A391E00875752 /* ScannerResultView.swift */; };
 		85240FD92D30CDCD000EEAC6 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85240FD82D30CDCD000EEAC6 /* SettingView.swift */; };
 		85240FDC2D30D32C000EEAC6 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85240FDB2D30D32C000EEAC6 /* WebViewController.swift */; };
-		852E28E82D2794DA00293218 /* CameraDetectorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28E42D2794DA00293218 /* CameraDetectorCoordinator.swift */; };
-		852E28E92D2794DA00293218 /* CameraDetectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28E52D2794DA00293218 /* CameraDetectorViewController.swift */; };
-		852E28EA2D2794DA00293218 /* CameraDetectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28E62D2794DA00293218 /* CameraDetectorViewModel.swift */; };
-		852E28ED2D2794E200293218 /* CameraDetectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28EC2D2794E200293218 /* CameraDetectorView.swift */; };
-		852E28FB2D2799EA00293218 /* AVCaptureDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28EE2D2799EA00293218 /* AVCaptureDeviceExtension.swift */; };
-		852E28FC2D2799EA00293218 /* aicamera.onnx in Resources */ = {isa = PBXBuildFile; fileRef = 852E28EF2D2799EA00293218 /* aicamera.onnx */; };
-		852E28FD2D2799EA00293218 /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28F02D2799EA00293218 /* BoundingBox.swift */; };
-		852E28FF2D2799EA00293218 /* DataProcesser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28F22D2799EA00293218 /* DataProcesser.swift */; };
-		852E29002D2799EA00293218 /* ExtensionImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28F32D2799EA00293218 /* ExtensionImage.swift */; };
-		852E29022D2799EA00293218 /* ShapeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E28F52D2799EA00293218 /* ShapeData.swift */; };
 		852E290C2D27E4EC00293218 /* WifiScannerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29082D27E4EC00293218 /* WifiScannerCoordinator.swift */; };
 		852E290D2D27E4EC00293218 /* WifiScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E29092D27E4EC00293218 /* WifiScannerViewController.swift */; };
 		852E290E2D27E4EC00293218 /* WifiScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E290A2D27E4EC00293218 /* WifiScannerViewModel.swift */; };
@@ -98,7 +88,6 @@
 		85DA72552D1E942B008F5589 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72542D1E942B008F5589 /* AppColor.swift */; };
 		85DA725A2D1E9561008F5589 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72592D1E9561008F5589 /* AppConfig.swift */; };
 		85DA725D2D1E99F4008F5589 /* SakuraExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 85DA725C2D1E99F4008F5589 /* SakuraExtension */; };
-		85DA725F2D1E9C5B008F5589 /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA725E2D1E9C5B008F5589 /* ToolsView.swift */; };
 		85DA72622D1E9EFD008F5589 /* ToolItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72612D1E9EFD008F5589 /* ToolItem.swift */; };
 		85DA72642D1E9F0D008F5589 /* HomeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72632D1E9F0D008F5589 /* HomeTab.swift */; };
 		85DA726D2D1EA436008F5589 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DA72662D1EA436008F5589 /* BaseViewModel.swift */; };
@@ -142,7 +131,27 @@
 		85FC31D92D37A774000A4ECC /* TimeLimitDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FC31D82D37A774000A4ECC /* TimeLimitDialogView.swift */; };
 		85FC31DB2D37C90A000A4ECC /* premium.json in Resources */ = {isa = PBXBuildFile; fileRef = 85FC31DA2D37C90A000A4ECC /* premium.json */; };
 		BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */; };
+		F446CCA72D5F4D5F00B7E74D /* UserAddressDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446CCA62D5F4D5F00B7E74D /* UserAddressDialog.swift */; };
+		F44D2D092D5C4B1700E95B10 /* DecodeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44D2D082D5C4B1700E95B10 /* DecodeHelper.swift */; };
+		F44D2D0B2D5C4C8700E95B10 /* Reel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44D2D0A2D5C4C8700E95B10 /* Reel.swift */; };
+		F44D2D0E2D5C4D0400E95B10 /* ReelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44D2D0D2D5C4D0400E95B10 /* ReelsView.swift */; };
+		F44D2D102D5C4F0A00E95B10 /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44D2D0F2D5C4F0A00E95B10 /* Downloader.swift */; };
+		F44D2D202D5C868500E95B10 /* HistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44D2D1C2D5C868400E95B10 /* HistoryCoordinator.swift */; };
+		F44D2D212D5C868500E95B10 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44D2D1D2D5C868400E95B10 /* HistoryViewController.swift */; };
+		F44D2D222D5C868500E95B10 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44D2D1E2D5C868400E95B10 /* HistoryViewModel.swift */; };
+		F44D2D252D5C9BD800E95B10 /* nextvideo.json in Resources */ = {isa = PBXBuildFile; fileRef = F44D2D242D5C9BD800E95B10 /* nextvideo.json */; };
+		F45328F02D5B401B00809369 /* CCTVCountryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45328EB2D5B401B00809369 /* CCTVCountryCoordinator.swift */; };
+		F45328F12D5B401B00809369 /* CCTVCountryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45328EC2D5B401B00809369 /* CCTVCountryViewController.swift */; };
+		F45328F22D5B401B00809369 /* CCTVCountryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45328ED2D5B401B00809369 /* CCTVCountryViewModel.swift */; };
+		F45328F42D5B403F00809369 /* CCTVCountryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45328F32D5B403F00809369 /* CCTVCountryView.swift */; };
+		F45328FB2D5B53F800809369 /* CCTVCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45328F62D5B53F800809369 /* CCTVCoordinator.swift */; };
+		F45328FC2D5B53F800809369 /* CCTVViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45328F72D5B53F800809369 /* CCTVViewController.swift */; };
+		F45328FD2D5B53F800809369 /* CCTVViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45328F82D5B53F800809369 /* CCTVViewModel.swift */; };
+		F45328FF2D5B540800809369 /* CCTVDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45328FE2D5B540800809369 /* CCTVDetailView.swift */; };
+		F45329022D5B572600809369 /* VideoPlayer in Frameworks */ = {isa = PBXBuildFile; productRef = F45329012D5B572500809369 /* VideoPlayer */; };
 		F4D6583D2D3E0F93007043D9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4D6583C2D3E0F93007043D9 /* StoreKit.framework */; };
+		F4EB73372D5B363E00346983 /* CCTVView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EB73362D5B363E00346983 /* CCTVView.swift */; };
+		F4EB73392D5B383200346983 /* CCTVCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EB73382D5B383200346983 /* CCTVCountry.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -153,16 +162,6 @@
 		24EC7E202D2A391E00875752 /* ScannerResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerResultView.swift; sourceTree = "<group>"; };
 		85240FD82D30CDCD000EEAC6 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		85240FDB2D30D32C000EEAC6 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		852E28E42D2794DA00293218 /* CameraDetectorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDetectorCoordinator.swift; sourceTree = "<group>"; };
-		852E28E52D2794DA00293218 /* CameraDetectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDetectorViewController.swift; sourceTree = "<group>"; };
-		852E28E62D2794DA00293218 /* CameraDetectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDetectorViewModel.swift; sourceTree = "<group>"; };
-		852E28EC2D2794E200293218 /* CameraDetectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDetectorView.swift; sourceTree = "<group>"; };
-		852E28EE2D2799EA00293218 /* AVCaptureDeviceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVCaptureDeviceExtension.swift; sourceTree = "<group>"; };
-		852E28EF2D2799EA00293218 /* aicamera.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = aicamera.onnx; sourceTree = "<group>"; };
-		852E28F02D2799EA00293218 /* BoundingBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
-		852E28F22D2799EA00293218 /* DataProcesser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProcesser.swift; sourceTree = "<group>"; };
-		852E28F32D2799EA00293218 /* ExtensionImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionImage.swift; sourceTree = "<group>"; };
-		852E28F52D2799EA00293218 /* ShapeData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeData.swift; sourceTree = "<group>"; };
 		852E29082D27E4EC00293218 /* WifiScannerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScannerCoordinator.swift; sourceTree = "<group>"; };
 		852E29092D27E4EC00293218 /* WifiScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScannerViewController.swift; sourceTree = "<group>"; };
 		852E290A2D27E4EC00293218 /* WifiScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiScannerViewModel.swift; sourceTree = "<group>"; };
@@ -235,7 +234,6 @@
 		85DA724B2D1E9392008F5589 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
 		85DA72542D1E942B008F5589 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
 		85DA72592D1E9561008F5589 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
-		85DA725E2D1E9C5B008F5589 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
 		85DA72612D1E9EFD008F5589 /* ToolItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolItem.swift; sourceTree = "<group>"; };
 		85DA72632D1E9F0D008F5589 /* HomeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTab.swift; sourceTree = "<group>"; };
 		85DA72662D1EA436008F5589 /* BaseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
@@ -281,7 +279,26 @@
 		9538BCC95076E37CF40E04C0 /* Pods-HiddenCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.debug.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.debug.xcconfig"; sourceTree = "<group>"; };
 		B6A234657A5479F0B6265BFC /* Pods_HiddenCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HiddenCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D38A84736AD64ED2E350337F /* Pods-HiddenCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiddenCamera.release.xcconfig"; path = "Target Support Files/Pods-HiddenCamera/Pods-HiddenCamera.release.xcconfig"; sourceTree = "<group>"; };
+		F446CCA62D5F4D5F00B7E74D /* UserAddressDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAddressDialog.swift; sourceTree = "<group>"; };
+		F44D2D082D5C4B1700E95B10 /* DecodeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodeHelper.swift; sourceTree = "<group>"; };
+		F44D2D0A2D5C4C8700E95B10 /* Reel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reel.swift; sourceTree = "<group>"; };
+		F44D2D0D2D5C4D0400E95B10 /* ReelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelsView.swift; sourceTree = "<group>"; };
+		F44D2D0F2D5C4F0A00E95B10 /* Downloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
+		F44D2D1C2D5C868400E95B10 /* HistoryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCoordinator.swift; sourceTree = "<group>"; };
+		F44D2D1D2D5C868400E95B10 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		F44D2D1E2D5C868400E95B10 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		F44D2D242D5C9BD800E95B10 /* nextvideo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = nextvideo.json; sourceTree = "<group>"; };
+		F45328EB2D5B401B00809369 /* CCTVCountryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCTVCountryCoordinator.swift; sourceTree = "<group>"; };
+		F45328EC2D5B401B00809369 /* CCTVCountryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCTVCountryViewController.swift; sourceTree = "<group>"; };
+		F45328ED2D5B401B00809369 /* CCTVCountryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCTVCountryViewModel.swift; sourceTree = "<group>"; };
+		F45328F32D5B403F00809369 /* CCTVCountryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCTVCountryView.swift; sourceTree = "<group>"; };
+		F45328F62D5B53F800809369 /* CCTVCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCTVCoordinator.swift; sourceTree = "<group>"; };
+		F45328F72D5B53F800809369 /* CCTVViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCTVViewController.swift; sourceTree = "<group>"; };
+		F45328F82D5B53F800809369 /* CCTVViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCTVViewModel.swift; sourceTree = "<group>"; };
+		F45328FE2D5B540800809369 /* CCTVDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCTVDetailView.swift; sourceTree = "<group>"; };
 		F4D6583C2D3E0F93007043D9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F4EB73362D5B363E00346983 /* CCTVView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCTVView.swift; sourceTree = "<group>"; };
+		F4EB73382D5B383200346983 /* CCTVCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCTVCountry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,6 +313,7 @@
 				BB023A3D1A38E1D3F4A480E9 /* Pods_HiddenCamera.framework in Frameworks */,
 				853D482F2D2CF3C000644A55 /* Numerics in Frameworks */,
 				852E29332D27E94000293218 /* SwiftyPing in Frameworks */,
+				F45329022D5B572600809369 /* VideoPlayer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,30 +337,6 @@
 				85240FDB2D30D32C000EEAC6 /* WebViewController.swift */,
 			);
 			path = WebView;
-			sourceTree = "<group>";
-		};
-		852E28E32D2794C800293218 /* CameraDetector */ = {
-			isa = PBXGroup;
-			children = (
-				852E28E42D2794DA00293218 /* CameraDetectorCoordinator.swift */,
-				852E28E52D2794DA00293218 /* CameraDetectorViewController.swift */,
-				852E28E62D2794DA00293218 /* CameraDetectorViewModel.swift */,
-				852E28EC2D2794E200293218 /* CameraDetectorView.swift */,
-			);
-			path = CameraDetector;
-			sourceTree = "<group>";
-		};
-		852E28FA2D2799EA00293218 /* CameraDetector */ = {
-			isa = PBXGroup;
-			children = (
-				852E28EF2D2799EA00293218 /* aicamera.onnx */,
-				852E28EE2D2799EA00293218 /* AVCaptureDeviceExtension.swift */,
-				852E28F02D2799EA00293218 /* BoundingBox.swift */,
-				852E28F22D2799EA00293218 /* DataProcesser.swift */,
-				852E28F32D2799EA00293218 /* ExtensionImage.swift */,
-				852E28F52D2799EA00293218 /* ShapeData.swift */,
-			);
-			path = CameraDetector;
 			sourceTree = "<group>";
 		};
 		852E29072D27E4D300293218 /* WifiScanner */ = {
@@ -425,6 +419,8 @@
 			children = (
 				85699C502D268A9B0000E5A6 /* CameraResultItem.swift */,
 				853D48352D2D2A1300644A55 /* ScanOptionItem.swift */,
+				F4EB73382D5B383200346983 /* CCTVCountry.swift */,
+				F44D2D0A2D5C4C8700E95B10 /* Reel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -432,9 +428,9 @@
 		853D48372D2D320100644A55 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				F45328F52D5B53ED00809369 /* CCTV */,
 				853D48182D2CD79600644A55 /* Magnetometer */,
 				85DA72812D1EA935008F5589 /* InfraredCamera */,
-				852E28E32D2794C800293218 /* CameraDetector */,
 				85E3C5F42D2B9B4500BBAFBE /* BluetoothScanner */,
 				852E29072D27E4D300293218 /* WifiScanner */,
 			);
@@ -523,7 +519,6 @@
 		85A5EAED2D23D471008B58EB /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				852E28FA2D2799EA00293218 /* CameraDetector */,
 				85A5EAEE2D23D479008B58EB /* PreviewCameraView.swift */,
 				85A5EAF32D23DEE2008B58EB /* CameraManager.swift */,
 				85699C402D26474F0000E5A6 /* AssetWriter.swift */,
@@ -570,6 +565,8 @@
 		85DA723D2D1E9302008F5589 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				F44D2D0C2D5C4CF200E95B10 /* History */,
+				F4EB733A2D5B3F8B00346983 /* CCTVCountry */,
 				853D48372D2D320100644A55 /* Feature */,
 				85240FDA2D30D2FA000EEAC6 /* WebView */,
 				857AF9212D2F6E37004C8016 /* Subscription */,
@@ -621,6 +618,7 @@
 		85DA72432D1E9376008F5589 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F44D2D242D5C9BD800E95B10 /* nextvideo.json */,
 				85FC31DA2D37C90A000A4ECC /* premium.json */,
 				856A1CE02D364C6F0085C170 /* tapfinger.json */,
 				856A1CDC2D3624990085C170 /* scanning.json */,
@@ -667,6 +665,7 @@
 		85DA72652D1EA427008F5589 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				F44D2D072D5C4B0D00E95B10 /* Helper */,
 				857AF91E2D2F6D97004C8016 /* Manager */,
 				853D48342D2D2A0A00644A55 /* Model */,
 				853D48262D2CF2DF00644A55 /* Magnetometer */,
@@ -705,10 +704,10 @@
 			isa = PBXGroup;
 			children = (
 				85DA72412D1E9343008F5589 /* HomeView.swift */,
-				85DA725E2D1E9C5B008F5589 /* ToolsView.swift */,
 				857F24262D2E73F800AFDA73 /* ScanView.swift */,
-				857F24282D2E746300AFDA73 /* HistoryView.swift */,
+				F4EB73362D5B363E00346983 /* CCTVView.swift */,
 				85240FD82D30CDCD000EEAC6 /* SettingView.swift */,
+				F44D2D0D2D5C4D0400E95B10 /* ReelsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -738,6 +737,7 @@
 				85EDFA6A2D312E9E002BF8F3 /* RemoveAdDialogView.swift */,
 				85E3C5F22D2B8E8100BBAFBE /* PermissionDialogView.swift */,
 				85FC31D82D37A774000A4ECC /* TimeLimitDialogView.swift */,
+				F446CCA62D5F4D5F00B7E74D /* UserAddressDialog.swift */,
 			);
 			path = Dialog;
 			sourceTree = "<group>";
@@ -804,6 +804,48 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F44D2D072D5C4B0D00E95B10 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				F44D2D082D5C4B1700E95B10 /* DecodeHelper.swift */,
+				F44D2D0F2D5C4F0A00E95B10 /* Downloader.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		F44D2D0C2D5C4CF200E95B10 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				857F24282D2E746300AFDA73 /* HistoryView.swift */,
+				F44D2D1C2D5C868400E95B10 /* HistoryCoordinator.swift */,
+				F44D2D1D2D5C868400E95B10 /* HistoryViewController.swift */,
+				F44D2D1E2D5C868400E95B10 /* HistoryViewModel.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		F45328F52D5B53ED00809369 /* CCTV */ = {
+			isa = PBXGroup;
+			children = (
+				F45328F62D5B53F800809369 /* CCTVCoordinator.swift */,
+				F45328F72D5B53F800809369 /* CCTVViewController.swift */,
+				F45328F82D5B53F800809369 /* CCTVViewModel.swift */,
+				F45328FE2D5B540800809369 /* CCTVDetailView.swift */,
+			);
+			path = CCTV;
+			sourceTree = "<group>";
+		};
+		F4EB733A2D5B3F8B00346983 /* CCTVCountry */ = {
+			isa = PBXGroup;
+			children = (
+				F45328EB2D5B401B00809369 /* CCTVCountryCoordinator.swift */,
+				F45328EC2D5B401B00809369 /* CCTVCountryViewController.swift */,
+				F45328ED2D5B401B00809369 /* CCTVCountryViewModel.swift */,
+				F45328F32D5B403F00809369 /* CCTVCountryView.swift */,
+			);
+			path = CCTVCountry;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -830,6 +872,7 @@
 				853D482C2D2CF3C000644A55 /* ComplexModule */,
 				853D482E2D2CF3C000644A55 /* Numerics */,
 				853D48302D2CF3C000644A55 /* RealModule */,
+				F45329012D5B572500809369 /* VideoPlayer */,
 			);
 			productName = HiddenCamera;
 			productReference = 85DA72262D1E919B008F5589 /* HiddenCamera.app */;
@@ -863,6 +906,7 @@
 				85DA725B2D1E99F4008F5589 /* XCRemoteSwiftPackageReference "SakuraExtension" */,
 				852E29312D27E94000293218 /* XCRemoteSwiftPackageReference "SwiftyPing" */,
 				853D482B2D2CF3C000644A55 /* XCRemoteSwiftPackageReference "swift-numerics" */,
+				F45329002D5B572500809369 /* XCRemoteSwiftPackageReference "VideoPlayer" */,
 			);
 			productRefGroup = 85DA72272D1E919B008F5589 /* Products */;
 			projectDirPath = "";
@@ -885,11 +929,11 @@
 				85DA724F2D1E9392008F5589 /* Poppins-Bold.ttf in Resources */,
 				85DA72512D1E9392008F5589 /* Poppins-Italic.ttf in Resources */,
 				85DA72502D1E9392008F5589 /* Poppins-Regular.ttf in Resources */,
+				F44D2D252D5C9BD800E95B10 /* nextvideo.json in Resources */,
 				852E29292D27E90600293218 /* macVendors.plist in Resources */,
 				85DA724D2D1E9392008F5589 /* Poppins-SemiBold.ttf in Resources */,
 				856A1CE12D364C6F0085C170 /* tapfinger.json in Resources */,
 				852E29272D27E90600293218 /* iphoneModels.json in Resources */,
-				852E28FC2D2799EA00293218 /* aicamera.onnx in Resources */,
 				85EDFA512D30F6E1002BF8F3 /* GoogleService-Info.plist in Resources */,
 				85EDFA682D3122AC002BF8F3 /* NativeAdView.xib in Resources */,
 				85DA724E2D1E9392008F5589 /* Poppins-Medium.ttf in Resources */,
@@ -991,7 +1035,6 @@
 				85240FDC2D30D32C000EEAC6 /* WebViewController.swift in Sources */,
 				85DA72712D1EA436008F5589 /* ViewController.swift in Sources */,
 				85DA72722D1EA436008F5589 /* WindowBasedCoordinator.swift in Sources */,
-				852E28FD2D2799EA00293218 /* BoundingBox.swift in Sources */,
 				85DA72742D1EA526008F5589 /* AppCoordinator.swift in Sources */,
 				85A5EAF42D23DEE2008B58EB /* CameraManager.swift in Sources */,
 				85EDFA5A2D310027002BF8F3 /* AdsInterstitial.swift in Sources */,
@@ -1003,14 +1046,15 @@
 				857AF9322D2F888A004C8016 /* SplashCoordinator.swift in Sources */,
 				857AF9332D2F888A004C8016 /* SplashViewController.swift in Sources */,
 				857AF9342D2F888A004C8016 /* SplashViewModel.swift in Sources */,
+				F45328FF2D5B540800809369 /* CCTVDetailView.swift in Sources */,
 				85EDFA582D30FAD9002BF8F3 /* UserSetting.swift in Sources */,
 				85DA72872D1EA93C008F5589 /* InfraredCameraCoordinator.swift in Sources */,
 				85DA72882D1EA93C008F5589 /* InfraredCameraViewController.swift in Sources */,
 				85699C412D26474F0000E5A6 /* AssetWriter.swift in Sources */,
-				852E29002D2799EA00293218 /* ExtensionImage.swift in Sources */,
 				85DA728C2D1EAA1C008F5589 /* InfraredCameraView.swift in Sources */,
 				85DA72892D1EA93C008F5589 /* InfraredCameraViewModel.swift in Sources */,
 				85EDFA6B2D312E9E002BF8F3 /* RemoveAdDialogView.swift in Sources */,
+				F45328F42D5B403F00809369 /* CCTVCountryView.swift in Sources */,
 				85699C562D2691C20000E5A6 /* RlmCameraResult.swift in Sources */,
 				853D481E2D2CD7A100644A55 /* MagnetometerCoordinator.swift in Sources */,
 				853D481F2D2CD7A100644A55 /* MagnetometerViewController.swift in Sources */,
@@ -1021,17 +1065,24 @@
 				85EDFA5D2D31096A002BF8F3 /* BannerContentView.swift in Sources */,
 				85699C4C2D264A130000E5A6 /* CameraResultView.swift in Sources */,
 				85DA72552D1E942B008F5589 /* AppColor.swift in Sources */,
+				F446CCA72D5F4D5F00B7E74D /* UserAddressDialog.swift in Sources */,
+				F44D2D0E2D5C4D0400E95B10 /* ReelsView.swift in Sources */,
 				85E3C6032D2BB5AE00BBAFBE /* LANDevice.swift in Sources */,
 				85699C542D2690C50000E5A6 /* RealmDAO.swift in Sources */,
 				857F24232D2E568700AFDA73 /* RlmScanHistory.swift in Sources */,
-				852E28ED2D2794E200293218 /* CameraDetectorView.swift in Sources */,
 				85DA72422D1E9343008F5589 /* HomeView.swift in Sources */,
 				85DA72792D1EA53B008F5589 /* HomeCoordinator.swift in Sources */,
 				857F24292D2E746300AFDA73 /* HistoryView.swift in Sources */,
 				85699C472D2649600000E5A6 /* CameraResultCoordinator.swift in Sources */,
 				857AF9372D2F88AF004C8016 /* SplashView.swift in Sources */,
+				F4EB73372D5B363E00346983 /* CCTVView.swift in Sources */,
+				F45328F02D5B401B00809369 /* CCTVCountryCoordinator.swift in Sources */,
+				F45328F12D5B401B00809369 /* CCTVCountryViewController.swift in Sources */,
+				F45328F22D5B401B00809369 /* CCTVCountryViewModel.swift in Sources */,
+				F4EB73392D5B383200346983 /* CCTVCountry.swift in Sources */,
 				856A1CDB2D3606250085C170 /* AdsConsentManager.swift in Sources */,
 				85EDFA542D30F86A002BF8F3 /* GoogleAdsKey.swift in Sources */,
+				F44D2D092D5C4B1700E95B10 /* DecodeHelper.swift in Sources */,
 				85699C482D2649600000E5A6 /* CameraResultViewController.swift in Sources */,
 				853D483E2D2D333E00644A55 /* HistoryDetailCoordinator.swift in Sources */,
 				853D483F2D2D333E00644A55 /* HistoryDetailViewController.swift in Sources */,
@@ -1039,9 +1090,9 @@
 				853D48402D2D333E00644A55 /* HistoryDetailViewModel.swift in Sources */,
 				85699C492D2649600000E5A6 /* CameraResultViewModel.swift in Sources */,
 				85E3C6012D2BB27100BBAFBE /* BluetoothScanner.swift in Sources */,
+				F44D2D0B2D5C4C8700E95B10 /* Reel.swift in Sources */,
 				85240FD92D30CDCD000EEAC6 /* SettingView.swift in Sources */,
 				85699C512D268A9B0000E5A6 /* CameraResultItem.swift in Sources */,
-				852E29022D2799EA00293218 /* ShapeData.swift in Sources */,
 				85EDFA6D2D313370002BF8F3 /* SubscriptionViewController.swift in Sources */,
 				85DA727A2D1EA53B008F5589 /* HomeViewController.swift in Sources */,
 				853D48422D2D337600644A55 /* HistoryDetailView.swift in Sources */,
@@ -1052,11 +1103,17 @@
 				85EDFA5F2D311830002BF8F3 /* AdsNativeLoader.swift in Sources */,
 				85A5EAEF2D23D479008B58EB /* PreviewCameraView.swift in Sources */,
 				85DA72622D1E9EFD008F5589 /* ToolItem.swift in Sources */,
+				F44D2D202D5C868500E95B10 /* HistoryCoordinator.swift in Sources */,
+				F44D2D212D5C868500E95B10 /* HistoryViewController.swift in Sources */,
+				F44D2D222D5C868500E95B10 /* HistoryViewModel.swift in Sources */,
 				85DA725A2D1E9561008F5589 /* AppConfig.swift in Sources */,
 				85E3C5FE2D2B9B5600BBAFBE /* BluetoothScannerView.swift in Sources */,
 				85E3C5F92D2B9B4F00BBAFBE /* BluetoothScannerCoordinator.swift in Sources */,
 				85E3C5FA2D2B9B4F00BBAFBE /* BluetoothScannerViewController.swift in Sources */,
 				85E3C5FB2D2B9B4F00BBAFBE /* BluetoothScannerViewModel.swift in Sources */,
+				F45328FB2D5B53F800809369 /* CCTVCoordinator.swift in Sources */,
+				F45328FC2D5B53F800809369 /* CCTVViewController.swift in Sources */,
+				F45328FD2D5B53F800809369 /* CCTVViewModel.swift in Sources */,
 				857AF92A2D2F6EF1004C8016 /* IntroCoordinator.swift in Sources */,
 				857AF92B2D2F6EF1004C8016 /* IntroViewController.swift in Sources */,
 				85EDFA642D3122A3002BF8F3 /* NativeContentView.swift in Sources */,
@@ -1068,6 +1125,7 @@
 				852E290E2D27E4EC00293218 /* WifiScannerViewModel.swift in Sources */,
 				85699C5E2D26943F0000E5A6 /* CameraResultGalleryCoordinator.swift in Sources */,
 				852E29302D27E90600293218 /* NetworkUtils.swift in Sources */,
+				F44D2D102D5C4F0A00E95B10 /* Downloader.swift in Sources */,
 				85699C5F2D26943F0000E5A6 /* CameraResultGalleryViewController.swift in Sources */,
 				85699C602D26943F0000E5A6 /* CameraResultGalleryViewModel.swift in Sources */,
 				85FC31D92D37A774000A4ECC /* TimeLimitDialogView.swift in Sources */,
@@ -1076,14 +1134,11 @@
 				853D48172D2CD32500644A55 /* NetworkManager.swift in Sources */,
 				85DA726E2D1EA436008F5589 /* Coordinator.swift in Sources */,
 				24EC7E212D2A391E00875752 /* ScannerResultView.swift in Sources */,
-				852E28FB2D2799EA00293218 /* AVCaptureDeviceExtension.swift in Sources */,
 				857F242D2D2E805D00AFDA73 /* RequestLocalNetworkAuthorization.swift in Sources */,
-				85DA725F2D1E9C5B008F5589 /* ToolsView.swift in Sources */,
 				85EDFA562D30F8E9002BF8F3 /* AdsAppOpen.swift in Sources */,
 				247A67A12D298F8300BA6EC8 /* AppleDevice.swift in Sources */,
 				852E292F2D27E90600293218 /* LocalNetworkDetector.swift in Sources */,
 				853D48362D2D2A1300644A55 /* ScanOptionItem.swift in Sources */,
-				852E28FF2D2799EA00293218 /* DataProcesser.swift in Sources */,
 				857AF9252D2F6EE8004C8016 /* IntroView.swift in Sources */,
 				85F0F6EE2D38C7EA0085980A /* AdsMultiNativeLoader.swift in Sources */,
 				85699C632D2696360000E5A6 /* CameraResultGalleryView.swift in Sources */,
@@ -1092,12 +1147,9 @@
 				857F24272D2E73F800AFDA73 /* ScanView.swift in Sources */,
 				853D48282D2CF31500644A55 /* Magnetometer.swift in Sources */,
 				853D48222D2CD7BD00644A55 /* MagnetometerView.swift in Sources */,
-				852E28E82D2794DA00293218 /* CameraDetectorCoordinator.swift in Sources */,
 				857AF9202D2F6D9F004C8016 /* RateManager.swift in Sources */,
 				857AF91D2D2F68CF004C8016 /* LoadingView.swift in Sources */,
 				852E292A2D27E90600293218 /* NetServiceExtension.swift in Sources */,
-				852E28E92D2794DA00293218 /* CameraDetectorViewController.swift in Sources */,
-				852E28EA2D2794DA00293218 /* CameraDetectorViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1232,7 +1284,7 @@
 				CODE_SIGN_ENTITLEMENTS = HiddenCamera/HiddenCamera.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = TMFTUKGKLZ;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -1280,7 +1332,7 @@
 				CODE_SIGN_ENTITLEMENTS = HiddenCamera/HiddenCamera.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = TMFTUKGKLZ;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -1367,6 +1419,14 @@
 				kind = branch;
 			};
 		};
+		F45329002D5B572500809369 /* XCRemoteSwiftPackageReference "VideoPlayer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/wxxsw/VideoPlayer.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1394,6 +1454,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 85DA725B2D1E99F4008F5589 /* XCRemoteSwiftPackageReference "SakuraExtension" */;
 			productName = SakuraExtension;
+		};
+		F45329012D5B572500809369 /* VideoPlayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F45329002D5B572500809369 /* XCRemoteSwiftPackageReference "VideoPlayer" */;
+			productName = VideoPlayer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

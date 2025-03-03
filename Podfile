@@ -8,7 +8,9 @@ target 'HiddenCamera' do
   # Pods for HiddenCamera
   pod 'lottie-ios'
   pod 'RxSwift'
-  pod 'RxCocoa'
+  pod 'RxCocoa' 
+  pod 'SDWebImage'
+  pod 'SDWebImageSwiftUI'
 
   pod 'WebBrowser'
   pod 'RealmSwift'

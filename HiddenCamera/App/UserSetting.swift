@@ -10,7 +10,6 @@ import Foundation
 enum AppFeature: String {
     case bluetooth
     case wifi
-    case aiDetector
     case ifCamera
     case magnetometer
     case quickScan

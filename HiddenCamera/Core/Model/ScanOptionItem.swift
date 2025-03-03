@@ -24,10 +24,11 @@ class ScanOptionItem {
     var isEnd: Bool = false
     var type: ScanOptionType = .quick
     var isThreadAfterIntro: Bool = false
-    
+    var address: String = "Unknown place"
+
     init() {
         self.id = UUID().uuidString
-        self.tools = [.bluetoothScanner, .wifiScanner, .cameraDetector]
+        self.tools = [.bluetoothScanner, .wifiScanner]
         self.type = .quick
     }
     
@@ -55,6 +56,7 @@ class ScanOptionItem {
             return nil
         }))
         
+        self.address = rlm.address
         self.tools = rlm.tools.components(separatedBy: ",").compactMap({ ToolItem(rawValue: $0) })
     }
     

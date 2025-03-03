@@ -87,6 +87,7 @@ struct HistoryDetailView: View {
             Text(title)
                 .textColor(.app(.light12))
                 .font(Poppins.semibold.font(size: 18))
+                .lineLimit(1)
             
             Spacer()
             
@@ -102,7 +103,11 @@ struct HistoryDetailView: View {
     }
     
     var title: String {
-        switch viewModel.scanOption.type {
+        if !viewModel.scanOption.address.isEmpty {
+            return viewModel.scanOption.address
+        }
+        
+        return switch viewModel.scanOption.type {
         case .quick:
             "Quick Scan"
         case .full:
@@ -160,7 +165,7 @@ fileprivate struct HistoryDetailItemView: View {
                         switch tool {
                         case .bluetoothScanner, .wifiScanner:
                             warningStatus(number: result)
-                        case .cameraDetector, .magnetic, .infraredCamera:
+                        case .magnetic, .infraredCamera:
                             warningStatus()
                         }
                     }

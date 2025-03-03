@@ -8,8 +8,8 @@
 import Foundation
 
 enum HomeTab: String, CaseIterable {
-    case scan
-    case tools
-    case history
-    case setting
+    case Scan
+    case CCTV
+    case Reels
+    case Setting
 }

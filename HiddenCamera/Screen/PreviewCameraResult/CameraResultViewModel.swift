@@ -80,12 +80,7 @@ final class CameraResultViewModel: BaseViewModel<CameraResultViewModelInput, Cam
             self.tag = tag
             self.item.tag = tag
             self.dao.addObject(item: item)
-            
-            if item.type == .aiDetector {
-                self.scanOption?.suspiciousResult[.cameraDetector] = tag == .risk ? 1 : 0
-            } else {
-                self.scanOption?.suspiciousResult[.infraredCamera] = tag == .risk ? 1 : 0
-            }
+            self.scanOption?.suspiciousResult[.infraredCamera] = tag == .risk ? 1 : 0
                         
             withAnimation {
                 self.objectWillChange.send()
@@ -172,8 +167,6 @@ extension CameraResultViewModel: SakuraVideoPlayerDelegate {
 extension CameraResultViewModel {
     var title: String {
         switch item.type {
-        case .aiDetector:
-            "AI Camera Scanner Result"
         case .infrared:
             "IR Vision Camera Result"
         }

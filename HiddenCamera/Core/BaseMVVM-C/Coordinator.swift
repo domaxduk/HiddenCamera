@@ -53,7 +53,8 @@ open class Coordinator: NSObject {
         }
     }
 
-    public func addChild(_ coordinator: Coordinator) {
+    public func addChild(_ coordinator: Coordinator?) {
+        guard let coordinator else { return }
         coordinator.parent = self
         self.children.append(coordinator)
     }

@@ -36,8 +36,7 @@ struct HomeView: View {
                 tabbar
             }
             
-            ScanOptionView(viewModel: viewModel)
-                .offset(x: viewModel.isShowingScanOption ? 0 : UIScreen.main.bounds.width)
+            ReelScrollView(viewModel: viewModel)
             
             ZStack {
                 BlurSwiftUIView(effect: .init(style: .dark)).ignoresSafeArea()
@@ -53,20 +52,19 @@ struct HomeView: View {
     var navigationBar: some View {
         HStack {
             switch viewModel.currentTab {
-            case .scan:
+            case .Scan:
                 Text(AppConfig.appName)
                     .font(Poppins.bold.font(size: 20))
-            case .tools:
-                Text("Tools")
+            case .CCTV:
+                Text("CCTV")
                     .font(Poppins.bold.font(size: 20))
-            case .history:
-                Text("History")
+            case .Reels:
+                Text("Reels")
                     .font(Poppins.bold.font(size: 20))
-            case .setting:
+            case .Setting:
                 Text("Setting")
                     .font(Poppins.bold.font(size: 20))
             }
-            
             
             Spacer()
             
@@ -89,14 +87,14 @@ struct HomeView: View {
                 Spacer()
                 ForEach(HomeTab.allCases, id: \.rawValue) { tab in
                     VStack(spacing: 4) {
-                        Image("ic_tab_\(tab.rawValue)")
+                        Image("ic_tab_\(tab.rawValue.lowercased())")
                             .renderingMode(.template)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .foreColor(.app(tab == viewModel.currentTab ? .main : .light06))
                             .frame(width: 24)
                         
-                        Text(tab.rawValue.capitalized)
+                        Text(tab.rawValue)
                             .font(Poppins.medium.font(size: 14))
                             .foreColor(.app(tab == viewModel.currentTab ? .main : .light06))
                             .frame(height: 20)
@@ -121,20 +119,20 @@ struct HomeView: View {
     // MARK: - Content
     var content: some View {
         ZStack {
-            if viewModel.didLoadTab.contains(where: { $0 == .scan}) {
-                ScanView().opacity(viewModel.currentTab == .scan ? 1 : 0)
+            if viewModel.didLoadTab.contains(where: { $0 == .Scan}) {
+                ScanView().opacity(viewModel.currentTab == .Scan ? 1 : 0)
             }
             
-            if viewModel.didLoadTab.contains(where: { $0 == .tools}) {
-                ToolsView().opacity(viewModel.currentTab == .tools ? 1 : 0)
+            if viewModel.didLoadTab.contains(where: { $0 == .CCTV}) {
+                CCTVView().opacity(viewModel.currentTab == .CCTV ? 1 : 0)
             }
             
-            if viewModel.didLoadTab.contains(where: { $0 == .history}) {
-                HistoryView().opacity(viewModel.currentTab == .history ? 1 : 0)
+            if viewModel.didLoadTab.contains(where: { $0 == .Reels}) {
+                ReelsView().opacity(viewModel.currentTab == .Reels ? 1 : 0)
             }
             
-            if viewModel.didLoadTab.contains(where: { $0 == .setting}) {
-                SettingView().opacity(viewModel.currentTab == .setting ? 1 : 0)
+            if viewModel.didLoadTab.contains(where: { $0 == .Setting}) {
+                SettingView().opacity(viewModel.currentTab == .Setting ? 1 : 0)
             }
         }
     }

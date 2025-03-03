@@ -58,33 +58,17 @@ class HomeViewController: ViewController {
     }
 
     func configRoutingOutput() {
-        viewModel.routing.routeToInfraredCamera.subscribe(onNext: { [weak self] _ in
-            self?.coordinator?.routeToInfraredCamera()
-        }).disposed(by: self.disposeBag)
-        
-        viewModel.routing.routeToCameraDetector.subscribe(onNext: { [weak self] _ in
-            self?.coordinator?.routeToCameraDetector()
-        }).disposed(by: self.disposeBag)
-        
-        viewModel.routing.routeToWifiScanner.subscribe(onNext: { [weak self] _ in
-            self?.coordinator?.routeToWifiScanner()
-        }).disposed(by: self.disposeBag)
-        
-        viewModel.routing.routeToBluetoothScanner.subscribe(onNext: { [weak self] _ in
-            self?.coordinator?.routeToBluetoothScanner()
-        }).disposed(by: self.disposeBag)
-        
-        viewModel.routing.routeToMagnetic.subscribe(onNext: { [weak self] _ in
-            self?.coordinator?.routeToMagnetic()
-        }).disposed(by: self.disposeBag)
-        
         viewModel.routing.routeToScanOption.subscribe(onNext: { [weak self] item in
             self?.coordinator?.startScanOption(item: item)
         }).disposed(by: self.disposeBag)
         
-        viewModel.routing.routeToHistoryDetail.subscribe(onNext: { [weak self] item in
-            Analytics.logEvent("feature_history_item", parameters: nil)
-            self?.coordinator?.routeToHistoryDetail(item: item)
+        viewModel.routing.routeToCCTVCountry.subscribe(onNext: { [weak self] country in
+            self?.coordinator?.routeToCCTVCountry(country: country)
+        }).disposed(by: self.disposeBag)
+        
+        viewModel.routing.routeToHistory.subscribe(onNext: { [weak self] in
+            Analytics.logEvent("feature_history", parameters: nil)
+            self?.coordinator?.routeToHistory()
         }).disposed(by: self.disposeBag)
         
         viewModel.routing.presentAlert.subscribe(onNext: { [weak self] message in

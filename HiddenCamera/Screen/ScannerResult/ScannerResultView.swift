@@ -478,7 +478,7 @@ fileprivate struct FindView: View {
     }
     
     var circleColor: Color {
-        return device.meterDistance() <= 1.0 ? .app(.warning) : .app(.safe)
+        return device.meter() <= 1.0 ? .app(.warning) : .app(.safe)
     }
     
     var gradientColor: LinearGradient {
@@ -489,7 +489,7 @@ fileprivate struct FindView: View {
     }
     
     var meterDescription: String {
-        return String(format: "%.2f m", device.meterDistance())
+        return String(format: "%.2f m", device.meter())
     }
 }
 

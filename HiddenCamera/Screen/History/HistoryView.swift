@@ -8,13 +8,46 @@
 import SwiftUI
 import SakuraExtension
 import Lottie
+import RxSwift
 
 // MARK: - HistoryView
 struct HistoryView: View {
-    @EnvironmentObject var viewModel: HomeViewModel
+    @ObservedObject var viewModel: HistoryViewModel
+    
+    var body: some View {
+        ZStack {
+            Color.app(.light03).ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                HStack {
+                    Image("ic_back")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 24)
+                    
+                    Text("History")
+                        .font(Poppins.semibold.font(size: 18))
+                        .textColor(.app(.light12))
+                    
+                    Spacer(minLength: 0)
+                }
+                .padding(.horizontal, 20)
+                .frame(height: AppConfig.navigationBarHeight)
+                .onTapGesture {
+                    viewModel.input.didTapBack.onNext(())
+                }
+                
+                content
+                
+                if !viewModel.isPremium {
+                    BannerContentView(isCollapse: true, needToReload: nil)
+                }
+            }
+        }
+    }
     
     @ViewBuilder
-    var body: some View {
+    var content: some View {
         if viewModel.historyItems.isEmpty {
             VStack(spacing: 0) {
                 Spacer()
@@ -31,7 +64,7 @@ struct HistoryView: View {
                     .padding(.horizontal, 44)
                 
                 Button(action: {
-                    viewModel.currentTab = .scan
+                    viewModel.input.didTapBack.onNext(())
                 }, label: {
                     Text("Scan now")
                         .font(Poppins.semibold.font(size: 16))
@@ -111,13 +144,17 @@ fileprivate struct HistoryItemView: View {
     }
     
     var titleString: String {
+        if !item.address.isEmpty {
+            return item.address
+        }
+        
         switch item.type {
         case .quick:
-            "Quick Scan"
+            return "Quick Scan"
         case .full:
-            "Scan Full"
+            return "Scan Full"
         case .option:
-            "Scan Options"
+            return "Scan Options"
         }
     }
     
@@ -149,6 +186,6 @@ fileprivate struct HistoryItemView: View {
 }
 
 #Preview {
-    HomeView(viewModel: HomeViewModel())
+    HistoryView(viewModel: HistoryViewModel())
 }
 

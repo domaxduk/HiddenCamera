@@ -7,9 +7,9 @@ import Foundation
 import UIKit
 
 open class PresentedCoordinator: Coordinator {
-    var presentingViewController: UIViewController
+    weak var presentingViewController: UIViewController?
 
-    public init(presentingViewController: UIViewController) {
+    public init(presentingViewController: UIViewController?) {
         self.presentingViewController = presentingViewController
     }
 }

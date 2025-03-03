@@ -11,7 +11,6 @@ import SwiftUI
 enum ToolItem: String, CaseIterable {
     case bluetoothScanner
     case wifiScanner
-    case cameraDetector
     case infraredCamera
     case magnetic
     
@@ -19,8 +18,6 @@ enum ToolItem: String, CaseIterable {
         switch self {
         case .bluetoothScanner:
             "ic_tool_bluetooth"
-        case .cameraDetector:
-            "ic_tool_camera_detector"
         case .infraredCamera:
             "ic_tool_infrared_camera"
         case .magnetic:
@@ -34,8 +31,6 @@ enum ToolItem: String, CaseIterable {
         switch self {
         case .bluetoothScanner:
             "Bluetooth Locator"
-        case .cameraDetector:
-            "AI Camera Scanner"
         case .infraredCamera:
             "IR Vision Camera"
         case .magnetic:
@@ -49,8 +44,6 @@ enum ToolItem: String, CaseIterable {
         switch self {
         case .bluetoothScanner:
             Color.app(.main)
-        case .cameraDetector:
-            Color(rgb: 0x9747FF)
         case .infraredCamera:
             Color(rgb: 0x0CDC08)
         case .magnetic:
@@ -66,8 +59,6 @@ enum ToolItem: String, CaseIterable {
             "Locate bluetooth devices around you"
         case .wifiScanner:
             "Find all devices on your wifi"
-        case .cameraDetector:
-            "Detects hidden cameras with AI tool"
         case .magnetic:
             "Detect spy cam via magnetic sensor"
         case .infraredCamera:

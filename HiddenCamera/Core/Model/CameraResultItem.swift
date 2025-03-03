@@ -34,6 +34,5 @@ enum CameraResultTag: String {
 }
 
 enum CameraType: String {
-    case aiDetector
     case infrared
 }

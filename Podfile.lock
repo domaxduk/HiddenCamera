@@ -148,6 +148,11 @@ PODS:
   - RxRelay (6.8.0):
     - RxSwift (= 6.8.0)
   - RxSwift (6.8.0)
+  - SDWebImage (5.20.0):
+    - SDWebImage/Core (= 5.20.0)
+  - SDWebImage/Core (5.20.0)
+  - SDWebImageSwiftUI (3.1.3):
+    - SDWebImage (~> 5.10)
   - SwiftyStoreKit (0.16.1)
   - WebBrowser (0.1.5)
 
@@ -163,6 +168,8 @@ DEPENDENCIES:
   - RealmSwift
   - RxCocoa
   - RxSwift
+  - SDWebImage
+  - SDWebImageSwiftUI
   - SwiftyStoreKit
   - WebBrowser
 
@@ -198,6 +205,8 @@ SPEC REPOS:
     - RxCocoa
     - RxRelay
     - RxSwift
+    - SDWebImage
+    - SDWebImageSwiftUI
     - SwiftyStoreKit
     - WebBrowser
 
@@ -232,9 +241,11 @@ SPEC CHECKSUMS:
   RxCocoa: 2d33c1e1e5d66492052ad46b11024ae287572880
   RxRelay: 335c78b926a2aea8d863a6d25f1ed3b5ad8e8705
   RxSwift: 4e28be97cbcfeee614af26d83415febbf2bf6f45
+  SDWebImage: 73c6079366fea25fa4bb9640d5fb58f0893facd8
+  SDWebImageSwiftUI: a6d7129fb68fc18c8b930b869ddcfce314e49ded
   SwiftyStoreKit: 6b9c08810269f030586dac1fae8e75871a82e84a
   WebBrowser: 0248873c77f54e2ac504ece7c2bc8eeb710b5a4f
 
-PODFILE CHECKSUM: 9896c3932a486f29db1b89211792b7ac6b4062db
+PODFILE CHECKSUM: 1e1ea69cf55b95ed6850f2ed31b0ad91bd9050d9
 
 COCOAPODS: 1.16.2

@@ -7,21 +7,24 @@
 
 import UIKit
 import RxSwift
+import SwiftUI
 
 struct RouteToNextTool: CoordinatorEvent {  }
 
 final class HomeCoordinator: WindowBasedCoordinator {
     private var navigationController: UINavigationController!
 
+    private var historyCoordinator: HistoryCoordinator?
+    private var historyDetailCoordinator: HistoryDetailCoordinator?
+
     private var infraredCameraCoordinator: InfraredCameraCoordinator?
-    private var cameraDetectorCoordinator: CameraDetectorCoordinator?
     private var wifiScannerCoordinator: WifiScannerCoordinator?
     private var bluetoothScannerCoordinator: BluetoothScannerCoordinator?
     private var magneticCoordinator: MagnetometerCoordinator?
-    private var historyDetailCoordinator: HistoryDetailCoordinator?
     
     private var scanOptionItem: ScanOptionItem?
-
+    private var cctvCountryCoordinator: CCTVCountryCoordinator?
+    private var userAdressDialog: UIHostingController<UserAddressDialog>?
     lazy var controller: HomeViewController = {
         let viewModel = HomeViewModel()
         let controller = HomeViewController(viewModel: viewModel, coordinator: self)
@@ -52,12 +55,6 @@ final class HomeCoordinator: WindowBasedCoordinator {
             scanOptionItem?.decrease()
         }
         
-        if let child = child as? CameraDetectorCoordinator, child.canRemove() {
-            print("remove screen: cameraDetectorCoordinator")
-            self.cameraDetectorCoordinator = nil
-            scanOptionItem?.decrease()
-        }
-        
         if let child = child as? WifiScannerCoordinator, child.canRemove() {
             print("remove screen: wifiScannerCoordinator")
             self.wifiScannerCoordinator = nil
@@ -82,6 +79,14 @@ final class HomeCoordinator: WindowBasedCoordinator {
             print("remove screen: historyDetailCoordinator")
             self.historyDetailCoordinator = nil
         }
+        
+        if child is CCTVCountryCoordinator {
+            self.cctvCountryCoordinator = nil
+        }
+        
+        if child is HistoryCoordinator {
+            self.historyCoordinator = nil
+        }
     }
     
     override func handle(event: any CoordinatorEvent) -> Bool {
@@ -105,8 +110,6 @@ final class HomeCoordinator: WindowBasedCoordinator {
                 self.routeToBluetoothScanner(scanOption: event.scanOption)
             case .wifiScanner:
                 self.routeToWifiScanner(scanOption: event.scanOption)
-            case .cameraDetector:
-                self.routeToCameraDetector(scanOption: event.scanOption)
             case .magnetic:
                 self.routeToMagnetic(scanOption: event.scanOption)
             case .infraredCamera:
@@ -117,10 +120,6 @@ final class HomeCoordinator: WindowBasedCoordinator {
         
         if event is HistoryDetailWantToBack {
             if scanOptionItem != nil {
-                self.controller.viewModel.isShowingScanOption = false
-                self.controller.viewModel.scanOptions = []
-                self.controller.viewModel.input.selectTab.onNext(.history)
-                
                 self.scanOptionItem = nil
             }
             
@@ -135,12 +134,32 @@ final class HomeCoordinator: WindowBasedCoordinator {
 
 // MARK: - Route
 extension HomeCoordinator {
+    func routeToCCTVCountry(country: CCTVCountry) {
+        self.cctvCountryCoordinator = CCTVCountryCoordinator(country: country, navigationController: navigationController)
+        self.cctvCountryCoordinator?.start()
+        self.addChild(cctvCountryCoordinator)
+    }
+    
     func startScanOption(item: ScanOptionItem) {
-        self.scanOptionItem = item
+        let viewModel = UserAddressViewModel()
+        viewModel.didChooseAddress.subscribe(onNext: { [weak self] address in
+            guard let self else { return }
+            self.userAdressDialog?.dismiss(animated: true)
+            self.userAdressDialog = nil
+            item.address = address
+            
+            self.scanOptionItem = item
+            
+            if let tool = item.nextTool {
+                self.routeToTool(tool: tool, option: item)
+            }
+        }).disposed(by: viewModel.disposeBag)
         
-        if let tool = item.nextTool {
-            self.routeToTool(tool: tool, option: item)
-        }
+        self.userAdressDialog = UIHostingController(rootView: UserAddressDialog(viewModel: viewModel))
+        self.userAdressDialog?.view.backgroundColor = .clear
+        self.userAdressDialog?.modalTransitionStyle = .crossDissolve
+        self.userAdressDialog?.modalPresentationStyle = .overFullScreen
+        controller.present(userAdressDialog!, animated: true)
     }
     
     private func routeToTool(tool: ToolItem, option: ScanOptionItem) {
@@ -149,8 +168,6 @@ extension HomeCoordinator {
             routeToBluetoothScanner(scanOption: option)
         case .wifiScanner:
             routeToWifiScanner(scanOption: option)
-        case .cameraDetector:
-            routeToCameraDetector(scanOption: option)
         case .magnetic:
             routeToMagnetic(scanOption: option)
         case .infraredCamera:
@@ -160,7 +177,7 @@ extension HomeCoordinator {
         option.increase()
     }
     
-    func routeToHistoryDetail(item: ScanOptionItem) {
+    private func routeToHistoryDetail(item: ScanOptionItem) {
         if self.historyDetailCoordinator == nil {
             self.historyDetailCoordinator = HistoryDetailCoordinator(scanOption: item, navigationController: self.navigationController)
             self.addChild(self.historyDetailCoordinator!)
@@ -181,21 +198,6 @@ extension HomeCoordinator {
             }
         } else {
             self.infraredCameraCoordinator?.start()
-        }
-    }
-    
-    func routeToCameraDetector(scanOption: ScanOptionItem? = nil) {
-        if self.cameraDetectorCoordinator == nil {
-            Permission.requestCamera { [weak self] granted in
-                guard let self else { return }
-                DispatchQueue.main.async {
-                    self.cameraDetectorCoordinator = CameraDetectorCoordinator(scanOption: scanOption, navigationController: self.navigationController)
-                    self.cameraDetectorCoordinator?.start()
-                    self.addChild(self.cameraDetectorCoordinator!)
-                }
-            }
-        } else {
-            self.cameraDetectorCoordinator?.start()
         }
     }
     
@@ -235,5 +237,11 @@ extension HomeCoordinator {
         }
         
         self.magneticCoordinator?.start()
+    }
+    
+    func routeToHistory() {
+        self.historyCoordinator = HistoryCoordinator(navigationController: navigationController)
+        self.historyCoordinator?.start()
+        self.addChild(historyCoordinator)
     }
 }

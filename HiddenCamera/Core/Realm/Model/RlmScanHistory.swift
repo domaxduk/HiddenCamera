@@ -14,6 +14,7 @@ final class RlmScanHistory: Object {
     @objc dynamic var type: Int = 0
     @objc dynamic var results: String!
     @objc dynamic var tools: String!
+    @objc dynamic var address: String!
     
     override class func primaryKey() -> String? {
         return "id"

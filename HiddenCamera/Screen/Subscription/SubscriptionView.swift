@@ -41,13 +41,13 @@ class SubscriptionItem {
 class SubscriptionViewModel: ObservableObject {
     @Published var items: [SubscriptionItem] = [
         SubscriptionItem(type: .week, title: "Weekly",
-                         id: "com.trale.hidden.camera.week",
+                         id: "com.trale.hidden.camera.w",
                          priceString: "$9.99",
                          pricePerWeek: "",
                          color: Color(rgb: 0x00BA00), noteString: ""),
         SubscriptionItem(type: .year,
                          title: "Yearly",
-                         id: "com.trale.hidden.camera.year",
+                         id: "com.trale.hidden.camera.y",
                          priceString: "$19.99",
                          pricePerWeek: "Only $0.38 per week",
                          color: Color(rgb: 0xFFC53D), noteString: "Save 96%")
